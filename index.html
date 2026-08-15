@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ankit Sinha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0c0c;
+    --text:#f0f0f0;
+    --dim:#7d7d7d;
+    --pill-bg:#1a1a1a;
+    --pill-border:#292929;
+    --line:#262626;
+    --avatar:#3547f5;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    font-size:15px;
+  }
+  .page{max-width:580px;margin:0 auto;padding:80px 24px 60px;}
+
+  .avatar{
+    width:56px;height:56px;border-radius:50%;
+    background:var(--avatar);
+    margin-bottom:40px;
+  }
+
+  p{line-height:1.75;text-align:justify;}
+  .bio-primary{color:var(--text);margin-bottom:26px;}
+  .bio-secondary{color:var(--dim);margin-bottom:44px;}
+
+  .pills{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:64px;}
+  .pill{
+    display:inline-block;
+    background:var(--pill-bg);
+    border:1px solid var(--pill-border);
+    color:var(--text);
+    text-decoration:none;
+    font-family:'Inter', sans-serif;
+    font-size:13px;
+    padding:9px 20px;
+    border-radius:999px;
+    transition:background .15s ease;
+  }
+  .pill:hover{background:#242424;}
+
+  .section-label{color:var(--dim);font-size:14px;margin-bottom:16px;}
+  .divider{height:1px;background:var(--line);margin-bottom:8px;}
+
+  .list{margin-bottom:64px;}
+  .row{
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+    padding:16px 0;
+    text-decoration:none;
+    transition:opacity .15s ease;
+  }
+  .row:hover{opacity:0.7;}
+  .row .name{color:var(--text);}
+  .row .meta{color:var(--dim);font-size:13px;white-space:nowrap;}
+
+  .footer-divider{height:1px;background:var(--line);}
+  .footer{
+    display:flex;justify-content:space-between;align-items:center;
+    padding-top:20px;
+  }
+  .footer .year{color:var(--text);font-size:13px;}
+  .grid-icon{
+    display:grid;grid-template-columns:repeat(3,3px);grid-template-rows:repeat(3,3px);
+    gap:3px;
+  }
+  .grid-icon span{width:3px;height:3px;background:var(--dim);}
+
+  @media(max-width:480px){
+    .page{padding:56px 20px 40px;}
+    .row{flex-direction:row;}
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="avatar"></div>
+
+  <p class="bio-primary">I'm Ankit Sinha, a backend developer working with Node.js, Express, and REST API design. I build systems end to end, from schema design and authentication to background jobs and deployment, and care about how the pieces fit together, not just shipping endpoints.</p>
+
+  <p class="bio-secondary">Currently a B.Tech Information Technology student at Maharaja Agrasen Institute of Technology, New Delhi, building projects to get hands-on with the backend fundamentals that matter in production.</p>
+
+  <div class="pills">
+    <a class="pill" href="#">GitHub</a>
+    <a class="pill" href="mailto:sinhaankit12jan@gmail.com">Email</a>
+  </div>
+
+  <div class="section-label">Projects</div>
+  <div class="divider"></div>
+  <div class="list">
+    <a class="row" href="#">
+      <span class="name">URL Shortener &amp; Analytics Platform</span>
+      <span class="meta">Node.js &middot; PostgreSQL</span>
+    </a>
+    <a class="row" href="#">
+      <span class="name">LinkNotes</span>
+      <span class="meta">Node.js &middot; PostgreSQL</span>
+    </a>
+    <a class="row" href="#">
+      <span class="name">IdleForge</span>
+      <span class="meta">TypeScript &middot; Redis</span>
+    </a>
+  </div>
+
+  <div class="footer-divider"></div>
+  <div class="footer">
+    <span class="year">2026</span>
+    <div class="grid-icon">
+      <span></span><span></span><span></span>
+      <span></span><span></span><span></span>
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
