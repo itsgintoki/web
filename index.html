@@ -57,12 +57,7 @@
     overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
   }
 
-  .backdrop{
-    position:fixed;inset:0;z-index:0;
-    pointer-events:none;overflow:hidden;
-  }
-  .backdrop svg{display:block;width:100%;height:100%;}
-  .page{position:relative;z-index:1;max-width:580px;margin:0 auto;padding:80px 24px 60px;}
+  .page{max-width:580px;margin:0 auto;padding:80px 24px 60px;}
 
   .avatar{
     display:block;
@@ -129,29 +124,9 @@
   }
   .row:hover{background:#141414;}
   .row-link{
-    display:grid;
-    grid-template-columns:34px minmax(0,1fr);
-    grid-template-areas:"icon name" "icon desc";
-    column-gap:12px;row-gap:3px;
-    align-items:start;
+    display:flex;flex-direction:column;gap:3px;
     flex:1;min-width:0;
     text-decoration:none;
-  }
-  .row-link .name{grid-area:name;}
-  .row-link .desc{grid-area:desc;}
-  .row-icon{
-    grid-area:icon;
-    width:34px;height:34px;margin-top:1px;
-    display:grid;place-items:center;
-    border:1px solid #242838;border-radius:9px;
-    background:radial-gradient(circle at 30% 20%, rgba(53,71,245,.2), transparent 70%), #131313;
-    color:var(--accent-soft);
-  }
-  .row-icon svg{width:18px;height:18px;display:block;}
-  .row-icon.merged{
-    border-color:#203a28;
-    background:radial-gradient(circle at 30% 20%, rgba(86,211,100,.16), transparent 70%), #121512;
-    color:var(--green-soft);
   }
   .row .name{
     display:inline-flex;align-items:center;gap:6px;
@@ -260,12 +235,53 @@
     padding-top:20px;
   }
   .footer .year{color:var(--text);font-size:13px;}
+  .stack-menu{position:relative;display:flex;align-items:center;}
   .grid-icon{
-    display:grid;grid-template-columns:repeat(3,3px);grid-template-rows:repeat(3,3px);
-    gap:3px;text-decoration:none;padding:5px;
+    display:grid;grid-template-columns:repeat(3,4px);grid-template-rows:repeat(3,4px);
+    gap:4px;padding:8px;border:0;border-radius:8px;background:transparent;
+    cursor:pointer;transition:background .15s ease;
   }
-  .grid-icon span{width:3px;height:3px;background:var(--dim);transition:background .15s ease;}
-  .grid-icon:hover span{background:var(--accent-soft);}
+  .grid-icon span{
+    width:4px;height:4px;background:var(--accent-soft);opacity:.65;
+    transition:opacity .15s ease;
+  }
+  .grid-icon:hover{background:#171717;}
+  .grid-icon:hover span,.grid-icon[aria-expanded="true"] span{opacity:1;}
+  .grid-icon:focus-visible{outline:2px solid var(--accent-soft);outline-offset:3px;}
+  .stack-popover{
+    position:absolute;right:0;bottom:calc(100% + 14px);z-index:20;
+    width:min(280px, calc(100vw - 48px));
+    padding:12px;
+    border:1px solid var(--pill-border);border-radius:14px;
+    background:#121212;
+    box-shadow:0 18px 50px rgba(0,0,0,.7);
+    animation:stack-in .15s ease-out;
+  }
+  .stack-popover[hidden]{display:none;}
+  .stack-popover:focus{outline:none;}
+  .stack-popover::after{
+    content:"";position:absolute;right:15px;bottom:-5px;
+    width:8px;height:8px;background:#121212;
+    border-right:1px solid var(--pill-border);border-bottom:1px solid var(--pill-border);
+    transform:rotate(45deg);
+  }
+  .stack-title{
+    margin:0 2px 10px;color:var(--dim);
+    font-size:10px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;
+  }
+  .stack-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;}
+  .stack-item{
+    display:flex;flex-direction:column;align-items:center;gap:7px;
+    padding:9px 4px 8px;
+    border:1px solid #232323;border-radius:9px;
+    background:#161616;
+  }
+  .stack-item svg{width:24px;height:24px;display:block;}
+  .stack-item span{color:var(--dim);font-size:10px;line-height:1.2;text-align:center;}
+  @keyframes stack-in{
+    from{opacity:0;transform:translateY(4px) scale(.985);}
+    to{opacity:1;transform:translateY(0) scale(1);}
+  }
 
   @media(max-width:560px){
     .activity-body{grid-template-columns:1fr;gap:18px;}
@@ -289,34 +305,11 @@
   @media(prefers-reduced-motion:reduce){
     html{scroll-behavior:auto;}
     *,*::before,*::after{transition:none !important;}
+    .stack-popover{animation:none !important;}
   }
 </style>
 </head>
 <body>
-
-<div class="backdrop" aria-hidden="true">
-  <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-    <defs>
-      <pattern id="bg-grid" width="48" height="48" patternUnits="userSpaceOnUse">
-        <path d="M48 0H0v48" fill="none" stroke="#242424" stroke-width="1"/>
-      </pattern>
-      <radialGradient id="bg-glow" cx="50%" cy="0%" r="60%">
-        <stop offset="0%" stop-color="#3547f5" stop-opacity=".14"/>
-        <stop offset="100%" stop-color="#3547f5" stop-opacity="0"/>
-      </radialGradient>
-      <radialGradient id="bg-fade" cx="50%" cy="0%" r="72%">
-        <stop offset="0%" stop-color="#fff" stop-opacity=".85"/>
-        <stop offset="55%" stop-color="#fff" stop-opacity=".28"/>
-        <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
-      </radialGradient>
-      <mask id="bg-mask">
-        <rect width="100%" height="100%" fill="url(#bg-fade)"/>
-      </mask>
-    </defs>
-    <rect width="100%" height="100%" fill="url(#bg-glow)"/>
-    <rect width="100%" height="100%" fill="url(#bg-grid)" mask="url(#bg-mask)" opacity=".7"/>
-  </svg>
-</div>
 
 <main class="page">
 
@@ -338,9 +331,6 @@
 
       <div class="row">
         <a class="row-link" href="https://github.com/itsgintoki/gatekeep" target="_blank" rel="noopener">
-          <span class="row-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4.5 6v5.2c0 4.4 3.2 8.3 7.5 9.8 4.3-1.5 7.5-5.4 7.5-9.8V6L12 3Z"/><circle cx="12" cy="11" r="1.4"/><path d="M12 12.4v2.2"/></svg>
-          </span>
           <span class="name">GateKeep
             <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6"/></svg>
           </span>
@@ -354,9 +344,6 @@
 
       <div class="row">
         <a class="row-link" href="https://github.com/itsgintoki/idleforge" target="_blank" rel="noopener">
-          <span class="row-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 4 5 5-2.5 2.5-5-5L15 4Z"/><path d="M12.5 9 4 17.5 6.5 20 15 11.5"/></svg>
-          </span>
           <span class="name">IdleForge
             <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6"/></svg>
           </span>
@@ -380,9 +367,6 @@
 
       <div class="row">
         <a class="row-link" href="https://github.com/Agenta-AI/agenta/pull/6453" target="_blank" rel="noopener">
-          <span class="row-icon merged" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/><path d="M6 7v10"/><path d="M18 17V9a4 4 0 0 0-4-4h-3"/><path d="m13 3-2 2 2 2"/></svg>
-          </span>
           <span class="name">Agenta-AI/agenta <span class="pr">#6453</span>
             <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6"/></svg>
           </span>
@@ -395,9 +379,6 @@
 
       <div class="row">
         <a class="row-link" href="https://github.com/faker-js/faker/pull/4020" target="_blank" rel="noopener">
-          <span class="row-icon merged" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/><path d="M6 7v10"/><path d="M18 17V9a4 4 0 0 0-4-4h-3"/><path d="m13 3-2 2 2 2"/></svg>
-          </span>
           <span class="name">faker-js/faker <span class="pr">#4020</span>
             <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6"/></svg>
           </span>
@@ -419,9 +400,6 @@
     <div class="list">
       <div class="row">
         <a class="row-link" href="https://github.com/itsgintoki/holdfast" target="_blank" rel="noopener">
-          <span class="row-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5V21"/><path d="M5 13H3.5c0 4.2 3.8 7.5 8.5 7.5s8.5-3.3 8.5-7.5H19"/><path d="M8.5 10h7"/></svg>
-          </span>
           <span class="name">HoldFast
             <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6"/></svg>
           </span>
@@ -516,11 +494,90 @@
   <div class="footer-divider"></div>
   <footer class="footer">
     <span class="year">2026</span>
-    <a class="grid-icon" href="https://github.com/itsgintoki" target="_blank" rel="noopener" aria-label="GitHub profile (opens in a new tab)">
-      <span></span><span></span><span></span>
-      <span></span><span></span><span></span>
-      <span></span><span></span><span></span>
-    </a>
+    <div class="stack-menu">
+      <button class="grid-icon" type="button" aria-label="Show tech stack" aria-haspopup="dialog" aria-expanded="false" aria-controls="stack-popover" title="Tech stack">
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+      </button>
+      <div class="stack-popover" id="stack-popover" role="dialog" aria-labelledby="stack-title" tabindex="-1" hidden>
+        <div class="stack-title" id="stack-title">Stack</div>
+        <div class="stack-grid">
+          <div class="stack-item">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="1.5" y="1.5" width="21" height="21" rx="4.5" fill="#3178C6"/>
+              <text x="12" y="15.5" text-anchor="middle" font-family="Inter, sans-serif" font-size="8.5" font-weight="700" fill="#fff">TS</text>
+            </svg>
+            <span>TypeScript</span>
+          </div>
+          <div class="stack-item">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2 21 7.5v9L12 22 3 16.5v-9L12 2Z" fill="#5FA04E"/>
+              <text x="12" y="15.2" text-anchor="middle" font-family="Inter, sans-serif" font-size="7.5" font-weight="700" fill="#fff">JS</text>
+            </svg>
+            <span>Node.js</span>
+          </div>
+          <div class="stack-item">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <ellipse cx="12" cy="6" rx="7" ry="3" stroke="#4169E1" stroke-width="1.7"/>
+              <path d="M5 6v12c0 1.66 3.13 3 7 3s7-1.34 7-3V6" stroke="#4169E1" stroke-width="1.7"/>
+              <path d="M5 12c0 1.66 3.13 3 7 3s7-1.34 7-3" stroke="#4169E1" stroke-width="1.7"/>
+            </svg>
+            <span>PostgreSQL</span>
+          </div>
+          <div class="stack-item">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="m12 3 8.5 4L12 11 3.5 7 12 3Z" fill="#FF4438"/>
+              <path d="m3.5 10.5 8.5 4 8.5-4" stroke="#FF4438" stroke-width="1.8" stroke-linejoin="round"/>
+              <path d="m3.5 14.5 8.5 4 8.5-4" stroke="#FF4438" stroke-width="1.8" stroke-linejoin="round" opacity=".55"/>
+            </svg>
+            <span>Redis</span>
+          </div>
+          <div class="stack-item">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="4.5" width="12" height="3" rx="1.5" fill="#E5484D"/>
+              <rect x="3" y="10.5" width="12" height="3" rx="1.5" fill="#E5484D" opacity=".72"/>
+              <rect x="3" y="16.5" width="12" height="3" rx="1.5" fill="#E5484D" opacity=".45"/>
+              <path d="M17 6h3.5m0 0-2-2m2 2-2 2" fill="none" stroke="#E5484D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>BullMQ</span>
+          </div>
+          <div class="stack-item">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 14.5a4 4 0 0 1 .5-8 5.5 5.5 0 0 1 10.4 1.4A3.4 3.4 0 0 1 18 14.5H7Z" stroke="#C5F74F" stroke-width="1.7" stroke-linejoin="round"/>
+              <path d="m8.5 18-1 2m5-2-1 2m5-2-1 2" stroke="#C5F74F" stroke-width="1.7" stroke-linecap="round"/>
+            </svg>
+            <span>Drizzle</span>
+          </div>
+          <div class="stack-item">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="11" width="4" height="4" rx=".8" fill="#2496ED"/>
+              <rect x="8" y="11" width="4" height="4" rx=".8" fill="#2496ED"/>
+              <rect x="13" y="11" width="4" height="4" rx=".8" fill="#2496ED"/>
+              <rect x="8" y="6" width="4" height="4" rx=".8" fill="#2496ED"/>
+              <rect x="13" y="6" width="4" height="4" rx=".8" fill="#2496ED"/>
+              <path d="M3 16h18c-.8 2.8-3.4 4.5-6.8 4.5h-4.4C6.4 20.5 3.8 18.8 3 16Z" fill="#2496ED"/>
+            </svg>
+            <span>Docker</span>
+          </div>
+          <div class="stack-item">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="6" cy="5" r="2" stroke="#F05032" stroke-width="1.8"/>
+              <circle cx="6" cy="19" r="2" stroke="#F05032" stroke-width="1.8"/>
+              <circle cx="18" cy="19" r="2" stroke="#F05032" stroke-width="1.8"/>
+              <path d="M6 7v10M18 17V9a4 4 0 0 0-4-4h-4" stroke="#F05032" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Git</span>
+          </div>
+          <div class="stack-item">
+            <svg viewBox="0 0 16 16" aria-hidden="true">
+              <path fill="#f0f0f0" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/>
+            </svg>
+            <span>GitHub</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </footer>
 
 </main>
@@ -706,6 +763,40 @@
     } catch (error) {
       // Leave the calendar hidden if activity cannot be loaded.
     }
+  })();
+</script>
+
+<script>
+  (() => {
+    const button = document.querySelector('.grid-icon');
+    const popover = document.getElementById('stack-popover');
+    const menu = button && button.closest('.stack-menu');
+    if (!button || !popover || !menu) return;
+
+    const setOpen = (open, restoreFocus = false) => {
+      popover.hidden = !open;
+      button.setAttribute('aria-expanded', String(open));
+
+      if (open) {
+        popover.focus({ preventScroll: true });
+      } else if (restoreFocus) {
+        button.focus({ preventScroll: true });
+      }
+    };
+
+    button.addEventListener('click', () => setOpen(popover.hidden));
+
+    document.addEventListener('pointerdown', (event) => {
+      if (!popover.hidden && !menu.contains(event.target)) setOpen(false);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !popover.hidden) setOpen(false, true);
+    });
+
+    document.addEventListener('focusin', (event) => {
+      if (!popover.hidden && !menu.contains(event.target)) setOpen(false);
+    });
   })();
 </script>
 
