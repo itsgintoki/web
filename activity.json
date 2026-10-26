@@ -1,0 +1,28 @@
+{
+  "percentages": {
+    "Commits": 86,
+    "Pull requests": 12,
+    "Code review": 2,
+    "Issues": 0
+  },
+  "contributedTo": [
+    "itsgintoki/url-shortener",
+    "itsgintoki/gatekeep",
+    "itsgintoki/idleforge"
+  ],
+  "otherRepositories": 11,
+  "organizations": [
+    {
+      "login": "21072026",
+      "avatar": "https://avatars.githubusercontent.com/u/307296943?s=40&v=4"
+    },
+    {
+      "login": "faker-js",
+      "avatar": "https://avatars.githubusercontent.com/u/97165289?s=40&v=4"
+    },
+    {
+      "login": "drizzle-team",
+      "avatar": "https://avatars.githubusercontent.com/u/108468352?s=40&v=4"
+    }
+  ]
+}

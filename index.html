@@ -345,18 +345,6 @@
       </div>
 
       <div class="row">
-        <a class="row-link" href="https://github.com/IvanTran-2001/FriendChise/pull/398" target="_blank" rel="noopener">
-          <span class="name">IvanTran-2001/FriendChise <span class="pr">#398</span>
-            <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6"/></svg>
-          </span>
-          <span class="desc">Added an API endpoint for creating organizations.</span>
-        </a>
-        <div class="row-meta">
-          <span class="meta merged">Merged Aug 2026</span>
-        </div>
-      </div>
-
-      <div class="row">
         <a class="row-link" href="https://github.com/faker-js/faker/pull/4020" target="_blank" rel="noopener">
           <span class="name">faker-js/faker <span class="pr">#4020</span>
             <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6"/></svg>
@@ -399,7 +387,7 @@
     <div class="divider"></div>
 
     <div class="activity-card">
-      <nav class="orgs" aria-label="Organizations contributed to">
+      <nav class="orgs" id="org-chips" aria-label="Organizations contributed to">
         <a class="org" href="https://github.com/21072026" target="_blank" rel="noopener">
           <img src="https://avatars.githubusercontent.com/u/307296943?s=40&amp;v=4" alt="" width="22" height="22" loading="lazy">@21072026
         </a>
@@ -415,15 +403,15 @@
       <div class="activity-body">
         <div class="activity-contrib">
           <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"/></svg>
-          <p>Contributed to <a href="https://github.com/itsgintoki/url-shortener" target="_blank" rel="noopener">itsgintoki/url-shortener</a>, <a href="https://github.com/itsgintoki/gatekeep" target="_blank" rel="noopener">itsgintoki/gatekeep</a>, <a href="https://github.com/itsgintoki/idleforge" target="_blank" rel="noopener">itsgintoki/idleforge</a> and <a href="https://github.com/itsgintoki?tab=repositories" target="_blank" rel="noopener">11 other repositories</a></p>
+          <p id="activity-contrib-text">Contributed to <a href="https://github.com/itsgintoki/url-shortener" target="_blank" rel="noopener">itsgintoki/url-shortener</a>, <a href="https://github.com/itsgintoki/gatekeep" target="_blank" rel="noopener">itsgintoki/gatekeep</a>, <a href="https://github.com/itsgintoki/idleforge" target="_blank" rel="noopener">itsgintoki/idleforge</a> and <a href="https://github.com/itsgintoki?tab=repositories" target="_blank" rel="noopener">11 other repositories</a></p>
         </div>
 
         <div class="radar-wrap">
-          <div class="radar" role="img" aria-label="Activity breakdown over the last year: 86% commits, 12% pull requests, 2% code review, and 0% issues.">
-            <div class="radar-label top"><span>2%</span>Code review</div>
-            <div class="radar-label left"><span>86%</span>Commits</div>
-            <div class="radar-label right"><span>0%</span>Issues</div>
-            <div class="radar-label bottom"><span>12%</span>Pull requests</div>
+          <div class="radar" id="radar" role="img" aria-label="Activity breakdown over the last year: 86% commits, 12% pull requests, 2% code review, and 0% issues.">
+            <div class="radar-label top" data-metric="Code review"><span>2%</span>Code review</div>
+            <div class="radar-label left" data-metric="Commits"><span>86%</span>Commits</div>
+            <div class="radar-label right" data-metric="Issues"><span>0%</span>Issues</div>
+            <div class="radar-label bottom" data-metric="Pull requests"><span>12%</span>Pull requests</div>
             <svg viewBox="0 0 300 230" aria-hidden="true" focusable="false">
               <g class="radar-axes">
                 <line x1="150" y1="115" x2="60" y2="115" vector-effect="non-scaling-stroke"/>
@@ -431,12 +419,12 @@
                 <line x1="150" y1="115" x2="150" y2="45" vector-effect="non-scaling-stroke"/>
                 <line x1="150" y1="115" x2="150" y2="185" vector-effect="non-scaling-stroke"/>
               </g>
-              <polygon class="radar-area" points="72.6,115 150,113.6 150,115 150,123.4" vector-effect="non-scaling-stroke"/>
+              <polygon class="radar-area" id="radar-area" points="150,113.6 150,115 150,123.4 72.6,115" vector-effect="non-scaling-stroke"/>
               <g class="radar-points">
-                <circle cx="72.6" cy="115" r="2.6"/>
-                <circle cx="150" cy="113.6" r="2.6"/>
-                <circle cx="150" cy="115" r="2.6"/>
-                <circle cx="150" cy="123.4" r="2.6"/>
+                <circle data-metric="Commits" cx="72.6" cy="115" r="2.6"/>
+                <circle data-metric="Code review" cx="150" cy="113.6" r="2.6"/>
+                <circle data-metric="Issues" cx="150" cy="115" r="2.6"/>
+                <circle data-metric="Pull requests" cx="150" cy="123.4" r="2.6"/>
               </g>
             </svg>
           </div>
@@ -464,6 +452,135 @@
   </footer>
 
 </main>
+
+<script>
+  (async () => {
+    try {
+      const response = await fetch('activity.json', { cache: 'no-store' });
+      if (!response.ok) return;
+
+      const data = await response.json();
+      const metrics = data.percentages;
+      const required = ['Commits', 'Pull requests', 'Code review', 'Issues'];
+      if (!metrics || !required.every((key) => Number.isFinite(metrics[key]))) return;
+
+      const radar = document.getElementById('radar');
+      const area = document.getElementById('radar-area');
+      const points = document.querySelectorAll('.radar-points circle');
+      if (!radar || !area || !points.length) return;
+
+      const centerX = 150;
+      const centerY = 115;
+      const radiusX = 90;
+      const radiusY = 70;
+      const directions = {
+        'Commits': [-1, 0],
+        'Issues': [1, 0],
+        'Code review': [0, -1],
+        'Pull requests': [0, 1]
+      };
+      const coordinates = {};
+
+      required.forEach((metric) => {
+        const [dx, dy] = directions[metric];
+        const value = Math.min(100, Math.max(0, Number(metrics[metric])));
+        coordinates[metric] = [
+          centerX + dx * (value / 100) * radiusX,
+          centerY + dy * (value / 100) * radiusY
+        ];
+      });
+
+      const order = ['Code review', 'Issues', 'Pull requests', 'Commits'];
+      area.setAttribute('points', order.map((metric) => coordinates[metric].join(',')).join(' '));
+
+      points.forEach((circle) => {
+        const point = coordinates[circle.dataset.metric];
+        if (point) {
+          circle.setAttribute('cx', point[0]);
+          circle.setAttribute('cy', point[1]);
+        }
+      });
+
+      document.querySelectorAll('.radar-label[data-metric]').forEach((label) => {
+        const percent = label.querySelector('span');
+        if (percent) percent.textContent = Math.round(Number(metrics[label.dataset.metric])) + '%';
+      });
+
+      radar.setAttribute('aria-label', `Activity breakdown over the last year: ${metrics.Commits}% commits, ${metrics['Pull requests']}% pull requests, ${metrics['Code review']}% code review, and ${metrics.Issues}% issues.`);
+
+      const repos = Array.isArray(data.contributedTo)
+        ? data.contributedTo.filter((repo) => /^[\w.-]+\/[\w.-]+$/.test(repo))
+        : [];
+      const other = Number.isInteger(data.otherRepositories) ? data.otherRepositories : null;
+      const summary = document.getElementById('activity-contrib-text');
+
+      if (summary && repos.length && other !== null) {
+        const fragment = document.createDocumentFragment();
+        fragment.append('Contributed to ');
+
+        repos.forEach((repo, index) => {
+          if (index > 0) fragment.append(', ');
+          const link = document.createElement('a');
+          link.href = 'https://github.com/' + repo;
+          link.target = '_blank';
+          link.rel = 'noopener';
+          link.textContent = repo;
+          fragment.append(link);
+        });
+
+        if (other > 0) {
+          fragment.append(' and ');
+          const otherLink = document.createElement('a');
+          otherLink.href = 'https://github.com/itsgintoki?tab=repositories';
+          otherLink.target = '_blank';
+          otherLink.rel = 'noopener';
+          otherLink.textContent = `${other} other repositor${other === 1 ? 'y' : 'ies'}`;
+          fragment.append(otherLink);
+        }
+
+        summary.replaceChildren(fragment);
+      }
+
+      const orgs = Array.isArray(data.organizations)
+        ? data.organizations.filter((org) => org && /^[\w.-]+$/.test(org.login) && typeof org.avatar === 'string')
+        : [];
+      const orgChips = document.getElementById('org-chips');
+
+      if (orgChips && orgs.length) {
+        const fragment = document.createDocumentFragment();
+
+        orgs.slice(0, 3).forEach((org) => {
+          const link = document.createElement('a');
+          link.className = 'org';
+          link.href = 'https://github.com/' + org.login;
+          link.target = '_blank';
+          link.rel = 'noopener';
+
+          const avatar = document.createElement('img');
+          avatar.src = org.avatar;
+          avatar.alt = '';
+          avatar.width = 22;
+          avatar.height = 22;
+          avatar.loading = 'lazy';
+
+          link.append(avatar, document.createTextNode('@' + org.login));
+          fragment.append(link);
+        });
+
+        const more = document.createElement('a');
+        more.className = 'org org-more';
+        more.href = 'https://github.com/itsgintoki?tab=overview';
+        more.target = '_blank';
+        more.rel = 'noopener';
+        more.textContent = 'More';
+        fragment.append(more);
+        orgChips.replaceChildren(fragment);
+      }
+    } catch (error) {
+      // Keep the static fallback if the snapshot cannot be loaded.
+    }
+  })();
+</script>
 
 <script>
   (async () => {
