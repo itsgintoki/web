@@ -57,7 +57,12 @@
     overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
   }
 
-  .page{max-width:580px;margin:0 auto;padding:80px 24px 60px;}
+  .backdrop{
+    position:fixed;inset:0;z-index:0;
+    pointer-events:none;overflow:hidden;
+  }
+  .backdrop svg{display:block;width:100%;height:100%;}
+  .page{position:relative;z-index:1;max-width:580px;margin:0 auto;padding:80px 24px 60px;}
 
   .avatar{
     display:block;
@@ -124,9 +129,29 @@
   }
   .row:hover{background:#141414;}
   .row-link{
-    display:flex;flex-direction:column;gap:3px;
+    display:grid;
+    grid-template-columns:34px minmax(0,1fr);
+    grid-template-areas:"icon name" "icon desc";
+    column-gap:12px;row-gap:3px;
+    align-items:start;
     flex:1;min-width:0;
     text-decoration:none;
+  }
+  .row-link .name{grid-area:name;}
+  .row-link .desc{grid-area:desc;}
+  .row-icon{
+    grid-area:icon;
+    width:34px;height:34px;margin-top:1px;
+    display:grid;place-items:center;
+    border:1px solid #242838;border-radius:9px;
+    background:radial-gradient(circle at 30% 20%, rgba(53,71,245,.2), transparent 70%), #131313;
+    color:var(--accent-soft);
+  }
+  .row-icon svg{width:18px;height:18px;display:block;}
+  .row-icon.merged{
+    border-color:#203a28;
+    background:radial-gradient(circle at 30% 20%, rgba(86,211,100,.16), transparent 70%), #121512;
+    color:var(--green-soft);
   }
   .row .name{
     display:inline-flex;align-items:center;gap:6px;
@@ -269,6 +294,30 @@
 </head>
 <body>
 
+<div class="backdrop" aria-hidden="true">
+  <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+    <defs>
+      <pattern id="bg-grid" width="48" height="48" patternUnits="userSpaceOnUse">
+        <path d="M48 0H0v48" fill="none" stroke="#242424" stroke-width="1"/>
+      </pattern>
+      <radialGradient id="bg-glow" cx="50%" cy="0%" r="60%">
+        <stop offset="0%" stop-color="#3547f5" stop-opacity=".14"/>
+        <stop offset="100%" stop-color="#3547f5" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="bg-fade" cx="50%" cy="0%" r="72%">
+        <stop offset="0%" stop-color="#fff" stop-opacity=".85"/>
+        <stop offset="55%" stop-color="#fff" stop-opacity=".28"/>
+        <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+      </radialGradient>
+      <mask id="bg-mask">
+        <rect width="100%" height="100%" fill="url(#bg-fade)"/>
+      </mask>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#bg-glow)"/>
+    <rect width="100%" height="100%" fill="url(#bg-grid)" mask="url(#bg-mask)" opacity=".7"/>
+  </svg>
+</div>
+
 <main class="page">
 
   <a class="avatar" href="https://github.com/itsgintoki" target="_blank" rel="noopener" aria-label="Ankit Sinha on GitHub (opens in a new tab)">
@@ -289,6 +338,9 @@
 
       <div class="row">
         <a class="row-link" href="https://github.com/itsgintoki/gatekeep" target="_blank" rel="noopener">
+          <span class="row-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4.5 6v5.2c0 4.4 3.2 8.3 7.5 9.8 4.3-1.5 7.5-5.4 7.5-9.8V6L12 3Z"/><circle cx="12" cy="11" r="1.4"/><path d="M12 12.4v2.2"/></svg>
+          </span>
           <span class="name">GateKeep
             <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6"/></svg>
           </span>
@@ -302,6 +354,9 @@
 
       <div class="row">
         <a class="row-link" href="https://github.com/itsgintoki/idleforge" target="_blank" rel="noopener">
+          <span class="row-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 4 5 5-2.5 2.5-5-5L15 4Z"/><path d="M12.5 9 4 17.5 6.5 20 15 11.5"/></svg>
+          </span>
           <span class="name">IdleForge
             <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6"/></svg>
           </span>
@@ -325,6 +380,9 @@
 
       <div class="row">
         <a class="row-link" href="https://github.com/Agenta-AI/agenta/pull/6453" target="_blank" rel="noopener">
+          <span class="row-icon merged" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/><path d="M6 7v10"/><path d="M18 17V9a4 4 0 0 0-4-4h-3"/><path d="m13 3-2 2 2 2"/></svg>
+          </span>
           <span class="name">Agenta-AI/agenta <span class="pr">#6453</span>
             <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6"/></svg>
           </span>
@@ -337,6 +395,9 @@
 
       <div class="row">
         <a class="row-link" href="https://github.com/faker-js/faker/pull/4020" target="_blank" rel="noopener">
+          <span class="row-icon merged" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/><path d="M6 7v10"/><path d="M18 17V9a4 4 0 0 0-4-4h-3"/><path d="m13 3-2 2 2 2"/></svg>
+          </span>
           <span class="name">faker-js/faker <span class="pr">#4020</span>
             <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6"/></svg>
           </span>
@@ -358,6 +419,9 @@
     <div class="list">
       <div class="row">
         <a class="row-link" href="https://github.com/itsgintoki/holdfast" target="_blank" rel="noopener">
+          <span class="row-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5V21"/><path d="M5 13H3.5c0 4.2 3.8 7.5 8.5 7.5s8.5-3.3 8.5-7.5H19"/><path d="M8.5 10h7"/></svg>
+          </span>
           <span class="name">HoldFast
             <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6"/></svg>
           </span>
