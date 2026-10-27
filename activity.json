@@ -1,17 +1,21 @@
 {
   "percentages": {
-    "Commits": 86,
-    "Pull requests": 12,
-    "Code review": 2,
+    "Commits": 88,
+    "Pull requests": 11,
+    "Code review": 1,
     "Issues": 0
   },
   "contributedTo": [
     "itsgintoki/url-shortener",
     "itsgintoki/gatekeep",
-    "itsgintoki/idleforge"
+    "itsgintoki/web"
   ],
   "otherRepositories": 11,
   "organizations": [
+    {
+      "login": "Agenta-AI",
+      "avatar": "https://avatars.githubusercontent.com/u/127993667?s=40&v=4"
+    },
     {
       "login": "21072026",
       "avatar": "https://avatars.githubusercontent.com/u/307296943?s=40&v=4"
@@ -19,10 +23,6 @@
     {
       "login": "faker-js",
       "avatar": "https://avatars.githubusercontent.com/u/97165289?s=40&v=4"
-    },
-    {
-      "login": "drizzle-team",
-      "avatar": "https://avatars.githubusercontent.com/u/108468352?s=40&v=4"
     }
   ]
 }
