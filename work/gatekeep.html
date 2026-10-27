@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GateKeep — Case study — Ankit Sinha</title>
+<meta name="description" content="How GateKeep handles encrypted, expiring notes with passphrase gates, atomic read limits, private file access, and access analytics.">
+<meta name="author" content="Ankit Sinha">
+<meta name="theme-color" content="#0c0c0c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GateKeep — Case study">
+<meta property="og:description" content="Encrypted, expiring notes with passphrase gates, atomic read limits, and access analytics.">
+<link rel="canonical" href="https://itsgintoki.github.io/web/work/gatekeep.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Ccircle%20cx='32'%20cy='32'%20r='32'%20fill='%233547f5'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="case-study.css">
+</head>
+<body>
+<main class="page">
+  <div class="topbar">
+    <a class="back" href="../index.html"><span aria-hidden="true">&larr;</span> Ankit Sinha</a>
+    <a class="site-mark" href="../index.html#projects">All projects</a>
+  </div>
+
+  <header class="case-header">
+    <p class="eyebrow">Selected work / 01</p>
+    <h1>GateKeep</h1>
+    <p class="summary">Encrypted, expiring notes with passphrase gates, atomic read limits, and access analytics.</p>
+    <div class="tags">
+      <span class="tag">TypeScript</span>
+      <span class="tag">Node.js</span>
+      <span class="tag">Express</span>
+      <span class="tag">PostgreSQL</span>
+      <span class="tag">Drizzle</span>
+      <span class="tag">Supabase Storage</span>
+      <span class="tag">Docker</span>
+      <span class="tag">Render</span>
+    </div>
+    <div class="links">
+      <a href="https://gatekeep-6lhv.onrender.com" target="_blank" rel="noopener">Live app <span aria-hidden="true">&nearr;</span><span class="sr-only"> (opens in a new tab)</span></a>
+      <a href="https://github.com/itsgintoki/gatekeep" target="_blank" rel="noopener">Source <span aria-hidden="true">&nearr;</span><span class="sr-only"> (opens in a new tab)</span></a>
+    </div>
+  </header>
+
+  <section class="case-section">
+    <h2>The problem</h2>
+    <p>Sharing a sensitive note usually means choosing between a permanent link and a screenshot. A link is convenient, but it tends to outlive the reason it was sent. GateKeep explores a stricter middle ground: a note should be readable by the right person, for a limited number of reads, and then disappear.</p>
+    <p>The hard part is not the text editor or the browser UI. It is making the promise hold when a link is opened twice at once, when a client retries, when a file is requested after the note expires, and when someone tries to guess a passphrase.</p>
+  </section>
+
+  <section class="case-section">
+    <h2>How it fits together</h2>
+    <pre class="diagram" aria-label="GateKeep architecture diagram">Browser
+  │  JWT session
+  ▼
+Express API ─────────────── PostgreSQL
+  │                         ├─ note metadata, expiry, read counts
+  │                         ├─ access analytics
+  │                         └─ HMAC webhook events
+  │
+  ├── AES-256-GCM encrypted note content
+  │
+  ├── Supabase Storage
+  │     └─ private files → short-lived signed URLs
+  │
+  └── rate limits</pre>
+    <p>The API owns expiry, passphrase verification, read counters, file authorization, and analytics. The browser only receives what it needs for the current request.</p>
+  </section>
+
+  <section class="case-section">
+    <h2>Design decisions</h2>
+
+    <div class="decision">
+      <h3>Expiry and read limits live in the database</h3>
+      <p>A read is an atomic operation in Postgres, not a client-side counter. Two simultaneous viewers cannot both consume the last allowed read, and an expired note cannot be revived by refreshing the page.</p>
+    </div>
+
+    <div class="decision">
+      <h3>Passphrases are checked before content is returned</h3>
+      <p>The note link is not the secret. The passphrase gate is verified server-side before the note body or file URL is released, so the passphrase never has to live in the URL or in browser state.</p>
+    </div>
+
+    <div class="decision">
+      <h3>Encryption at rest, private files in storage</h3>
+      <p>Note content is encrypted with AES-256-GCM before storage. Uploads stay in a private Supabase bucket and are exposed only through short-lived signed URLs after authorization.</p>
+    </div>
+
+    <div class="decision">
+      <h3>Webhooks are signed and retried</h3>
+      <p>Analytics and notification events are sent with an HMAC signature so receivers can verify the payload. Retries make delivery more resilient without turning every failed request into a manual cleanup task.</p>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <h2>At a glance</h2>
+    <div class="metrics">
+      <div class="metric"><strong>28</strong><span>unit + E2E tests<br>plus integration coverage</span></div>
+      <div class="metric"><strong>AES-256</strong><span>GCM note encryption</span></div>
+      <div class="metric"><strong>3</strong><span>access gates: passphrase, expiry, read limit</span></div>
+      <div class="metric"><strong>HMAC</strong><span>signed, retried webhooks</span></div>
+    </div>
+    <p class="callout">The part I care about most: the read limit is enforced by the database, not by UI state.</p>
+  </section>
+
+  <section class="case-section">
+    <h2>What I'd do next</h2>
+    <ul>
+      <li>Add key rotation and per-note key derivation so encryption keys are not tied to one long-lived application secret.</li>
+      <li>Run a background cleanup job for expired note rows and orphaned files.</li>
+      <li>Give note owners an audit trail for access events instead of only aggregate analytics.</li>
+      <li>Test concurrent reads and file requests more aggressively, including the failure path when storage is slow.</li>
+    </ul>
+  </section>
+
+  <footer class="case-footer">
+    <a class="back" href="../index.html"><span aria-hidden="true">&larr;</span> Back to portfolio</a>
+    <a class="next" href="idleforge.html">Next case study: IdleForge <span aria-hidden="true">&rarr;</span></a>
+  </footer>
+</main>
+</body>
+</html>

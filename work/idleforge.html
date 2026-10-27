@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IdleForge — Case study — Ankit Sinha</title>
+<meta name="description" content="How IdleForge keeps an idle-game economy correct with Postgres row locks, persisted idempotency, BullMQ workers, and a Redis leaderboard.">
+<meta name="author" content="Ankit Sinha">
+<meta name="theme-color" content="#0c0c0c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IdleForge — Case study">
+<meta property="og:description" content="An idle-game economy backend with offline earnings, Redis leaderboards, and BullMQ jobs.">
+<link rel="canonical" href="https://itsgintoki.github.io/web/work/idleforge.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Ccircle%20cx='32'%20cy='32'%20r='32'%20fill='%233547f5'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="case-study.css">
+</head>
+<body>
+<main class="page">
+  <div class="topbar">
+    <a class="back" href="../index.html"><span aria-hidden="true">&larr;</span> Ankit Sinha</a>
+    <a class="site-mark" href="../index.html#projects">All projects</a>
+  </div>
+
+  <header class="case-header">
+    <p class="eyebrow">Selected work / 02</p>
+    <h1>IdleForge</h1>
+    <p class="summary">An idle-game economy backend with offline earnings, Redis leaderboards, and BullMQ jobs.</p>
+    <div class="tags">
+      <span class="tag">TypeScript</span>
+      <span class="tag">Node.js</span>
+      <span class="tag">Express</span>
+      <span class="tag">PostgreSQL</span>
+      <span class="tag">Drizzle</span>
+      <span class="tag">Redis</span>
+      <span class="tag">BullMQ</span>
+      <span class="tag">Docker</span>
+    </div>
+    <div class="links">
+      <a href="https://github.com/itsgintoki/idleforge" target="_blank" rel="noopener">Source <span aria-hidden="true">&nearr;</span><span class="sr-only"> (opens in a new tab)</span></a>
+    </div>
+  </header>
+
+  <section class="case-section">
+    <h2>The problem</h2>
+    <p>Idle games are full of small economy mutations: collect what was earned while offline, buy an upgrade, claim a reward, update a leaderboard. Those operations are easy to write once and surprisingly hard to keep correct when clients retry, jobs run twice, or two requests touch the same player at the same time.</p>
+    <p>IdleForge is built around the idea that the economy should stay consistent even when the request layer is not. The database is the source of truth; Redis and the queue are there for speed and scheduling, not to quietly become the ledger.</p>
+  </section>
+
+  <section class="case-section">
+    <h2>How it fits together</h2>
+    <pre class="diagram" aria-label="IdleForge architecture diagram">Client
+  │  authenticated requests
+  ▼
+Express API ───────────────── PostgreSQL
+  │                            ├─ players, balances, upgrades
+  │                            ├─ guarded SQL + row locks
+  │                            └─ persisted idempotency records
+  │
+  ├── Redis
+  │     ├─ sorted-set leaderboard
+  │     └─ BullMQ queues
+  │
+  └── BullMQ workers
+        ├─ scheduled economy events
+        └─ duplicate-delivery protection</pre>
+    <p>The API and workers run as separate processes. Both write through the same data model, so a worker retry and an HTTP retry hit the same guarantees.</p>
+  </section>
+
+  <section class="case-section">
+    <h2>Design decisions</h2>
+
+    <div class="decision">
+      <h3>Offline collection and upgrades are transactions</h3>
+      <p>Collection and spending are guarded by SQL and row locks. A request either credits the correct amount and commits, or it fails without leaving a half-applied balance change. Two concurrent upgrades cannot spend the same currency twice.</p>
+    </div>
+
+    <div class="decision">
+      <h3>Retries are expected, so idempotency is persisted</h3>
+      <p>Client retries use persisted idempotency records instead of an in-memory cache. Scheduled events get duplicate-delivery protection at the BullMQ layer, so a job that runs more than once does not become a second payout.</p>
+    </div>
+
+    <div class="decision">
+      <h3>Postgres owns the truth; Redis owns the fast view</h3>
+      <p>The leaderboard is a Redis sorted set reconciled from Postgres. If Redis is unavailable, the API has defined behavior rather than silently serving a stale ranking. Rebuilding the sorted set is treated as a recovery path, not the primary write path.</p>
+    </div>
+
+    <div class="decision">
+      <h3>Separate API and worker processes</h3>
+      <p>HTTP traffic and background work have different failure modes, so they have separate lifecycles. Both emit correlation logs and expose health checks, and both handle graceful shutdown so in-flight work is not cut off mid-transaction.</p>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <h2>At a glance</h2>
+    <div class="metrics">
+      <div class="metric"><strong>114 ms</strong><span>p95, authenticated<br><code>/player/me</code></span></div>
+      <div class="metric"><strong>33 ms</strong><span>p95,<br><code>/leaderboard</code></span></div>
+      <div class="metric"><strong>0</strong><span>errors in the<br>mixed load test</span></div>
+      <div class="metric"><strong>246</strong><span>mixed req/s at<br>10 concurrent readers</span></div>
+    </div>
+    <p class="callout">The interesting part is not the happy path. It is what happens when the same economy mutation arrives twice.</p>
+  </section>
+
+  <section class="case-section">
+    <h2>What I'd do next</h2>
+    <ul>
+      <li>Push the load test beyond 10 concurrent readers and measure where Postgres row contention starts to dominate.</li>
+      <li>Exercise Redis failover in a repeatable test environment instead of only reasoning about the outage path.</li>
+      <li>Add fault injection around worker retries and scheduled jobs to verify the duplicate-delivery guarantees under real failure timing.</li>
+      <li>Tighten the retry and backoff policy so transient upstream failures do not turn into long-lived queue pressure.</li>
+    </ul>
+  </section>
+
+  <footer class="case-footer">
+    <a class="back" href="../index.html"><span aria-hidden="true">&larr;</span> Back to portfolio</a>
+    <a class="next" href="gatekeep.html">Previous case study: GateKeep <span aria-hidden="true">&rarr;</span></a>
+  </footer>
+</main>
+</body>
+</html>
