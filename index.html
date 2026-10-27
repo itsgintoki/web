@@ -6,7 +6,7 @@
 <title>Ankit Sinha — Backend Developer</title>
 <meta name="description" content="Ankit — backend developer working with TypeScript, Node.js, and PostgreSQL. Building systems end to end, focused on how the pieces behave under load.">
 <meta name="author" content="Ankit Sinha">
-<meta name="theme-color" content="#0c0c0c">
+<meta name="theme-color" content="#0a0a0a">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ankit Sinha — Backend Developer">
 <meta property="og:description" content="Backend developer working with TypeScript, Node.js, and PostgreSQL. Building systems end to end, focused on how the pieces behave under load.">
@@ -14,157 +14,282 @@
 <meta property="og:image:alt" content="Ankit Sinha">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ankit Sinha — Backend Developer">
-<meta name="twitter:description" content="Backend developer working with TypeScript, Node.js, and PostgreSQL. Building systems end to end, focused on how the pieces behave under load.">
+<meta name="twitter:description" content="Backend developer working with TypeScript, Node.js, and PostgreSQL. Building the pieces and testing how they behave under load.">
 <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/237295543?v=4">
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Ccircle%20cx='32'%20cy='32'%20r='32'%20fill='%233547f5'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='10'%20fill='%233547f5'/%3E%3Ctext%20x='32'%20y='42'%20text-anchor='middle'%20font-family='monospace'%20font-size='24'%20font-weight='700'%20fill='white'%3EAS%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     color-scheme:dark;
-    --bg:#0c0c0c;
-    --text:#f0f0f0;
-    --dim:#8a8a8a;
-    --pill-bg:#1a1a1a;
-    --pill-border:#292929;
-    --line:#262626;
-    --avatar:#3547f5;
+    --bg:#0a0a0a;
+    --bg-soft:#11110f;
+    --text:#f2efe8;
+    --muted:#b8b2a8;
+    --dim:#8a857d;
+    --line:#262421;
+    --line-strong:#3b3833;
+    --accent:#3547f5;
     --accent-soft:#8b96ff;
-    --contrib-0:#171717;
+    --green:#56d364;
+    --green-soft:#8fd6a9;
+    --contrib-0:#171715;
     --contrib-1:#1f2a5e;
     --contrib-2:#2a3a9e;
     --contrib-3:#3547f5;
     --contrib-4:#7f8bff;
-    --green:#56d364;
-    --green-soft:#8fd6a9;
-    --green-axis:#2b5f3d;
+    --sans:'Inter', sans-serif;
+    --display:'Space Grotesk', 'Inter', sans-serif;
+    --mono:'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
     background:var(--bg);
     color:var(--text);
-    font-family:'Inter', sans-serif;
+    font-family:var(--sans);
     font-size:15px;
     -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
   }
+  body.modal-open{overflow:hidden;}
   ::selection{background:rgba(53,71,245,.45);color:#fff;}
   a{color:inherit;}
+  button{font:inherit;}
+  img{max-width:100%;}
   :focus-visible{outline:2px solid var(--accent-soft);outline-offset:3px;}
   .sr-only{
     position:absolute;width:1px;height:1px;padding:0;margin:-1px;
     overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
   }
-
-  .page{max-width:580px;margin:0 auto;padding:80px 24px 60px;}
-
-  .avatar{
-    display:block;
-    width:56px;height:56px;border-radius:50%;
-    background:var(--avatar);
-    margin-bottom:40px;
-    overflow:hidden;
-    box-shadow:0 0 0 1px var(--line), 0 4px 24px rgba(53,71,245,.22);
-    transition:transform .15s ease, box-shadow .15s ease;
+  .skip-link{
+    position:fixed;top:-80px;left:16px;z-index:100;
+    padding:10px 14px;border:1px solid var(--accent-soft);border-radius:4px;
+    background:var(--bg);color:var(--text);font-family:var(--mono);font-size:10px;
+    text-decoration:none;text-transform:uppercase;letter-spacing:.08em;
   }
-  .avatar img{width:100%;height:100%;object-fit:cover;display:block;}
-  .avatar:hover{
-    transform:translateY(-1px);
-    box-shadow:0 0 0 1px #3a3a3a, 0 6px 28px rgba(53,71,245,.32);
-  }
+  .skip-link:focus{top:12px;}
 
-  p{line-height:1.75;}
-  .bio-primary{color:var(--text);margin-bottom:44px;}
+  .site{width:100%;max-width:1600px;min-height:100dvh;margin:0 auto;display:flex;flex-direction:column;}
 
-  .pills{display:flex;flex-wrap:wrap;gap:10px;}
-  .contact-section{margin-bottom:40px;}
-  .contact-section .pills{margin-top:14px;}
-  .contact-note{
-    color:var(--dim);font-size:13px;line-height:1.7;
-    margin:-2px 0 14px;
+  .topbar{
+    position:sticky;top:0;z-index:40;
+    display:flex;align-items:center;justify-content:space-between;gap:24px;
+    height:72px;padding:0 clamp(20px,4vw,56px);
+    border-bottom:1px solid var(--line);
+    background:var(--bg);
   }
-  .contact-note a{
+  .brand{
+    display:inline-flex;align-items:center;gap:10px;flex:0 0 auto;
     color:var(--text);text-decoration:none;
-    border-bottom:1px solid var(--pill-border);
-    transition:border-color .15s ease;
+    font-family:var(--display);font-size:11px;font-weight:600;
+    letter-spacing:.11em;text-transform:uppercase;
   }
-  .contact-note a:hover{border-bottom-color:var(--accent-soft);}
-  .pill{
-    display:inline-flex;align-items:center;gap:7px;
-    background:var(--pill-bg);
-    border:1px solid var(--pill-border);
-    color:var(--text);
-    text-decoration:none;
-    font-family:'Inter', sans-serif;
-    font-size:13px;
-    padding:9px 18px;
-    border-radius:999px;
-    transition:background .15s ease, border-color .15s ease;
+  .brand-mark{
+    display:grid;place-items:center;width:27px;height:27px;
+    border:1px solid var(--accent);border-radius:3px;
+    background:var(--accent);color:#fff;
+    font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.03em;
+    transition:background .15s ease,color .15s ease;
   }
-  .pill svg{width:14px;height:14px;opacity:.75;}
-  .pill:hover{background:#242424;border-color:#383838;}
-
-  .section-head{
-    display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-    margin-bottom:16px;
+  .brand:hover .brand-mark{background:transparent;color:var(--accent-soft);}
+  .main-nav{
+    display:flex;align-items:center;justify-content:center;
+    gap:clamp(18px,3vw,40px);
+    font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
   }
-  .section{margin-bottom:48px;}
-  .section-label{color:var(--dim);font-size:14px;font-weight:500;display:inline-flex;align-items:center;gap:7px;}
-  .section-num{color:#5c5f69;font-size:10px;font-weight:500;letter-spacing:.08em;font-variant-numeric:tabular-nums;}
-  .status-dot{
-    width:6px;height:6px;border-radius:50%;
-    background:#6fcf97;
-    box-shadow:0 0 0 3px rgba(111,207,151,.12);
-    flex-shrink:0;
-  }
-  .section-link{
-    color:var(--dim);font-size:12px;text-decoration:none;white-space:nowrap;
+  .main-nav a{
+    position:relative;padding:7px 0;color:var(--dim);text-decoration:none;
     transition:color .15s ease;
   }
-  .section-link:hover{color:var(--text);}
-  .divider{height:1px;background:var(--line);margin-bottom:4px;}
+  .main-nav a::after{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+    background:var(--accent-soft);transform:scaleX(0);transform-origin:left;
+    transition:transform .18s ease;
+  }
+  .main-nav a:hover,.main-nav a[aria-current="location"]{color:var(--text);}
+  .main-nav a:hover::after,.main-nav a[aria-current="location"]::after{transform:scaleX(1);}
+  .availability{
+    display:flex;align-items:center;justify-content:flex-end;gap:7px;flex:0 0 auto;
+    color:var(--dim);font-family:var(--mono);font-size:9px;
+    letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;
+  }
+  .availability .dot,.state .dot{
+    width:5px;height:5px;border-radius:50%;background:var(--green);
+    box-shadow:0 0 0 3px rgba(86,211,100,.1);flex:0 0 auto;
+  }
 
-  .list{margin-bottom:0;}
-  .row{
-    display:flex;justify-content:space-between;align-items:flex-start;gap:20px;
-    padding:14px 12px;
-    margin:0 -12px;
-    border-radius:10px;
-    transition:background .15s ease;
+  .stage{
+    flex:1;
+    display:grid;
+    grid-template-columns:minmax(280px,.95fr) minmax(0,1.45fr) minmax(310px,1.05fr);
+    gap:clamp(26px,3.8vw,60px);
+    width:100%;
+    padding:clamp(30px,5vh,52px) clamp(20px,4vw,56px) 36px;
+    align-items:stretch;
   }
-  .row:hover{background:#141414;}
-  .row-link{
-    display:flex;flex-direction:column;gap:3px;
-    flex:1;min-width:0;
-    text-decoration:none;
+  .identity,.work-column,.signal-column{min-width:0;}
+  .identity{display:flex;flex-direction:column;}
+  .work-column,.signal-column{
+    display:flex;flex-direction:column;
+    gap:clamp(36px,5vh,60px);
+    border-left:1px solid var(--line);
+    padding-left:clamp(22px,3vw,40px);
   }
-  .row .name{
-    display:inline-flex;align-items:center;gap:6px;
-    color:var(--text);font-weight:500;
-  }
-  .row .arrow{
-    width:12px;height:12px;
-    opacity:0;transform:translate(-2px,2px);
-    transition:opacity .15s ease, transform .15s ease;
-  }
-  .row:hover .arrow{opacity:.55;transform:translate(0,0);}
-  .row .desc{color:var(--dim);font-size:13px;line-height:1.55;}
-  .row-meta{
-    display:flex;flex-direction:column;align-items:flex-end;gap:4px;
-    flex-shrink:0;flex-wrap:wrap;padding-top:2px;
-  }
-  .meta{color:var(--dim);font-size:12px;white-space:nowrap;}
-  .merged{color:var(--green-soft);}
-  .pr{color:var(--dim);font-size:12px;font-weight:400;font-variant-numeric:tabular-nums;}
-  .live{
-    color:var(--accent-soft);font-size:12px;text-decoration:none;
-    border-bottom:1px solid transparent;
-    transition:border-color .15s ease;
-  }
-  .live:hover{border-bottom-color:var(--accent-soft);}
 
-  .contrib{margin-top:18px;}
+  .identity-top{position:relative;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;min-height:42px;margin-bottom:clamp(22px,4vh,34px);}
+  .eyebrow{
+    display:flex;align-items:center;gap:10px;
+    color:var(--dim);font-family:var(--mono);font-size:9px;
+    letter-spacing:.12em;text-transform:uppercase;
+  }
+  .eyebrow .index{color:var(--accent-soft);}
+  .avatar-link{
+    display:block;width:42px;height:42px;flex:0 0 42px;
+    border:1px solid var(--line-strong);border-radius:50%;overflow:hidden;
+    filter:grayscale(1);transition:filter .18s ease,border-color .18s ease,transform .18s ease;
+  }
+  .avatar-link:hover{filter:none;border-color:var(--accent-soft);transform:translateY(-1px);}
+  .avatar-link img{display:block;width:100%;height:100%;object-fit:cover;}
+
+  .display{
+    max-width:11ch;
+    font-family:var(--display);font-size:clamp(30px,2.55vw,37px);
+    font-weight:600;line-height:.99;letter-spacing:-.055em;
+    text-transform:uppercase;
+  }
+  .display em{font-style:normal;color:var(--accent-soft);}
+  .bio{
+    max-width:37ch;margin-top:clamp(22px,3.5vh,30px);
+    color:var(--muted);font-size:13.5px;line-height:1.78;
+  }
+  .bio + .bio{margin-top:10px;}
+
+  .now{
+    margin-top:clamp(26px,4vh,36px);padding-top:16px;
+    border-top:1px solid var(--line);
+  }
+  .micro-label{
+    display:block;margin-bottom:7px;color:var(--dim);
+    font-family:var(--mono);font-size:8px;letter-spacing:.11em;text-transform:uppercase;
+  }
+  .now-link{
+    display:inline-flex;align-items:center;gap:7px;
+    color:var(--text);font-family:var(--display);font-size:17px;font-weight:500;
+    letter-spacing:-.02em;text-decoration:none;
+  }
+  .now-link span{color:var(--accent-soft);font-size:13px;transition:transform .15s ease;}
+  .now-link:hover span{transform:translate(2px,-2px);}
+  .now-meta{display:block;margin-top:4px;color:var(--dim);font-family:var(--mono);font-size:8px;letter-spacing:.04em;line-height:1.7;text-transform:uppercase;}
+  .now-meta a{color:var(--accent-soft);text-decoration:none;}
+  .now-meta a:hover{text-decoration:underline;text-underline-offset:2px;}
+
+  .identity-foot{
+    display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;
+    gap:10px 16px;margin-top:auto;padding-top:34px;
+  }
+  .mini-links{display:flex;align-items:center;flex-wrap:wrap;gap:12px 16px;}
+  .mini-links a,.scroll-cue{
+    color:var(--dim);font-family:var(--mono);font-size:9px;
+    letter-spacing:.08em;text-transform:uppercase;text-decoration:none;
+  }
+  .mini-links a{transition:color .15s ease;white-space:nowrap;}
+  .mini-links a:hover{color:var(--accent-soft);}
+  .scroll-cue{display:inline-flex;align-items:center;gap:8px;white-space:nowrap;}
+  .scroll-cue .line{display:block;width:18px;height:1px;background:var(--line-strong);}
+  .scroll-cue .arrow{color:var(--accent-soft);}
+
+  .section-head{
+    display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+    padding-bottom:11px;border-bottom:1px solid var(--line-strong);
+  }
+  .section-label{display:flex;align-items:center;gap:9px;min-width:0;}
+  .section-index{color:var(--accent-soft);font-family:var(--mono);font-size:9px;letter-spacing:.04em;}
+  .section-label h2{
+    margin:0;color:var(--text);font-family:var(--display);font-size:11px;
+    font-weight:500;letter-spacing:.12em;line-height:1.2;text-transform:uppercase;
+  }
+  .section-link{
+    color:var(--dim);font-family:var(--mono);font-size:8px;
+    letter-spacing:.06em;line-height:1.4;text-align:right;text-decoration:none;
+    text-transform:uppercase;transition:color .15s ease;
+  }
+  .section-link:hover{color:var(--accent-soft);}
+
+  .anchor-alias,section[id]{scroll-margin-top:92px;}
+
+  .project-list{margin-top:2px;}
+  .project{padding:17px 0 15px;border-bottom:1px solid var(--line);}
+  .project-link{
+    display:grid;grid-template-columns:25px minmax(0,1fr) 16px;gap:11px;
+    color:inherit;text-decoration:none;
+  }
+  .project-no{
+    padding-top:5px;color:var(--dim);font-family:var(--mono);
+    font-size:9px;letter-spacing:.04em;
+  }
+  .project-copy h3{
+    display:flex;align-items:center;gap:7px;
+    margin:0 0 5px;color:var(--text);
+    font-family:var(--display);font-size:clamp(20px,1.8vw,25px);
+    font-weight:500;letter-spacing:-.035em;line-height:1.05;
+    transition:color .15s ease;
+  }
+  .project-copy p{color:var(--dim);font-size:12px;line-height:1.65;}
+  .project-arrow{
+    padding-top:4px;color:var(--dim);font-size:13px;line-height:1;
+    opacity:0;transform:translate(-3px,0);
+    transition:opacity .15s ease,transform .15s ease,color .15s ease;
+  }
+  .project-link:hover .project-copy h3{color:var(--accent-soft);}
+  .project-link:hover .project-arrow{opacity:1;transform:translate(0,0);color:var(--accent-soft);}
+  .project-meta{
+    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;
+    gap:7px 14px;margin-top:9px;padding-left:36px;
+    color:var(--dim);font-family:var(--mono);font-size:8px;
+    letter-spacing:.04em;text-transform:uppercase;
+  }
+  .project-meta a{color:var(--accent-soft);text-decoration:none;}
+  .project-meta a:hover{text-decoration:underline;text-underline-offset:2px;}
+  .project-meta-links{display:flex;align-items:center;gap:12px;}
+  .state{display:inline-flex;align-items:center;gap:6px;color:var(--green-soft);}
+  .state .dot{width:4px;height:4px;box-shadow:0 0 0 2px rgba(86,211,100,.1);}
+
+  .work-mascot{display:none;}
+  @keyframes gintoki-float{
+    0%,100%{transform:translateY(0) rotate(-.35deg);}
+    50%{transform:translateY(-5px) rotate(.35deg);}
+  }
+  .oss-block{margin-top:auto;}
+  .oss-block .section-head{margin-bottom:2px;}
+  .oss-list{display:flex;flex-direction:column;}
+  .oss-item{
+    display:block;padding:16px 0 15px;border-bottom:1px solid var(--line);
+    color:inherit;text-decoration:none;
+  }
+  .oss-top{display:flex;align-items:baseline;flex-wrap:wrap;gap:7px 10px;margin-bottom:6px;}
+  .oss-repo{color:var(--text);font-family:var(--display);font-size:15px;font-weight:500;letter-spacing:-.02em;transition:color .15s ease;}
+  .oss-pr{color:var(--accent-soft);font-family:var(--mono);font-size:9px;}
+  .oss-merged{margin-left:auto;color:var(--green-soft);font-family:var(--mono);font-size:8px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;}
+  .oss-item p{color:var(--dim);font-size:12px;line-height:1.65;}
+  .oss-item:hover .oss-repo{color:var(--accent-soft);}
+
+  .activity-block .section-head{margin-bottom:2px;}
+  .activity-total-row{
+    display:flex;align-items:flex-start;gap:11px;
+    padding:15px 0 12px;border-bottom:1px solid var(--line);
+  }
+  .activity-total{
+    color:var(--text);font-family:var(--display);font-size:clamp(36px,3vw,48px);
+    font-weight:500;letter-spacing:-.06em;line-height:.9;font-variant-numeric:tabular-nums;
+  }
+  .activity-total-label{
+    margin-top:3px;color:var(--dim);font-family:var(--mono);font-size:8px;
+    letter-spacing:.02em;line-height:1.5;text-transform:uppercase;
+  }
+  .activity-profile{margin-left:auto;margin-top:3px;}
+  .contrib{margin:13px 0 14px;min-height:42px;}
   .contrib svg{display:block;width:100%;height:auto;}
   .contrib rect{fill:var(--contrib-0);}
   .contrib .l1{fill:var(--contrib-1);}
@@ -172,521 +297,604 @@
   .contrib .l3{fill:var(--contrib-3);}
   .contrib .l4{fill:var(--contrib-4);}
   .contrib rect:hover{stroke:var(--text);stroke-width:.08;}
-
-  .activity-card{
-    margin-top:18px;
-    padding:14px;
-    border:1px solid var(--line);
-    border-radius:12px;
-    background:#0f0f0f;
-  }
-  .orgs{
-    display:flex;flex-wrap:wrap;gap:8px;
-    padding-bottom:14px;
-    margin-bottom:18px;
-    border-bottom:1px solid var(--line);
-  }
+  .activity-breakdown{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 18px;margin-bottom:17px;}
+  .mix{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px 8px;align-items:baseline;}
+  .mix-label{color:var(--dim);font-family:var(--mono);font-size:8px;letter-spacing:.03em;text-transform:uppercase;}
+  .mix-value{color:var(--muted);font-family:var(--mono);font-size:8px;font-variant-numeric:tabular-nums;}
+  .mix-bar{grid-column:1/-1;display:block;height:2px;background:var(--line);overflow:hidden;}
+  .mix-bar b{display:block;height:100%;background:var(--green);}
+  .orgs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
   .org{
-    display:inline-flex;align-items:center;gap:7px;
-    height:30px;padding:0 10px 0 4px;
-    border:1px solid var(--pill-border);border-radius:8px;
-    background:#151515;color:var(--text);
-    font-size:12px;text-decoration:none;
-    transition:background .15s ease, border-color .15s ease;
+    display:inline-flex;align-items:center;gap:6px;
+    height:26px;padding:0 8px 0 4px;border:1px solid var(--line);
+    border-radius:4px;background:var(--bg-soft);color:var(--muted);
+    font-family:var(--mono);font-size:8px;text-decoration:none;
+    transition:border-color .15s ease,color .15s ease;
   }
-  .org img{width:22px;height:22px;border-radius:50%;display:block;background:#1a1a1a;}
-  .org:hover{background:#1c1c1c;border-color:#3a3a3a;}
-  .org-more{padding:0 12px;color:var(--dim);}
-  .org-more:hover{color:var(--text);}
-
-  .activity-body{
-    display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;
-  }
-  .activity-contrib{
-    display:flex;align-items:flex-start;gap:9px;
-    color:var(--dim);font-size:13px;line-height:1.65;
-  }
-  .activity-contrib svg{width:16px;height:16px;flex-shrink:0;margin-top:3px;}
-  .activity-contrib a{color:var(--accent-soft);text-decoration:none;white-space:nowrap;}
+  .org img{display:block;width:18px;height:18px;border-radius:50%;background:var(--line);}
+  .org:hover{border-color:var(--line-strong);color:var(--text);}
+  .org-more{padding:0 9px;color:var(--dim);}
+  .activity-contrib{color:var(--dim);font-size:10px;line-height:1.7;}
+  .activity-contrib a{color:var(--accent-soft);text-decoration:none;}
   .activity-contrib a:hover{text-decoration:underline;text-underline-offset:2px;}
 
-  .radar-wrap{
-    display:flex;align-items:center;justify-content:center;
-    border-left:1px solid var(--line);
-    padding-left:24px;
-    min-height:188px;
-  }
-  .radar{position:relative;width:100%;max-width:250px;aspect-ratio:300/230;}
+  .radar-panel{margin:2px 0 16px;padding-top:12px;border-top:1px solid var(--line);}
+  .radar-panel .micro-label{margin-bottom:8px;}
+  .radar{position:relative;width:min(190px,100%);aspect-ratio:300/230;margin:0 auto;}
   .radar svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;}
   .radar-label{
-    position:absolute;z-index:1;
-    color:var(--dim);font-size:10px;line-height:1.4;
+    position:absolute;z-index:1;color:var(--dim);
+    font-family:var(--mono);font-size:7px;line-height:1.35;
     text-align:center;white-space:nowrap;
   }
-  .radar-label span{display:block;color:var(--text);font-variant-numeric:tabular-nums;}
+  .radar-label span{display:block;color:var(--text);font-size:9px;font-variant-numeric:tabular-nums;}
   .radar-label.top{top:0;left:50%;transform:translateX(-50%);}
   .radar-label.bottom{bottom:0;left:50%;transform:translateX(-50%);}
   .radar-label.left{left:0;top:50%;transform:translateY(-50%);text-align:left;}
   .radar-label.right{right:0;top:50%;transform:translateY(-50%);text-align:right;}
-  .radar-axes line{stroke:var(--green-axis);stroke-width:1;}
-  .radar-area{fill:rgba(86,211,100,.14);stroke:var(--green);stroke-width:1.4;stroke-linejoin:round;}
+  .radar-grid polygon{fill:none;stroke:var(--line);stroke-width:1;}
+  .radar-axes line{stroke:var(--line-strong);stroke-width:1;}
+  .radar-area{fill:rgba(86,211,100,.12);stroke:var(--green);stroke-width:1.4;stroke-linejoin:round;}
   .radar-points circle{fill:var(--green);}
 
-  .activity-calendar{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);}
-  .calendar-head{
-    display:flex;justify-content:space-between;align-items:flex-end;gap:16px;
-    margin-bottom:12px;color:var(--dim);font-size:11px;
+  .contact-block .section-head{margin-bottom:2px;}
+  .contact-lead{max-width:42ch;margin-top:16px;color:var(--muted);font-size:12px;line-height:1.7;}
+  .contact-lead a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--line-strong);}
+  .contact-lead a:hover{border-bottom-color:var(--accent-soft);}
+  .email-link{
+    display:inline-block;margin-top:17px;padding-bottom:4px;
+    color:var(--text);font-family:var(--display);font-size:clamp(16px,1.45vw,21px);
+    font-weight:500;letter-spacing:-.035em;text-decoration:none;
+    border-bottom:1px solid var(--line-strong);word-break:break-word;
+    transition:color .15s ease,border-color .15s ease;
   }
-  .calendar-total{display:flex;align-items:baseline;gap:8px;min-width:0;}
-  .calendar-total strong{
-    color:var(--text);font-size:24px;font-weight:500;line-height:1;
-    font-variant-numeric:tabular-nums;
+  .email-link:hover{color:var(--accent-soft);border-bottom-color:var(--accent-soft);}
+  .contact-actions{display:flex;flex-wrap:wrap;gap:12px 17px;margin-top:18px;}
+  .contact-actions a{
+    color:var(--dim);font-family:var(--mono);font-size:9px;
+    letter-spacing:.06em;text-transform:uppercase;text-decoration:none;
+    transition:color .15s ease;
   }
-  .calendar-total span{color:var(--dim);font-size:10px;line-height:1.35;}
-  .calendar-head .count{white-space:nowrap;font-variant-numeric:tabular-nums;}
-  .activity-calendar .contrib{margin-top:0;}
+  .contact-actions a:hover{color:var(--accent-soft);}
+  .contact-actions .arrow{color:var(--accent-soft);}
 
-  .footer-divider{height:1px;background:var(--line);}
   .footer{
-    display:flex;justify-content:space-between;align-items:center;
-    padding-top:20px;
+    display:flex;align-items:center;justify-content:space-between;gap:20px;
+    min-height:56px;padding:12px clamp(20px,4vw,56px);
+    border-top:1px solid var(--line);
+    color:var(--dim);font-family:var(--mono);font-size:8px;
+    letter-spacing:.08em;text-transform:uppercase;
   }
-  .footer .year{color:var(--text);font-size:13px;}
-  .stack-menu{position:relative;display:flex;align-items:center;}
+  .footer-left,.footer-right{display:flex;align-items:center;flex-wrap:wrap;gap:12px;}
+  .footer-right{justify-content:flex-end;}
+  .footer a{color:var(--dim);text-decoration:none;transition:color .15s ease;}
+  .footer a:hover{color:var(--text);}
+  .footer .sep{color:var(--line-strong);}
+  .stack-menu{position:relative;display:flex;align-items:center;margin-left:2px;}
   .grid-icon{
     display:grid;grid-template-columns:repeat(3,4px);grid-template-rows:repeat(3,4px);
-    gap:4px;padding:8px;border:0;border-radius:8px;background:transparent;
+    gap:3px;padding:9px;border:0;border-radius:4px;background:transparent;
     cursor:pointer;transition:background .15s ease;
   }
-  .grid-icon span{
-    width:4px;height:4px;background:var(--accent-soft);opacity:.65;
-    transition:opacity .15s ease;
-  }
-  .grid-icon:hover{background:#171717;}
+  .grid-icon span{width:4px;height:4px;background:var(--accent-soft);opacity:.65;transition:opacity .15s ease;}
+  .grid-icon:hover{background:#181816;}
   .grid-icon:hover span,.grid-icon[aria-expanded="true"] span{opacity:1;}
-  .grid-icon:focus-visible{outline:2px solid var(--accent-soft);outline-offset:3px;}
   .stack-popover{
-    position:absolute;right:0;bottom:calc(100% + 14px);z-index:20;
-    width:min(280px, calc(100vw - 48px));
-    padding:12px;
-    border:1px solid var(--pill-border);border-radius:14px;
-    background:#121212;
-    box-shadow:0 18px 50px rgba(0,0,0,.7);
+    position:absolute;right:0;bottom:calc(100% + 12px);z-index:80;
+    width:min(280px, calc(100vw - 40px));
+    padding:11px;border:1px solid var(--line-strong);border-radius:8px;
+    background:#141412;box-shadow:0 18px 50px rgba(0,0,0,.75);
     animation:stack-in .15s ease-out;
   }
   .stack-popover[hidden]{display:none;}
   .stack-popover:focus{outline:none;}
   .stack-popover::after{
-    content:"";position:absolute;right:15px;bottom:-5px;
-    width:8px;height:8px;background:#121212;
-    border-right:1px solid var(--pill-border);border-bottom:1px solid var(--pill-border);
-    transform:rotate(45deg);
+    content:"";position:absolute;right:9px;bottom:-5px;width:8px;height:8px;
+    background:#141412;border-right:1px solid var(--line-strong);
+    border-bottom:1px solid var(--line-strong);transform:rotate(45deg);
   }
   .stack-title{
-    margin:0 2px 10px;color:var(--dim);
-    font-size:10px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;
+    margin:0 2px 9px;color:var(--dim);font-family:var(--mono);
+    font-size:8px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
   }
-  .stack-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;}
+  .stack-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;}
   .stack-item{
-    display:flex;flex-direction:column;align-items:center;gap:7px;
-    padding:9px 4px 8px;
-    border:1px solid #232323;border-radius:9px;
-    background:#161616;
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+    padding:8px 3px 7px;border:1px solid var(--line);border-radius:5px;
+    background:#191917;
   }
-  .stack-item svg{width:24px;height:24px;display:block;}
-  .stack-item span{color:var(--dim);font-size:10px;line-height:1.2;text-align:center;}
-  @keyframes stack-in{
-    from{opacity:0;transform:translateY(4px) scale(.985);}
-    to{opacity:1;transform:translateY(0) scale(1);}
-  }
+  .stack-item svg{display:block;width:21px;height:21px;}
+  .stack-item span{color:var(--dim);font-family:var(--mono);font-size:7px;line-height:1.2;text-align:center;}
+  @keyframes stack-in{from{opacity:0;transform:translateY(4px) scale(.985);}to{opacity:1;transform:translateY(0) scale(1);}}
 
-  body.modal-open{overflow:hidden;}
   .resume-modal{
-    position:fixed;inset:0;z-index:60;
-    display:grid;place-items:center;
-    padding:16px;
-    background:rgba(0,0,0,.78);
-    backdrop-filter:blur(6px);
+    position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:16px;
+    background:rgba(0,0,0,.8);backdrop-filter:blur(6px);
   }
   .resume-modal[hidden]{display:none;}
   .resume-dialog{
-    width:min(680px, 100%);
-    max-height:calc(100vh - 32px);
-    display:flex;flex-direction:column;
-    overflow:hidden;
-    border:1px solid #2a2a2a;border-radius:16px;
-    background:#121212;
-    box-shadow:0 30px 100px rgba(0,0,0,.8);
+    display:flex;flex-direction:column;width:min(680px,100%);
+    max-height:calc(100vh - 32px);overflow:hidden;
+    border:1px solid var(--line-strong);border-radius:10px;
+    background:#121210;box-shadow:0 30px 100px rgba(0,0,0,.8);
     animation:resume-in .16s ease-out;
   }
-  .resume-head{
-    display:flex;justify-content:space-between;align-items:flex-start;gap:16px;
-    padding:14px 16px;border-bottom:1px solid var(--line);
-  }
-  .resume-title{font-size:14px;font-weight:500;color:var(--text);}
-  .resume-sub{margin-top:3px;color:var(--dim);font-size:11px;line-height:1.4;}
+  .resume-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 16px;border-bottom:1px solid var(--line);}
+  .resume-title{color:var(--text);font-family:var(--display);font-size:14px;font-weight:500;}
+  .resume-sub{margin-top:3px;color:var(--dim);font-family:var(--mono);font-size:9px;line-height:1.4;text-transform:uppercase;letter-spacing:.04em;}
   .resume-close{
-    width:30px;height:30px;flex:0 0 30px;display:grid;place-items:center;
+    display:grid;place-items:center;width:30px;height:30px;flex:0 0 30px;
     border:0;border-radius:50%;background:transparent;color:var(--dim);
     cursor:pointer;transition:background .15s ease,color .15s ease;
   }
-  .resume-close:hover{background:#1e1e1e;color:var(--text);}
+  .resume-close:hover{background:#22221f;color:var(--text);}
   .resume-close svg{width:14px;height:14px;}
   .resume-preview{
-    flex:1 1 auto;min-height:0;
-    height:min(60vh, 660px);
-    display:flex;align-items:center;justify-content:center;
-    padding:12px;
-    background:#0a0a0a;
+    display:flex;align-items:center;justify-content:center;flex:1 1 auto;
+    height:min(60vh,660px);min-height:0;padding:12px;background:#080807;
     overflow:hidden;text-decoration:none;
   }
-  .resume-preview img{
-    max-width:100%;max-height:100%;width:auto;height:auto;
-    display:block;
-    box-shadow:0 8px 30px rgba(0,0,0,.5);
-  }
-  .resume-actions{
-    display:flex;justify-content:flex-end;gap:8px;
-    padding:12px 16px;border-top:1px solid var(--line);
-  }
+  .resume-preview img{display:block;width:auto;height:auto;max-width:100%;max-height:100%;box-shadow:0 8px 30px rgba(0,0,0,.5);}
+  .resume-actions{display:flex;justify-content:flex-end;gap:8px;padding:12px 16px;border-top:1px solid var(--line);}
   .resume-action{
-    display:inline-flex;align-items:center;justify-content:center;
-    height:32px;padding:0 12px;
-    border:1px solid var(--pill-border);border-radius:7px;
-    background:#181818;color:var(--text);
-    font-size:12px;text-decoration:none;
-    transition:background .15s ease,border-color .15s ease;
+    display:inline-flex;align-items:center;justify-content:center;height:32px;padding:0 12px;
+    border:1px solid var(--line-strong);border-radius:4px;background:#1a1a17;
+    color:var(--text);font-family:var(--mono);font-size:9px;text-decoration:none;
+    text-transform:uppercase;letter-spacing:.04em;transition:background .15s ease,border-color .15s ease;
   }
-  .resume-action:hover{background:#222;border-color:#3a3a3a;}
-  .resume-action.primary{
-    background:var(--accent-soft);border-color:var(--accent-soft);
-    color:#0c0c0c;font-weight:500;
-  }
+  .resume-action:hover{background:#242420;border-color:#555047;}
+  .resume-action.primary{background:var(--accent-soft);border-color:var(--accent-soft);color:#0a0a0a;font-weight:500;}
   .resume-action.primary:hover{background:#a3adff;border-color:#a3adff;}
-  @keyframes resume-in{
-    from{opacity:0;transform:translateY(6px) scale(.99);}
-    to{opacity:1;transform:translateY(0) scale(1);}
-  }
+  @keyframes resume-in{from{opacity:0;transform:translateY(6px) scale(.99);}to{opacity:1;transform:translateY(0) scale(1);}}
 
-  @media(max-width:560px){
-    .activity-body{grid-template-columns:1fr;gap:18px;}
-    .radar-wrap{
-      border-left:0;border-top:1px solid var(--line);
-      padding-left:0;padding-top:18px;
+  @media(min-width:1181px){
+    .work-column{gap:18px;}
+    .oss-block{margin-top:0;}
+    .work-mascot{
+      position:relative;display:block;
+      flex:1 1 0;min-height:0;pointer-events:none;
     }
-    .radar{max-width:280px;margin:0 auto;}
+    .work-mascot picture{
+      position:absolute;inset:0;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .work-mascot img{
+      display:block;width:auto;height:100%;max-width:100%;max-height:300px;
+      filter:drop-shadow(0 18px 20px rgba(0,0,0,.55));
+      animation:gintoki-float 6.5s ease-in-out infinite;
+      transform-origin:50% 85%;
+    }
   }
-  @media(max-width:480px){
-    .page{padding:56px 20px 40px;}
-    .avatar{width:52px;height:52px;margin-bottom:32px;}
-    .activity-card{padding:12px;}
-    .org{height:28px;font-size:11px;}
-    .org img{width:20px;height:20px;}
-    .row{flex-direction:column;gap:7px;padding:14px 0;margin:0;}
-    .row:hover{background:none;}
-    .row-meta{flex-direction:row;align-items:center;gap:10px;padding-top:0;}
-    .row .arrow{opacity:.35;transform:none;}
-    .contact-section .pills{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
-    .contact-section .pill{justify-content:center;padding:9px 12px;}
+  @media(max-width:1360px){
+    .identity-foot{grid-template-columns:1fr;}
+  }
+  @media(min-width:1181px){
+    .signal-column .contact-block{margin-top:auto;}
+  }
+  @media(min-width:1181px) and (max-height:880px){
+    .stage{padding-top:22px;padding-bottom:18px;}
+    .signal-column{gap:28px;}
+    .project{padding:13px 0 12px;}
+    .project-copy h3{font-size:clamp(19px,1.7vw,23px);}
+    .bio{margin-top:20px;}
+    .now{margin-top:24px;}
+    .identity-foot{padding-top:24px;}
+    .activity-total-row{padding:12px 0 10px;}
+    .contrib{margin:10px 0 11px;}
+    .activity-breakdown{gap:8px 16px;margin-bottom:14px;}
+    .radar-panel{margin-bottom:10px;padding-top:8px;}
+    .radar{width:min(120px,100%);}
+    .orgs{margin-bottom:10px;}
+    .contact-lead{margin-top:12px;}
+    .email-link{margin-top:14px;}
+    .contact-actions{margin-top:14px;}
+    .footer{min-height:52px;padding-top:9px;padding-bottom:9px;}
+  }
+  @media(min-height:851px){
+    .stage{padding-bottom:12px;}
+  }
+  @media(min-width:901px) and (max-width:1300px) and (max-height:800px){
+    .bio{font-size:13px;line-height:1.6;}
+  }
+  @media(min-width:1401px) and (max-height:830px){
+    .radar{width:min(150px,100%);}
+  }
+  @media(min-width:1181px) and (max-height:820px){
+    .stage{padding-top:16px;padding-bottom:12px;}
+  }
+  @media(min-width:1181px) and (max-height:780px){
+    .stage{padding-top:8px;padding-bottom:8px;}
+    .radar-panel{margin-bottom:6px;padding-top:4px;}
+    .contact-lead{margin-top:8px;}
+    .email-link{margin-top:10px;}
+    .contact-actions{margin-top:10px;}
+  }
+  @media(max-width:1180px){
+    .stage{grid-template-columns:minmax(250px,.8fr) minmax(0,1.5fr);gap:32px;}
+    .signal-column{
+      grid-column:1/-1;display:grid;grid-template-columns:1.1fr .9fr;
+      gap:40px;border-left:0;border-top:1px solid var(--line);
+      padding-left:0;padding-top:34px;margin-top:2px;
+    }
+    .scroll-cue{display:none;}
+  }
+  @media(max-width:820px){
+    .topbar{height:auto;min-height:64px;flex-wrap:wrap;gap:10px 16px;padding:12px 20px;}
+    .brand{font-size:10px;}
+    .availability{font-size:8px;}
+    .main-nav{order:3;width:100%;justify-content:flex-start;gap:22px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;}
+    .main-nav::-webkit-scrollbar{display:none;}
+    .main-nav a{font-size:9px;white-space:nowrap;padding:5px 0;}
+    .stage{grid-template-columns:1fr;gap:40px;padding:26px 20px 32px;}
+    .work-column,.signal-column{border-left:0;padding-left:0;gap:40px;}
+    .signal-column{display:flex;border-top:1px solid var(--line);padding-top:32px;margin-top:0;}
+    .identity-top{margin-bottom:26px;}
+    .display{max-width:none;font-size:clamp(30px,7.6vw,40px);}
+    .bio{max-width:46ch;font-size:14px;}
+    .identity-foot{margin-top:28px;padding-top:26px;}
+    .project-meta{padding-left:0;}
+    .activity-breakdown{grid-template-columns:repeat(2,minmax(0,1fr));}
+    section[id]{scroll-margin-top:108px;}
+    .footer{padding:14px 20px;gap:10px 16px;}
+    .footer-left{order:1;}
+    .footer-right{order:2;margin-left:auto;}
+  }
+  @media(max-width:380px){
+    .topbar{padding:11px 16px;}
+    .stage{padding-left:16px;padding-right:16px;}
+    .footer{padding-left:16px;padding-right:16px;}
+    .display{font-size:29px;}
+    .contact-actions{gap:10px 14px;}
     .resume-head{padding:12px 14px;}
-    .resume-preview{height:min(56vh, 540px);padding:8px;}
+    .resume-preview{height:min(56vh,540px);padding:8px;}
     .resume-actions{padding:10px 12px;}
     .resume-action{flex:1;}
   }
   @media(prefers-reduced-motion:reduce){
     html{scroll-behavior:auto;}
-    *,*::before,*::after{transition:none !important;}
-    .stack-popover,.resume-dialog{animation:none !important;}
+    *,*::before,*::after{transition:none !important;animation:none !important;}
   }
 </style>
 </head>
 <body>
 
-<main class="page">
+<a class="skip-link" href="#work">Skip to work</a>
 
-  <a class="avatar" href="https://github.com/itsgintoki" target="_blank" rel="noopener" aria-label="Ankit Sinha on GitHub (opens in a new tab)">
-    <img src="https://avatars.githubusercontent.com/u/237295543?v=4" alt="" width="56" height="56">
-  </a>
+<div class="site">
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Ankit Sinha, back to top">
+      <span class="brand-mark" aria-hidden="true">AS</span>
+      <span>Ankit Sinha</span>
+    </a>
 
-  <h1 class="sr-only">Ankit Sinha — Backend Developer</h1>
+    <nav class="main-nav" aria-label="Sections">
+      <a href="#work">Work</a>
+      <a href="#oss">OSS</a>
+      <a href="#activity">Activity</a>
+      <a href="#contact">Contact</a>
+    </nav>
 
-  <p class="bio-primary">Ankit this side, a backend dev tryna understand how things work. Currently playing around with TypeScript, Node.js, and PostgreSQL. I build systems end to end, focusing on how the pieces fit together and behave under load.</p>
+    <p class="availability"><span class="dot" aria-hidden="true"></span> Open to work</p>
+  </header>
 
-  <section class="section" aria-labelledby="projects-heading">
-    <div class="section-head">
-      <h2 class="section-label" id="projects-heading"><span class="section-num" aria-hidden="true">01</span>Projects</h2>
-      <a class="section-link" href="https://github.com/itsgintoki?tab=repositories" target="_blank" rel="noopener">All repositories <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>
-    </div>
-    <div class="divider"></div>
-    <div class="list">
-
-      <div class="row">
-        <a class="row-link" href="work/gatekeep.html">
-          <span class="name">GateKeep
-            <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6"/></svg>
-          </span>
-          <span class="desc">Encrypted, expiring notes with passphrase gates, read limits, and access analytics.</span>
+  <main class="stage" id="top">
+    <section class="identity" aria-labelledby="identity-title">
+      <div class="identity-top">
+        <p class="eyebrow"><span class="index">01</span><span>Introduction</span></p>
+        <a class="avatar-link" href="https://github.com/itsgintoki" target="_blank" rel="noopener" aria-label="Ankit Sinha on GitHub (opens in a new tab)">
+          <img src="https://avatars.githubusercontent.com/u/237295543?v=4" alt="" width="42" height="42">
         </a>
-        <div class="row-meta">
-          <span class="meta">TypeScript &middot; PostgreSQL</span>
-          <a class="live" href="https://gatekeep-6lhv.onrender.com" target="_blank" rel="noopener">Live <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>
-          <a class="live" href="https://github.com/itsgintoki/gatekeep" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>
-        </div>
       </div>
 
-      <div class="row">
-        <a class="row-link" href="work/idleforge.html">
-          <span class="name">IdleForge
-            <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6"/></svg>
-          </span>
-          <span class="desc">Idle-game economy API with offline earnings, Redis leaderboards, and BullMQ jobs.</span>
-        </a>
-        <div class="row-meta">
-          <span class="meta">TypeScript &middot; Redis</span>
-          <a class="live" href="https://github.com/itsgintoki/idleforge" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>
-        </div>
+      <h1 class="display" id="identity-title">Backend dev<br>building systems<br>that <em>hold</em>.</h1>
+
+      <p class="bio">Ankit this side, a backend dev tryna understand how things work. Currently playing around with TypeScript, Node.js, and PostgreSQL. I build systems end to end, focusing on how the pieces fit together and behave under load.</p>
+
+      <div class="now">
+        <span class="micro-label">Currently working on</span>
+        <a class="now-link" href="work/holdfast.html">HoldFast <span aria-hidden="true">&#8599;</span></a>
+        <span class="now-meta">Reservation engine / <span class="state"><span class="dot" aria-hidden="true"></span>M1 complete</span> &middot; <a href="https://github.com/itsgintoki/holdfast" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a></span>
       </div>
 
-    </div>
-  </section>
+      <div class="identity-foot">
+        <nav class="mini-links" aria-label="Social links">
+          <a href="https://github.com/itsgintoki" target="_blank" rel="me noopener">GitHub <span aria-hidden="true">&#8599;</span></a>
+          <a href="https://www.linkedin.com/in/ank1202/" target="_blank" rel="me noopener">LinkedIn <span aria-hidden="true">&#8599;</span></a>
+          <a href="mailto:sinhaankit12jan@gmail.com">Email</a>
+        </nav>
+        <span class="scroll-cue" aria-hidden="true"><span class="line"></span>Read across <span class="arrow">&rarr;</span></span>
+      </div>
+    </section>
 
-  <section class="section" aria-labelledby="oss-heading">
-    <div class="section-head">
-      <h2 class="section-label" id="oss-heading"><span class="section-num" aria-hidden="true">02</span>Open source</h2>
-      <a class="section-link" href="https://github.com/search?q=author%3Aitsgintoki+is%3Apr&type=pullrequests" target="_blank" rel="noopener">All PRs <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>
-    </div>
-    <div class="divider"></div>
-    <div class="list">
-
-      <div class="row">
-        <a class="row-link" href="https://github.com/Agenta-AI/agenta/pull/6453" target="_blank" rel="noopener">
-          <span class="name">Agenta-AI/agenta <span class="pr">#6453</span>
-            <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6"/></svg>
-          </span>
-          <span class="desc">Fixed the SDK so schemeless AGENTA_API_URL values default to http.</span>
-        </a>
-        <div class="row-meta">
-          <span class="meta merged">Merged Oct 2026</span>
+    <div class="work-column">
+      <section id="work" aria-labelledby="work-heading">
+        <span id="projects" class="anchor-alias" aria-hidden="true"></span>
+        <div class="section-head">
+          <div class="section-label">
+            <span class="section-index">02</span>
+            <h2 id="work-heading">Selected work</h2>
+          </div>
+          <a class="section-link" href="https://github.com/itsgintoki?tab=repositories" target="_blank" rel="noopener">All repositories <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>
         </div>
+
+        <div class="project-list">
+          <article class="project">
+            <a class="project-link" href="work/gatekeep.html">
+              <span class="project-no">01</span>
+              <div class="project-copy">
+                <h3>GateKeep</h3>
+                <p>Encrypted, expiring notes with passphrase gates, read limits, and access analytics.</p>
+              </div>
+              <span class="project-arrow" aria-hidden="true">&#8599;</span>
+            </a>
+            <div class="project-meta">
+              <span>TypeScript / PostgreSQL</span>
+              <span class="project-meta-links">
+                <a href="https://gatekeep-6lhv.onrender.com" target="_blank" rel="noopener">Live <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>
+                <a href="https://github.com/itsgintoki/gatekeep" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>
+              </span>
+            </div>
+          </article>
+
+          <article class="project">
+            <a class="project-link" href="work/idleforge.html">
+              <span class="project-no">02</span>
+              <div class="project-copy">
+                <h3>IdleForge</h3>
+                <p>Idle-game economy API with offline earnings, Redis leaderboards, and BullMQ jobs.</p>
+              </div>
+              <span class="project-arrow" aria-hidden="true">&#8599;</span>
+            </a>
+            <div class="project-meta">
+              <span>TypeScript / Redis</span>
+              <span class="project-meta-links">
+                <a href="https://github.com/itsgintoki/idleforge" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>
+              </span>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <div class="work-mascot" aria-hidden="true">
+        <picture>
+          <source srcset="assets/mascots/gintoki-chibi.webp" type="image/webp">
+          <img src="assets/mascots/gintoki-chibi.png" alt="" width="467" height="560" loading="lazy">
+        </picture>
       </div>
 
-      <div class="row">
-        <a class="row-link" href="https://github.com/faker-js/faker/pull/4020" target="_blank" rel="noopener">
-          <span class="name">faker-js/faker <span class="pr">#4020</span>
-            <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6"/></svg>
-          </span>
-          <span class="desc">Replaced a Math.random spy with behavior-based assertions in the Roman numeral tests.</span>
-        </a>
-        <div class="row-meta">
-          <span class="meta merged">Merged Aug 2026</span>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="now-heading">
-    <div class="section-head">
-      <h2 class="section-label" id="now-heading"><span class="section-num" aria-hidden="true">03</span><span class="status-dot" aria-hidden="true"></span>Currently working on</h2>
-    </div>
-    <div class="divider"></div>
-    <div class="list">
-      <div class="row">
-        <a class="row-link" href="work/holdfast.html">
-          <span class="name">HoldFast
-            <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6"/></svg>
-          </span>
-          <span class="desc">Multi-tenant reservation and limited-drop engine, built around Postgres row locks.</span>
-        </a>
-        <div class="row-meta">
-          <span class="meta">TypeScript &middot; PostgreSQL</span>
-          <a class="live" href="https://github.com/itsgintoki/holdfast" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="activity" aria-labelledby="activity-heading">
-    <div class="section-head">
-      <h2 class="section-label" id="activity-heading"><span class="section-num" aria-hidden="true">04</span>Activity overview</h2>
-      <a class="section-link" href="https://github.com/itsgintoki" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>
-    </div>
-    <div class="divider"></div>
-
-    <div class="activity-card">
-      <nav class="orgs" id="org-chips" aria-label="Organizations contributed to">
-        <a class="org" href="https://github.com/21072026" target="_blank" rel="noopener">
-          <img src="https://avatars.githubusercontent.com/u/307296943?s=40&amp;v=4" alt="" width="22" height="22" loading="lazy">@21072026
-        </a>
-        <a class="org" href="https://github.com/faker-js" target="_blank" rel="noopener">
-          <img src="https://avatars.githubusercontent.com/u/97165289?s=40&amp;v=4" alt="" width="22" height="22" loading="lazy">@faker-js
-        </a>
-        <a class="org" href="https://github.com/drizzle-team" target="_blank" rel="noopener">
-          <img src="https://avatars.githubusercontent.com/u/108468352?s=40&amp;v=4" alt="" width="22" height="22" loading="lazy">@drizzle-team
-        </a>
-        <a class="org org-more" href="https://github.com/itsgintoki?tab=overview" target="_blank" rel="noopener">More</a>
-      </nav>
-
-      <div class="activity-body">
-        <div class="activity-contrib">
-          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"/></svg>
-          <p id="activity-contrib-text">Contributed to <a href="https://github.com/itsgintoki/url-shortener" target="_blank" rel="noopener">itsgintoki/url-shortener</a>, <a href="https://github.com/itsgintoki/gatekeep" target="_blank" rel="noopener">itsgintoki/gatekeep</a>, <a href="https://github.com/itsgintoki/idleforge" target="_blank" rel="noopener">itsgintoki/idleforge</a> and <a href="https://github.com/itsgintoki?tab=repositories" target="_blank" rel="noopener">11 other repositories</a></p>
+      <section class="oss-block" id="oss" aria-labelledby="oss-heading">
+        <div class="section-head">
+          <div class="section-label">
+            <span class="section-index">03</span>
+            <h2 id="oss-heading">Open source</h2>
+          </div>
+          <a class="section-link" href="https://github.com/search?q=author%3Aitsgintoki+is%3Apr&amp;type=pullrequests" target="_blank" rel="noopener">All PRs <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>
         </div>
 
-        <div class="radar-wrap">
-          <div class="radar" id="radar" role="img" aria-label="Activity breakdown over the last year: 86% commits, 12% pull requests, 2% code review, and 0% issues.">
-            <div class="radar-label top" data-metric="Code review"><span>2%</span>Code review</div>
-            <div class="radar-label left" data-metric="Commits"><span>86%</span>Commits</div>
+        <div class="oss-list">
+          <a class="oss-item" href="https://github.com/Agenta-AI/agenta/pull/6453" target="_blank" rel="noopener">
+            <div class="oss-top">
+              <span class="oss-repo">Agenta-AI/agenta</span>
+              <span class="oss-pr">#6453</span>
+              <span class="oss-merged">Merged Oct 2026</span>
+            </div>
+            <p>Fixed the SDK so schemeless <code>AGENTA_API_URL</code> values default to http.</p>
+          </a>
+
+          <a class="oss-item" href="https://github.com/faker-js/faker/pull/4020" target="_blank" rel="noopener">
+            <div class="oss-top">
+              <span class="oss-repo">faker-js/faker</span>
+              <span class="oss-pr">#4020</span>
+              <span class="oss-merged">Merged Aug 2026</span>
+            </div>
+            <p>Replaced a <code>Math.random</code> spy with behavior-based assertions in the Roman numeral tests.</p>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <div class="signal-column">
+      <section class="activity-block" id="activity" aria-labelledby="activity-heading">
+        <div class="section-head">
+          <div class="section-label">
+            <span class="section-index">04</span>
+            <h2 id="activity-heading">Activity</h2>
+          </div>
+          <a class="section-link" href="https://github.com/itsgintoki" target="_blank" rel="noopener">Profile <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>
+        </div>
+
+        <div class="activity-total-row">
+          <strong class="activity-total" id="activity-total">&mdash;</strong>
+          <span class="activity-total-label">contributions<br>in the last year</span>
+        </div>
+
+        <div class="contrib" id="contrib-chart" role="img" aria-label="GitHub contribution graph for the last 12 months"></div>
+
+        <div class="activity-breakdown" id="activity-breakdown" role="img" aria-label="Activity mix over the last year: 88% commits, 11% pull requests, 1% code review, and 0% issues.">
+          <div class="mix">
+            <span class="mix-label">Commits</span>
+            <span class="mix-value" data-metric="Commits">88%</span>
+            <span class="mix-bar"><b data-bar="Commits" style="width:88%"></b></span>
+          </div>
+          <div class="mix">
+            <span class="mix-label">Pull requests</span>
+            <span class="mix-value" data-metric="Pull requests">11%</span>
+            <span class="mix-bar"><b data-bar="Pull requests" style="width:11%"></b></span>
+          </div>
+          <div class="mix">
+            <span class="mix-label">Code review</span>
+            <span class="mix-value" data-metric="Code review">1%</span>
+            <span class="mix-bar"><b data-bar="Code review" style="width:1%"></b></span>
+          </div>
+          <div class="mix">
+            <span class="mix-label">Issues</span>
+            <span class="mix-value" data-metric="Issues">0%</span>
+            <span class="mix-bar"><b data-bar="Issues" style="width:0%"></b></span>
+          </div>
+        </div>
+
+        <div class="radar-panel">
+          <span class="micro-label">Activity mix</span>
+          <div class="radar" id="radar" role="img" aria-label="Activity breakdown over the last year: 88% commits, 11% pull requests, 1% code review, and 0% issues.">
+            <div class="radar-label top" data-metric="Code review"><span>1%</span>Code review</div>
+            <div class="radar-label left" data-metric="Commits"><span>88%</span>Commits</div>
             <div class="radar-label right" data-metric="Issues"><span>0%</span>Issues</div>
-            <div class="radar-label bottom" data-metric="Pull requests"><span>12%</span>Pull requests</div>
+            <div class="radar-label bottom" data-metric="Pull requests"><span>11%</span>Pull requests</div>
             <svg viewBox="0 0 300 230" aria-hidden="true" focusable="false">
+              <g class="radar-grid">
+                <polygon points="150,97.5 172.5,115 150,132.5 127.5,115" vector-effect="non-scaling-stroke"/>
+                <polygon points="150,80 195,115 150,150 105,115" vector-effect="non-scaling-stroke"/>
+                <polygon points="150,62.5 217.5,115 150,167.5 82.5,115" vector-effect="non-scaling-stroke"/>
+                <polygon points="150,45 240,115 150,185 60,115" vector-effect="non-scaling-stroke"/>
+              </g>
               <g class="radar-axes">
                 <line x1="150" y1="115" x2="60" y2="115" vector-effect="non-scaling-stroke"/>
                 <line x1="150" y1="115" x2="240" y2="115" vector-effect="non-scaling-stroke"/>
                 <line x1="150" y1="115" x2="150" y2="45" vector-effect="non-scaling-stroke"/>
                 <line x1="150" y1="115" x2="150" y2="185" vector-effect="non-scaling-stroke"/>
               </g>
-              <polygon class="radar-area" id="radar-area" points="150,113.6 150,115 150,123.4 72.6,115" vector-effect="non-scaling-stroke"/>
+              <polygon class="radar-area" id="radar-area" points="150,114.3 150,115 150,122.7 70.8,115" vector-effect="non-scaling-stroke"/>
               <g class="radar-points">
-                <circle data-metric="Commits" cx="72.6" cy="115" r="2.6"/>
-                <circle data-metric="Code review" cx="150" cy="113.6" r="2.6"/>
+                <circle data-metric="Commits" cx="70.8" cy="115" r="2.6"/>
+                <circle data-metric="Code review" cx="150" cy="114.3" r="2.6"/>
                 <circle data-metric="Issues" cx="150" cy="115" r="2.6"/>
-                <circle data-metric="Pull requests" cx="150" cy="123.4" r="2.6"/>
+                <circle data-metric="Pull requests" cx="150" cy="122.7" r="2.6"/>
               </g>
             </svg>
           </div>
         </div>
-      </div>
 
-      <div class="activity-calendar" id="activity-calendar" hidden>
-        <div class="calendar-head">
-          <div class="calendar-total">
-            <strong id="activity-total">&mdash;</strong>
-            <span>contributions<br>in the last year</span>
+        <nav class="orgs" id="org-chips" aria-label="Organizations contributed to">
+          <a class="org" href="https://github.com/Agenta-AI" target="_blank" rel="noopener">
+            <img src="https://avatars.githubusercontent.com/u/127993667?s=40&amp;v=4" alt="" width="18" height="18" loading="lazy">@Agenta-AI
+          </a>
+          <a class="org" href="https://github.com/21072026" target="_blank" rel="noopener">
+            <img src="https://avatars.githubusercontent.com/u/307296943?s=40&amp;v=4" alt="" width="18" height="18" loading="lazy">@21072026
+          </a>
+          <a class="org" href="https://github.com/faker-js" target="_blank" rel="noopener">
+            <img src="https://avatars.githubusercontent.com/u/97165289?s=40&amp;v=4" alt="" width="18" height="18" loading="lazy">@faker-js
+          </a>
+          <a class="org org-more" href="https://github.com/itsgintoki?tab=overview" target="_blank" rel="noopener">More</a>
+        </nav>
+
+        <p class="activity-contrib" id="activity-contrib-text">Contributed to <a href="https://github.com/itsgintoki/url-shortener" target="_blank" rel="noopener">itsgintoki/url-shortener</a>, <a href="https://github.com/itsgintoki/gatekeep" target="_blank" rel="noopener">itsgintoki/gatekeep</a>, <a href="https://github.com/itsgintoki/web" target="_blank" rel="noopener">itsgintoki/web</a> and 11 other repositories.</p>
+      </section>
+
+      <section class="contact-block" id="contact" aria-labelledby="contact-heading">
+        <div class="section-head">
+          <div class="section-label">
+            <span class="section-index">05</span>
+            <h2 id="contact-heading">Contact</h2>
           </div>
-          <span class="count">Contribution calendar</span>
         </div>
-        <div class="contrib" id="contrib-chart" role="img" aria-label="GitHub contribution graph for the last 12 months"></div>
-      </div>
-    </div>
-  </section>
 
-  <section class="section contact-section" id="contact" aria-labelledby="contact-heading">
-    <div class="section-head">
-      <h2 class="section-label" id="contact-heading"><span class="section-num" aria-hidden="true">05</span>Contact</h2>
+        <p class="contact-lead">Currently building <a href="work/holdfast.html">HoldFast</a>. Open to backend/systems roles and interesting problems.</p>
+        <a class="email-link" href="mailto:sinhaankit12jan@gmail.com">sinhaankit12jan@gmail.com <span aria-hidden="true">&#8599;</span></a>
+        <div class="contact-actions">
+          <a href="https://github.com/itsgintoki" target="_blank" rel="me noopener">GitHub <span class="arrow" aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>
+          <a href="https://www.linkedin.com/in/ank1202/" target="_blank" rel="me noopener">LinkedIn <span class="arrow" aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>
+          <a id="resume-trigger" href="resume.pdf?v=2" target="_blank" rel="noopener" aria-haspopup="dialog" aria-controls="resume-modal" aria-expanded="false">Resume <span class="arrow" aria-hidden="true">&#8599;</span><span class="sr-only"> (opens resume preview)</span></a>
+        </div>
+      </section>
     </div>
-    <div class="divider"></div>
-    <p class="contact-note">Currently building <a href="work/holdfast.html">HoldFast</a>. Open to backend/systems roles and interesting problems.</p>
-    <nav class="pills" aria-label="Contact links">
-      <a class="pill" href="https://github.com/itsgintoki" target="_blank" rel="me noopener">
-        <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
-        GitHub<span class="sr-only"> (opens in a new tab)</span>
-      </a>
-      <a class="pill" href="https://www.linkedin.com/in/ank1202/" target="_blank" rel="me noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg>
-        LinkedIn<span class="sr-only"> (opens in a new tab)</span>
-      </a>
-      <a class="pill" href="mailto:sinhaankit12jan@gmail.com">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
-        Email
-      </a>
-      <a class="pill" id="resume-trigger" href="resume.pdf?v=2" target="_blank" rel="noopener" aria-haspopup="dialog" aria-controls="resume-modal" aria-expanded="false">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>
-        Resume<span class="sr-only"> (opens resume preview)</span>
-      </a>
-    </nav>
-  </section>
+  </main>
 
-  <div class="footer-divider"></div>
   <footer class="footer">
-    <span class="year">2026</span>
-    <div class="stack-menu">
-      <button class="grid-icon" type="button" aria-label="Show tech stack" aria-haspopup="dialog" aria-expanded="false" aria-controls="stack-popover" title="Tech stack">
-        <span></span><span></span><span></span>
-        <span></span><span></span><span></span>
-        <span></span><span></span><span></span>
-      </button>
-      <div class="stack-popover" id="stack-popover" role="dialog" aria-labelledby="stack-title" tabindex="-1" hidden>
-        <div class="stack-title" id="stack-title">Stack</div>
-        <div class="stack-grid">
-          <div class="stack-item">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <rect x="1.5" y="1.5" width="21" height="21" rx="4.5" fill="#3178C6"/>
-              <text x="12" y="15.5" text-anchor="middle" font-family="Inter, sans-serif" font-size="8.5" font-weight="700" fill="#fff">TS</text>
-            </svg>
-            <span>TypeScript</span>
-          </div>
-          <div class="stack-item">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 2 21 7.5v9L12 22 3 16.5v-9L12 2Z" fill="#5FA04E"/>
-              <text x="12" y="15.2" text-anchor="middle" font-family="Inter, sans-serif" font-size="7.5" font-weight="700" fill="#fff">JS</text>
-            </svg>
-            <span>Node.js</span>
-          </div>
-          <div class="stack-item">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <ellipse cx="12" cy="6" rx="7" ry="3" stroke="#4169E1" stroke-width="1.7"/>
-              <path d="M5 6v12c0 1.66 3.13 3 7 3s7-1.34 7-3V6" stroke="#4169E1" stroke-width="1.7"/>
-              <path d="M5 12c0 1.66 3.13 3 7 3s7-1.34 7-3" stroke="#4169E1" stroke-width="1.7"/>
-            </svg>
-            <span>PostgreSQL</span>
-          </div>
-          <div class="stack-item">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="m12 3 8.5 4L12 11 3.5 7 12 3Z" fill="#FF4438"/>
-              <path d="m3.5 10.5 8.5 4 8.5-4" stroke="#FF4438" stroke-width="1.8" stroke-linejoin="round"/>
-              <path d="m3.5 14.5 8.5 4 8.5-4" stroke="#FF4438" stroke-width="1.8" stroke-linejoin="round" opacity=".55"/>
-            </svg>
-            <span>Redis</span>
-          </div>
-          <div class="stack-item">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <rect x="3" y="4.5" width="12" height="3" rx="1.5" fill="#E5484D"/>
-              <rect x="3" y="10.5" width="12" height="3" rx="1.5" fill="#E5484D" opacity=".72"/>
-              <rect x="3" y="16.5" width="12" height="3" rx="1.5" fill="#E5484D" opacity=".45"/>
-              <path d="M17 6h3.5m0 0-2-2m2 2-2 2" fill="none" stroke="#E5484D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>BullMQ</span>
-          </div>
-          <div class="stack-item">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M7 14.5a4 4 0 0 1 .5-8 5.5 5.5 0 0 1 10.4 1.4A3.4 3.4 0 0 1 18 14.5H7Z" stroke="#C5F74F" stroke-width="1.7" stroke-linejoin="round"/>
-              <path d="m8.5 18-1 2m5-2-1 2m5-2-1 2" stroke="#C5F74F" stroke-width="1.7" stroke-linecap="round"/>
-            </svg>
-            <span>Drizzle</span>
-          </div>
-          <div class="stack-item">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <rect x="3" y="11" width="4" height="4" rx=".8" fill="#2496ED"/>
-              <rect x="8" y="11" width="4" height="4" rx=".8" fill="#2496ED"/>
-              <rect x="13" y="11" width="4" height="4" rx=".8" fill="#2496ED"/>
-              <rect x="8" y="6" width="4" height="4" rx=".8" fill="#2496ED"/>
-              <rect x="13" y="6" width="4" height="4" rx=".8" fill="#2496ED"/>
-              <path d="M3 16h18c-.8 2.8-3.4 4.5-6.8 4.5h-4.4C6.4 20.5 3.8 18.8 3 16Z" fill="#2496ED"/>
-            </svg>
-            <span>Docker</span>
-          </div>
-          <div class="stack-item">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <circle cx="6" cy="5" r="2" stroke="#F05032" stroke-width="1.8"/>
-              <circle cx="6" cy="19" r="2" stroke="#F05032" stroke-width="1.8"/>
-              <circle cx="18" cy="19" r="2" stroke="#F05032" stroke-width="1.8"/>
-              <path d="M6 7v10M18 17V9a4 4 0 0 0-4-4h-4" stroke="#F05032" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Git</span>
-          </div>
-          <div class="stack-item">
-            <svg viewBox="0 0 16 16" aria-hidden="true">
-              <path fill="#f0f0f0" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/>
-            </svg>
-            <span>GitHub</span>
+    <div class="footer-left">
+      <span>&copy; 2026 Ankit Sinha</span>
+      <span class="sep" aria-hidden="true">/</span>
+      <span>Backend developer</span>
+    </div>
+    <div class="footer-right">
+      <a href="#top">Back to top <span aria-hidden="true">&uarr;</span></a>
+      <div class="stack-menu">
+        <button class="grid-icon" type="button" aria-label="Show tech stack" aria-haspopup="dialog" aria-expanded="false" aria-controls="stack-popover" title="Tech stack">
+          <span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+        </button>
+        <div class="stack-popover" id="stack-popover" role="dialog" aria-labelledby="stack-title" tabindex="-1" hidden>
+          <div class="stack-title" id="stack-title">Stack</div>
+          <div class="stack-grid">
+            <div class="stack-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="1.5" y="1.5" width="21" height="21" rx="4.5" fill="#3178C6"/>
+                <text x="12" y="15.5" text-anchor="middle" font-family="Inter, sans-serif" font-size="8.5" font-weight="700" fill="#fff">TS</text>
+              </svg>
+              <span>TypeScript</span>
+            </div>
+            <div class="stack-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 2 21 7.5v9L12 22 3 16.5v-9L12 2Z" fill="#5FA04E"/>
+                <text x="12" y="15.2" text-anchor="middle" font-family="Inter, sans-serif" font-size="7.5" font-weight="700" fill="#fff">JS</text>
+              </svg>
+              <span>Node.js</span>
+            </div>
+            <div class="stack-item">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <ellipse cx="12" cy="6" rx="7" ry="3" stroke="#4169E1" stroke-width="1.7"/>
+                <path d="M5 6v12c0 1.66 3.13 3 7 3s7-1.34 7-3V6" stroke="#4169E1" stroke-width="1.7"/>
+                <path d="M5 12c0 1.66 3.13 3 7 3s7-1.34 7-3" stroke="#4169E1" stroke-width="1.7"/>
+              </svg>
+              <span>PostgreSQL</span>
+            </div>
+            <div class="stack-item">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="m12 3 8.5 4L12 11 3.5 7 12 3Z" fill="#FF4438"/>
+                <path d="m3.5 10.5 8.5 4 8.5-4" stroke="#FF4438" stroke-width="1.8" stroke-linejoin="round"/>
+                <path d="m3.5 14.5 8.5 4 8.5-4" stroke="#FF4438" stroke-width="1.8" stroke-linejoin="round" opacity=".55"/>
+              </svg>
+              <span>Redis</span>
+            </div>
+            <div class="stack-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3" y="4.5" width="12" height="3" rx="1.5" fill="#E5484D"/>
+                <rect x="3" y="10.5" width="12" height="3" rx="1.5" fill="#E5484D" opacity=".72"/>
+                <rect x="3" y="16.5" width="12" height="3" rx="1.5" fill="#E5484D" opacity=".45"/>
+                <path d="M17 6h3.5m0 0-2-2m2 2-2 2" fill="none" stroke="#E5484D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>BullMQ</span>
+            </div>
+            <div class="stack-item">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 14.5a4 4 0 0 1 .5-8 5.5 5.5 0 0 1 10.4 1.4A3.4 3.4 0 0 1 18 14.5H7Z" stroke="#C5F74F" stroke-width="1.7" stroke-linejoin="round"/>
+                <path d="m8.5 18-1 2m5-2-1 2m5-2-1 2" stroke="#C5F74F" stroke-width="1.7" stroke-linecap="round"/>
+              </svg>
+              <span>Drizzle</span>
+            </div>
+            <div class="stack-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3" y="11" width="4" height="4" rx=".8" fill="#2496ED"/>
+                <rect x="8" y="11" width="4" height="4" rx=".8" fill="#2496ED"/>
+                <rect x="13" y="11" width="4" height="4" rx=".8" fill="#2496ED"/>
+                <rect x="8" y="6" width="4" height="4" rx=".8" fill="#2496ED"/>
+                <rect x="13" y="6" width="4" height="4" rx=".8" fill="#2496ED"/>
+                <path d="M3 16h18c-.8 2.8-3.4 4.5-6.8 4.5h-4.4C6.4 20.5 3.8 18.8 3 16Z" fill="#2496ED"/>
+              </svg>
+              <span>Docker</span>
+            </div>
+            <div class="stack-item">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="6" cy="5" r="2" stroke="#F05032" stroke-width="1.8"/>
+                <circle cx="6" cy="19" r="2" stroke="#F05032" stroke-width="1.8"/>
+                <circle cx="18" cy="19" r="2" stroke="#F05032" stroke-width="1.8"/>
+                <path d="M6 7v10M18 17V9a4 4 0 0 0-4-4h-4" stroke="#F05032" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>Git</span>
+            </div>
+            <div class="stack-item">
+              <svg viewBox="0 0 16 16" aria-hidden="true">
+                <path fill="#f0f0f0" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/>
+              </svg>
+              <span>GitHub</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </footer>
-
-</main>
+</div>
 
 <div class="resume-modal" id="resume-modal" hidden>
   <div class="resume-dialog" role="dialog" aria-modal="true" aria-labelledby="resume-title" aria-describedby="resume-sub" tabindex="-1">
@@ -720,49 +928,62 @@
       const required = ['Commits', 'Pull requests', 'Code review', 'Issues'];
       if (!metrics || !required.every((key) => Number.isFinite(metrics[key]))) return;
 
-      const radar = document.getElementById('radar');
-      const area = document.getElementById('radar-area');
-      const points = document.querySelectorAll('.radar-points circle');
-      if (!radar || !area || !points.length) return;
-
-      const centerX = 150;
-      const centerY = 115;
-      const radiusX = 90;
-      const radiusY = 70;
-      const directions = {
-        'Commits': [-1, 0],
-        'Issues': [1, 0],
-        'Code review': [0, -1],
-        'Pull requests': [0, 1]
-      };
-      const coordinates = {};
-
       required.forEach((metric) => {
-        const [dx, dy] = directions[metric];
-        const value = Math.min(100, Math.max(0, Number(metrics[metric])));
-        coordinates[metric] = [
-          centerX + dx * (value / 100) * radiusX,
-          centerY + dy * (value / 100) * radiusY
-        ];
+        const value = Math.round(Number(metrics[metric]));
+        const label = document.querySelector(`.mix-value[data-metric="${metric}"]`);
+        const bar = document.querySelector(`.mix-bar b[data-bar="${metric}"]`);
+        if (label) label.textContent = value + '%';
+        if (bar) bar.style.width = Math.max(0, Math.min(100, value)) + '%';
       });
 
-      const order = ['Code review', 'Issues', 'Pull requests', 'Commits'];
-      area.setAttribute('points', order.map((metric) => coordinates[metric].join(',')).join(' '));
+      const breakdown = document.getElementById('activity-breakdown');
+      if (breakdown) {
+        breakdown.setAttribute('aria-label', `Activity mix over the last year: ${metrics.Commits}% commits, ${metrics['Pull requests']}% pull requests, ${metrics['Code review']}% code review, and ${metrics.Issues}% issues.`);
+      }
 
-      points.forEach((circle) => {
-        const point = coordinates[circle.dataset.metric];
-        if (point) {
-          circle.setAttribute('cx', point[0]);
-          circle.setAttribute('cy', point[1]);
-        }
-      });
+      const radar = document.getElementById('radar');
+      const radarArea = document.getElementById('radar-area');
+      const radarPoints = document.querySelectorAll('.radar-points circle');
+      if (radar && radarArea && radarPoints.length) {
+        const centerX = 150;
+        const centerY = 115;
+        const radiusX = 90;
+        const radiusY = 70;
+        const directions = {
+          'Commits': [-1, 0],
+          'Issues': [1, 0],
+          'Code review': [0, -1],
+          'Pull requests': [0, 1]
+        };
+        const coordinates = {};
 
-      document.querySelectorAll('.radar-label[data-metric]').forEach((label) => {
-        const percent = label.querySelector('span');
-        if (percent) percent.textContent = Math.round(Number(metrics[label.dataset.metric])) + '%';
-      });
+        required.forEach((metric) => {
+          const [dx, dy] = directions[metric];
+          const value = Math.min(100, Math.max(0, Number(metrics[metric])));
+          coordinates[metric] = [
+            centerX + dx * (value / 100) * radiusX,
+            centerY + dy * (value / 100) * radiusY
+          ];
+        });
 
-      radar.setAttribute('aria-label', `Activity breakdown over the last year: ${metrics.Commits}% commits, ${metrics['Pull requests']}% pull requests, ${metrics['Code review']}% code review, and ${metrics.Issues}% issues.`);
+        const order = ['Code review', 'Issues', 'Pull requests', 'Commits'];
+        radarArea.setAttribute('points', order.map((metric) => coordinates[metric].join(',')).join(' '));
+
+        radarPoints.forEach((circle) => {
+          const point = coordinates[circle.dataset.metric];
+          if (point) {
+            circle.setAttribute('cx', point[0]);
+            circle.setAttribute('cy', point[1]);
+          }
+        });
+
+        radar.querySelectorAll('.radar-label[data-metric]').forEach((label) => {
+          const percent = label.querySelector('span');
+          if (percent) percent.textContent = Math.round(Number(metrics[label.dataset.metric])) + '%';
+        });
+
+        radar.setAttribute('aria-label', `Activity breakdown over the last year: ${metrics.Commits}% commits, ${metrics['Pull requests']}% pull requests, ${metrics['Code review']}% code review, and ${metrics.Issues}% issues.`);
+      }
 
       const repos = Array.isArray(data.contributedTo)
         ? data.contributedTo.filter((repo) => /^[\w.-]+\/[\w.-]+$/.test(repo))
@@ -815,8 +1036,8 @@
           const avatar = document.createElement('img');
           avatar.src = org.avatar;
           avatar.alt = '';
-          avatar.width = 22;
-          avatar.height = 22;
+          avatar.width = 18;
+          avatar.height = 18;
           avatar.loading = 'lazy';
 
           link.append(avatar, document.createTextNode('@' + org.login));
@@ -840,10 +1061,9 @@
 
 <script>
   (async () => {
-    const calendar = document.getElementById('activity-calendar');
     const chart = document.getElementById('contrib-chart');
     const totalEl = document.getElementById('activity-total');
-    if (!calendar || !chart || !totalEl) return;
+    if (!chart || !totalEl) return;
 
     try {
       const response = await fetch('https://github-contributions-api.jogruber.de/v4/itsgintoki?y=last');
@@ -886,9 +1106,8 @@
       chart.replaceChildren(svg);
       chart.setAttribute('aria-label', `GitHub contribution graph for the last 12 months: ${total} contributions.`);
       totalEl.textContent = String(total);
-      calendar.hidden = false;
     } catch (error) {
-      // Leave the calendar hidden if activity cannot be loaded.
+      // Leave the activity total and graph in their static state.
     }
   })();
 </script>
