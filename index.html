@@ -283,6 +283,74 @@
     to{opacity:1;transform:translateY(0) scale(1);}
   }
 
+  body.modal-open{overflow:hidden;}
+  .resume-modal{
+    position:fixed;inset:0;z-index:60;
+    display:grid;place-items:center;
+    padding:16px;
+    background:rgba(0,0,0,.78);
+    backdrop-filter:blur(6px);
+  }
+  .resume-modal[hidden]{display:none;}
+  .resume-dialog{
+    width:min(680px, 100%);
+    max-height:calc(100vh - 32px);
+    display:flex;flex-direction:column;
+    overflow:hidden;
+    border:1px solid #2a2a2a;border-radius:16px;
+    background:#121212;
+    box-shadow:0 30px 100px rgba(0,0,0,.8);
+    animation:resume-in .16s ease-out;
+  }
+  .resume-head{
+    display:flex;justify-content:space-between;align-items:flex-start;gap:16px;
+    padding:14px 16px;border-bottom:1px solid var(--line);
+  }
+  .resume-title{font-size:14px;font-weight:500;color:var(--text);}
+  .resume-sub{margin-top:3px;color:var(--dim);font-size:11px;line-height:1.4;}
+  .resume-close{
+    width:30px;height:30px;flex:0 0 30px;display:grid;place-items:center;
+    border:0;border-radius:50%;background:transparent;color:var(--dim);
+    cursor:pointer;transition:background .15s ease,color .15s ease;
+  }
+  .resume-close:hover{background:#1e1e1e;color:var(--text);}
+  .resume-close svg{width:14px;height:14px;}
+  .resume-preview{
+    flex:1 1 auto;min-height:0;
+    height:min(60vh, 660px);
+    display:flex;align-items:center;justify-content:center;
+    padding:12px;
+    background:#0a0a0a;
+    overflow:hidden;text-decoration:none;
+  }
+  .resume-preview img{
+    max-width:100%;max-height:100%;width:auto;height:auto;
+    display:block;
+    box-shadow:0 8px 30px rgba(0,0,0,.5);
+  }
+  .resume-actions{
+    display:flex;justify-content:flex-end;gap:8px;
+    padding:12px 16px;border-top:1px solid var(--line);
+  }
+  .resume-action{
+    display:inline-flex;align-items:center;justify-content:center;
+    height:32px;padding:0 12px;
+    border:1px solid var(--pill-border);border-radius:7px;
+    background:#181818;color:var(--text);
+    font-size:12px;text-decoration:none;
+    transition:background .15s ease,border-color .15s ease;
+  }
+  .resume-action:hover{background:#222;border-color:#3a3a3a;}
+  .resume-action.primary{
+    background:var(--accent-soft);border-color:var(--accent-soft);
+    color:#0c0c0c;font-weight:500;
+  }
+  .resume-action.primary:hover{background:#a3adff;border-color:#a3adff;}
+  @keyframes resume-in{
+    from{opacity:0;transform:translateY(6px) scale(.99);}
+    to{opacity:1;transform:translateY(0) scale(1);}
+  }
+
   @media(max-width:560px){
     .activity-body{grid-template-columns:1fr;gap:18px;}
     .radar-wrap{
@@ -301,11 +369,17 @@
     .row:hover{background:none;}
     .row-meta{flex-direction:row;align-items:center;gap:10px;padding-top:0;}
     .row .arrow{opacity:.35;transform:none;}
+    .contact-section .pills{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+    .contact-section .pill{justify-content:center;padding:9px 12px;}
+    .resume-head{padding:12px 14px;}
+    .resume-preview{height:min(56vh, 540px);padding:8px;}
+    .resume-actions{padding:10px 12px;}
+    .resume-action{flex:1;}
   }
   @media(prefers-reduced-motion:reduce){
     html{scroll-behavior:auto;}
     *,*::before,*::after{transition:none !important;}
-    .stack-popover{animation:none !important;}
+    .stack-popover,.resume-dialog{animation:none !important;}
   }
 </style>
 </head>
@@ -484,9 +558,17 @@
         <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
         GitHub<span class="sr-only"> (opens in a new tab)</span>
       </a>
+      <a class="pill" href="https://www.linkedin.com/in/ank1202/" target="_blank" rel="me noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg>
+        LinkedIn<span class="sr-only"> (opens in a new tab)</span>
+      </a>
       <a class="pill" href="mailto:sinhaankit12jan@gmail.com">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
         Email
+      </a>
+      <a class="pill" id="resume-trigger" href="resume.pdf" target="_blank" rel="noopener" aria-haspopup="dialog" aria-controls="resume-modal" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>
+        Resume<span class="sr-only"> (opens resume preview)</span>
       </a>
     </nav>
   </section>
@@ -581,6 +663,27 @@
   </footer>
 
 </main>
+
+<div class="resume-modal" id="resume-modal" hidden>
+  <div class="resume-dialog" role="dialog" aria-modal="true" aria-labelledby="resume-title" aria-describedby="resume-sub" tabindex="-1">
+    <div class="resume-head">
+      <div>
+        <h2 class="resume-title" id="resume-title">Resume</h2>
+        <p class="resume-sub" id="resume-sub">Ankit Sinha &middot; Backend Developer</p>
+      </div>
+      <button class="resume-close" type="button" aria-label="Close resume">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="m4 4 8 8M12 4l-8 8"/></svg>
+      </button>
+    </div>
+    <a class="resume-preview" href="resume.pdf" target="_blank" rel="noopener" aria-label="Open Ankit Sinha's resume PDF in a new tab">
+      <img src="resume-preview.jpg" alt="Preview of Ankit Sinha's resume" width="910" height="1287" loading="lazy">
+    </a>
+    <div class="resume-actions">
+      <a class="resume-action primary" href="resume.pdf" download="Ankit-Sinha-Resume.pdf">Download PDF</a>
+      <a class="resume-action" href="resume.pdf" target="_blank" rel="noopener">Open PDF <span aria-hidden="true">&#8599;</span></a>
+    </div>
+  </div>
+</div>
 
 <script>
   (async () => {
@@ -800,6 +903,67 @@
   })();
 </script>
 
+<script>
+  (() => {
+    const trigger = document.getElementById('resume-trigger');
+    const modal = document.getElementById('resume-modal');
+    if (!trigger || !modal) return;
+
+    const dialog = modal.querySelector('.resume-dialog');
+    const closeButton = modal.querySelector('.resume-close');
+    if (!dialog || !closeButton) return;
+
+    const setOpen = (open) => {
+      if (!open) {
+        modal.hidden = true;
+        document.body.classList.remove('modal-open');
+        trigger.setAttribute('aria-expanded', 'false');
+        trigger.focus({ preventScroll: true });
+        return;
+      }
+
+      modal.hidden = false;
+      document.body.classList.add('modal-open');
+      trigger.setAttribute('aria-expanded', 'true');
+      closeButton.focus({ preventScroll: true });
+    };
+
+    trigger.addEventListener('click', (event) => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+      event.preventDefault();
+      setOpen(true);
+    });
+
+    closeButton.addEventListener('click', () => setOpen(false));
+
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) setOpen(false);
+    });
+
+    dialog.addEventListener('keydown', (event) => {
+      if (event.key !== 'Tab') return;
+
+      const focusable = [...dialog.querySelectorAll('a[href], button:not([disabled])')]
+        .filter((element) => element.offsetParent !== null);
+      if (!focusable.length) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !modal.hidden) setOpen(false);
+    });
+  })();
+</script>
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -807,8 +971,11 @@
   "name": "Ankit Sinha",
   "jobTitle": "Backend Developer",
   "email": "sinhaankit12jan@gmail.com",
-  "url": "https://github.com/itsgintoki",
-  "sameAs": ["https://github.com/itsgintoki"],
+  "url": "https://itsgintoki.github.io/web/",
+  "sameAs": [
+    "https://github.com/itsgintoki",
+    "https://www.linkedin.com/in/ank1202/"
+  ],
   "alumniOf": {
     "@type": "CollegeOrUniversity",
     "name": "Maharaja Agrasen Institute of Technology"
