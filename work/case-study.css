@@ -60,6 +60,10 @@ h1{
   padding:5px 9px;border:1px solid var(--pill-border);border-radius:999px;
   background:var(--pill-bg);color:var(--dim);font-size:11px;line-height:1.2;
 }
+.tag-status{
+  color:var(--green-soft);border-color:rgba(86,211,100,.28);
+  background:rgba(86,211,100,.06);
+}
 .links{display:flex;flex-wrap:wrap;gap:16px;margin-top:24px;}
 .links a{
   color:var(--accent-soft);font-size:13px;text-decoration:none;
@@ -119,6 +123,32 @@ code{
 .callout{
   margin-top:18px;padding-left:14px;border-left:2px solid var(--accent);
   color:#d2d2d2;font-size:14px;line-height:1.75;
+}
+
+.roadmap-row{
+  display:grid;grid-template-columns:42px minmax(0,1fr);gap:14px;
+  padding:16px 0;border-bottom:1px solid var(--line);
+}
+.roadmap-row:first-child{padding-top:0;}
+.roadmap-row:last-child{border-bottom:0;padding-bottom:0;}
+.roadmap-milestone{
+  padding-top:3px;color:var(--dim);font-size:11px;letter-spacing:.06em;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+.roadmap-copy h3{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:4px;}
+.roadmap-copy p{font-size:13px;line-height:1.7;}
+.roadmap-status{
+  padding:3px 7px;border:1px solid var(--pill-border);border-radius:999px;
+  color:var(--dim);font-size:9px;font-weight:500;letter-spacing:.08em;
+  line-height:1;text-transform:uppercase;
+}
+.roadmap-row.done .roadmap-status{
+  color:var(--green-soft);border-color:rgba(86,211,100,.3);
+  background:rgba(86,211,100,.06);
+}
+.roadmap-row.next .roadmap-status{
+  color:var(--accent-soft);border-color:rgba(139,150,255,.3);
+  background:rgba(139,150,255,.06);
 }
 
 .case-footer{

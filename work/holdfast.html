@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HoldFast — Case study — Ankit Sinha</title>
+<meta name="description" content="HoldFast is a multi-tenant reservation and limited-drop engine built around all-or-nothing holds, Postgres row locks, and a roadmap toward expiry, checkout, and signed webhooks.">
+<meta name="author" content="Ankit Sinha">
+<meta name="theme-color" content="#0c0c0c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HoldFast — Case study">
+<meta property="og:description" content="A multi-tenant reservation and limited-drop engine built around all-or-nothing holds.">
+<link rel="canonical" href="https://itsgintoki.github.io/web/work/holdfast.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Ccircle%20cx='32'%20cy='32'%20r='32'%20fill='%233547f5'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="case-study.css">
+</head>
+<body>
+<main class="page">
+  <div class="topbar">
+    <a class="back" href="../index.html"><span aria-hidden="true">&larr;</span> Ankit Sinha</a>
+    <a class="site-mark" href="../index.html#projects">All projects</a>
+  </div>
+
+  <header class="case-header">
+    <p class="eyebrow">Currently building / 03</p>
+    <h1>HoldFast</h1>
+    <p class="summary">A multi-tenant reservation and limited-drop engine. All-or-nothing holds, deterministic row locking, and a roadmap toward expiry, idempotent checkout, and signed webhooks.</p>
+    <div class="tags">
+      <span class="tag tag-status">M1 complete · M2 next</span>
+      <span class="tag">TypeScript</span>
+      <span class="tag">Node.js</span>
+      <span class="tag">Express</span>
+      <span class="tag">PostgreSQL</span>
+      <span class="tag">Drizzle</span>
+      <span class="tag">Docker</span>
+      <span class="tag">Vitest</span>
+    </div>
+    <div class="links">
+      <a href="https://github.com/itsgintoki/holdfast" target="_blank" rel="noopener">Source <span aria-hidden="true">&nearr;</span><span class="sr-only"> (opens in a new tab)</span></a>
+    </div>
+  </header>
+
+  <section class="case-section">
+    <h2>The problem</h2>
+    <p>Reserving a seat, appointment slot, or limited-drop item is a small promise: this unit is yours for a few minutes. Making that promise hold at scale is a concurrency problem. Two buyers cannot both hold the same unit, a hold cannot outlive its TTL, a retry cannot charge twice, and an organizer needs to know what happened.</p>
+    <p>HoldFast is a multi-tenant engine for that whole flow. A unit can be a seat, an appointment slot, or a sale item. The project is also a deliberate learning vehicle: row locks, transaction boundaries, retries, queues, idempotency, outbox delivery, and multi-tenant isolation.</p>
+  </section>
+
+  <section class="case-section">
+    <h2>Today: M1 holds</h2>
+    <p>M1 is the reservation core. A client can request specific units or any N units. Both paths are all-or-nothing: the hold row and every unit update commit together, or nothing does. The API is Express, the data layer is Postgres with Drizzle, and the tests run on Vitest.</p>
+    <pre class="diagram" aria-label="HoldFast M1 architecture diagram">Client
+  │  POST /holds
+  ▼
+Express API
+  │
+  ├── holdSeats
+  │     ORDER BY id ... FOR UPDATE
+  │     availability pre-check + guarded update
+  │
+  └── holdAnySeats
+        LIMIT N ... FOR UPDATE SKIP LOCKED
+        count hint + capped jittered retries
+  │
+  ▼
+PostgreSQL
+  ├─ tenants / events / holds / units
+  ├─ holds.expires_at written with now()
+  ├─ guarded UPDATE ... WHERE status = 'available'
+  └─ check constraints + partial indexes</pre>
+
+    <div class="decision">
+      <h3>Specific-unit allocation uses fixed-order locks</h3>
+      <p>The requested units are locked in <code>ORDER BY id</code>, then checked for availability. The hold row is inserted, and a guarded update changes only units that are still <code>available</code>. If the updated row count is short, the transaction rolls back. Deadlocks (<code>40P01</code>) retry the whole transaction, up to a small cap with jitter.</p>
+    </div>
+
+    <div class="decision">
+      <h3>Any-N allocation uses <code>SKIP LOCKED</code> with a backstop</h3>
+      <p>The any-N path grabs available rows with <code>SKIP LOCKED</code>, then verifies the update count. A short result is retried only when a non-locking count says enough units might still be available. The count is a hint; the guarded update is the correctness check. Capped retries can produce a false conflict under extreme contention, but never an oversell.</p>
+    </div>
+
+    <div class="decision">
+      <h3>The database owns time and the transaction boundary</h3>
+      <p><code>expires_at</code> is computed with the database clock, not <code>Date.now()</code>. The hold row is created inside the same transaction as the unit updates, so a failed attempt leaves no orphan hold and no unit pointing at missing state.</p>
+    </div>
+
+    <div class="decision">
+      <h3>Tenant scoping comes before authentication</h3>
+      <p>Every query is already scoped by tenant ID. For now the tenant comes from the request body, which is a temporary development decision, not authentication. M5 replaces it with API keys, a non-owner database role, and row-level security.</p>
+    </div>
+
+    <div class="decision">
+      <h3>The tests are part of the proof</h3>
+      <p>Concurrency tests run buyers in parallel with a pool large enough to interleave. An advisory lock serializes test cases without serializing the buyers inside a test. The invariant checker verifies the database state after each scenario, and the M1 gate runs each invariant test repeatedly.</p>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <h2>What M1 proves</h2>
+    <div class="metrics">
+      <div class="metric"><strong>1</strong><span>winner with 200 buyers<br>for a single unit</span></div>
+      <div class="metric"><strong>100</strong><span>winners with 1,000 buyers<br>for 100 units</span></div>
+      <div class="metric"><strong>14</strong><span>tests plus typecheck<br>and invariant gate</span></div>
+      <div class="metric"><strong>7 × 50</strong><span>invariant runs before<br>the gate passes</span></div>
+    </div>
+    <p style="margin-top:18px">Local benchmark for 1,000 buyers and 100 units: 1,507 ms mean for the specific-unit path and 1,669 ms for any-N, with exactly 100 winners in both. It is a microbenchmark, not a production capacity claim.</p>
+    <p class="callout">The update guard decides the winner, not the lock. A test that passes with and without the guard is not proving anything.</p>
+  </section>
+
+  <section class="case-section">
+    <h2>The ship line</h2>
+    <div class="roadmap">
+      <div class="roadmap-row done">
+        <span class="roadmap-milestone">M1</span>
+        <div class="roadmap-copy">
+          <h3>Reserve <span class="roadmap-status">Done</span></h3>
+          <p>All-or-nothing holds, specific and any-N allocation, the reserve route, concurrency tests, and the invariant gate.</p>
+        </div>
+      </div>
+      <div class="roadmap-row next">
+        <span class="roadmap-milestone">M2</span>
+        <div class="roadmap-copy">
+          <h3>Holds with expiry <span class="roadmap-status">Next</span></h3>
+          <p>BullMQ delayed jobs plus a database sweeper. The hard part is the release-versus-confirm race at the expiry boundary, not the timer itself.</p>
+        </div>
+      </div>
+      <div class="roadmap-row">
+        <span class="roadmap-milestone">M3</span>
+        <div class="roadmap-copy">
+          <h3>Checkout + saga <span class="roadmap-status">Planned</span></h3>
+          <p>Orders, persisted idempotency keys, a mock payment provider, confirm/compensate paths, and crash recovery.</p>
+        </div>
+      </div>
+      <div class="roadmap-row">
+        <span class="roadmap-milestone">M4</span>
+        <div class="roadmap-copy">
+          <h3>Outbox + webhooks <span class="roadmap-status">Planned</span></h3>
+          <p>Signed at-least-once events, retries, a dead-letter queue, replay, secret rotation, and SSRF-safe delivery.</p>
+        </div>
+      </div>
+      <div class="roadmap-row">
+        <span class="roadmap-milestone">M8</span>
+        <div class="roadmap-copy">
+          <h3>Short proof <span class="roadmap-status">After M4</span></h3>
+          <p>One load test and a README of the failure cases. The finish line is M1–M4 plus this short proof, not the full extras list.</p>
+        </div>
+      </div>
+      <div class="roadmap-row">
+        <span class="roadmap-milestone">M5+</span>
+        <div class="roadmap-copy">
+          <h3>Extras <span class="roadmap-status">Later</span></h3>
+          <p>RLS, a waiting room, single-use tickets, full observability, and a demo UI. Useful, but deliberately after the ship line.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <h2>Planned architecture</h2>
+    <p>After M4, the core flow writes state and an outbox row in one database transaction. Expiry and retries live outside the API in BullMQ workers, the payment provider is called outside any transaction, and a relay signs webhook deliveries.</p>
+    <pre class="diagram" aria-label="HoldFast planned architecture diagram">Client
+  │
+  ▼
+Express API ─────────────── PostgreSQL
+  │                          ├─ holds / orders
+  │                          ├─ idempotency_keys
+  │                          └─ outbox
+  │
+  ├── BullMQ + Redis ────── expiry jobs, retries
+  │
+  ├── mock PSP ───────────── charge / lookup / refund
+  │
+  └── outbox relay ───────── signed webhooks (HMAC)
+
+Rules
+  • short DB transactions
+  • no payment or webhook call while holding row locks
+  • expiry decisions use database now()
+  • release and confirm lock the hold first, then units
+  • at-least-once delivery, dedup by event id</pre>
+  </section>
+
+  <section class="case-section">
+    <h2>Invariants I'm building against</h2>
+    <ul>
+      <li>Sold units never exceed event capacity.</li>
+      <li>No unit belongs to two active holds or orders.</li>
+      <li>Every sold unit belongs to a converted hold and a paid order.</li>
+      <li>An expired or released hold owns no units; expiry checks status and time under the same lock.</li>
+      <li>Tenant IDs match across the event, hold, order, and unit.</li>
+      <li>Duplicate expiry jobs, payment callbacks, and webhook deliveries are safe no-ops where required.</li>
+      <li>No external service is called inside a database transaction.</li>
+      <li>The M1 invariant gate stays green after every milestone.</li>
+    </ul>
+  </section>
+
+  <section class="case-section">
+    <h2>Current limits</h2>
+    <ul>
+      <li>No expiry worker, queue, or sweeper yet; holds can remain active until M2.</li>
+      <li>No checkout, orders, payments, or idempotency yet.</li>
+      <li>No outbox or webhooks yet.</li>
+      <li>No auth, API keys, or RLS. The tenant in the request body is not safe for a public deployment.</li>
+      <li>No waiting room, tickets, observability, or demo UI.</li>
+      <li>Capped any-N retries can return a false conflict under extreme contention; they do not oversell.</li>
+      <li>M1 is a microbenchmark, not a capacity claim. Before M2, I'm revisiting it through oral checks and break-it tests so I can explain and rebuild the core, not just run it.</li>
+    </ul>
+  </section>
+
+  <footer class="case-footer">
+    <a class="back" href="../index.html"><span aria-hidden="true">&larr;</span> Back to portfolio</a>
+    <a class="next" href="gatekeep.html">Next case study: GateKeep <span aria-hidden="true">&rarr;</span></a>
+  </footer>
+</main>
+</body>
+</html>
