@@ -1,16 +1,16 @@
 {
   "percentages": {
-    "Commits": 90,
-    "Pull requests": 9,
+    "Commits": 88,
+    "Pull requests": 11,
     "Code review": 1,
     "Issues": 0
   },
   "contributedTo": [
     "itsgintoki/url-shortener",
     "itsgintoki/gatekeep",
-    "itsgintoki/web"
+    "itsgintoki/idleforge"
   ],
-  "otherRepositories": 12,
+  "otherRepositories": 10,
   "organizations": [
     {
       "login": "Agenta-AI",
