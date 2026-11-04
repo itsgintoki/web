@@ -1,14 +1,14 @@
 {
   "percentages": {
-    "Commits": 89,
-    "Pull requests": 10,
+    "Commits": 88,
+    "Pull requests": 11,
     "Code review": 1,
     "Issues": 0
   },
   "contributedTo": [
     "itsgintoki/url-shortener",
-    "itsgintoki/gatekeep",
-    "itsgintoki/idleforge"
+    "itsgintoki/idleforge",
+    "itsgintoki/gatekeep"
   ],
   "otherRepositories": 11,
   "organizations": [
