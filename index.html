@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ankit Sinha — Backend Developer</title>
-<meta name="description" content="Ankit — backend developer working with TypeScript, Node.js, and PostgreSQL. Building systems end to end, focused on how the pieces behave under load.">
+<title>Ankit Sinha — AI Infrastructure / Backend Engineer</title>
+<meta name="description" content="Ankit Sinha — AI infrastructure and backend engineer building reliable LLM gateways, budget and usage controls, and systems that hold under load.">
 <meta name="author" content="Ankit Sinha">
 <meta name="theme-color" content="#0a0a0a">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Ankit Sinha — Backend Developer">
-<meta property="og:description" content="Backend developer working with TypeScript, Node.js, and PostgreSQL. Building systems end to end, focused on how the pieces behave under load.">
+<meta property="og:title" content="Ankit Sinha — AI Infrastructure / Backend Engineer">
+<meta property="og:description" content="AI infrastructure and backend engineer building reliable LLM gateways, budget and usage controls, and systems that hold under load.">
 <meta property="og:image" content="https://avatars.githubusercontent.com/u/237295543?v=4">
 <meta property="og:image:alt" content="Ankit Sinha">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ankit Sinha — Backend Developer">
-<meta name="twitter:description" content="Backend developer working with TypeScript, Node.js, and PostgreSQL. Building the pieces and testing how they behave under load.">
+<meta name="twitter:title" content="Ankit Sinha — AI Infrastructure / Backend Engineer">
+<meta name="twitter:description" content="AI infrastructure and backend engineer building reliable LLM gateways, budget and usage controls, and systems that hold under load.">
 <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/237295543?v=4">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='10'%20fill='%233547f5'/%3E%3Ctext%20x='32'%20y='42'%20text-anchor='middle'%20font-family='monospace'%20font-size='24'%20font-weight='700'%20fill='white'%3EAS%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -185,6 +185,11 @@
   .now-meta a{color:var(--accent-soft);text-decoration:none;}
   .now-meta a:hover{text-decoration:underline;text-underline-offset:2px;}
 
+  .recognition{margin-top:clamp(20px,3vh,27px);}
+  .recognition-item{color:var(--muted);font-size:11px;line-height:1.6;}
+  .recognition-item + .recognition-item{margin-top:5px;}
+  .recognition-item strong{color:var(--text);font-weight:500;}
+
   .identity-foot{
     display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;
     gap:10px 16px;margin-top:auto;padding-top:34px;
@@ -256,11 +261,7 @@
   .state{display:inline-flex;align-items:center;gap:6px;color:var(--green-soft);}
   .state .dot{width:4px;height:4px;box-shadow:0 0 0 2px rgba(86,211,100,.1);}
 
-  .work-mascot{display:none;}
-  @keyframes gintoki-float{
-    0%,100%{transform:translateY(0) rotate(-.35deg);}
-    50%{transform:translateY(-5px) rotate(.35deg);}
-  }
+  .work-art{display:none;}
   .oss-block{margin-top:auto;}
   .oss-block .section-head{margin-bottom:2px;}
   .oss-list{display:flex;flex-direction:column;}
@@ -269,8 +270,10 @@
     color:inherit;text-decoration:none;
   }
   .oss-top{display:flex;align-items:baseline;flex-wrap:wrap;gap:7px 10px;margin-bottom:6px;}
-  .oss-repo{color:var(--text);font-family:var(--display);font-size:15px;font-weight:500;letter-spacing:-.02em;transition:color .15s ease;}
+  .oss-repo{color:var(--text);font-family:var(--display);font-size:15px;font-weight:500;letter-spacing:-.02em;text-decoration:none;transition:color .15s ease;}
   .oss-pr{color:var(--accent-soft);font-family:var(--mono);font-size:9px;}
+  .oss-pr a{color:inherit;text-decoration:none;transition:color .15s ease;}
+  .oss-pr a:hover{color:var(--text);text-decoration:underline;text-underline-offset:2px;}
   .oss-merged{margin-left:auto;color:var(--green-soft);font-family:var(--mono);font-size:8px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;}
   .oss-item p{color:var(--dim);font-size:12px;line-height:1.65;}
   .oss-item:hover .oss-repo{color:var(--accent-soft);}
@@ -349,6 +352,9 @@
     transition:color .15s ease,border-color .15s ease;
   }
   .email-link:hover{color:var(--accent-soft);border-bottom-color:var(--accent-soft);}
+  .contact-meta{margin-top:9px;color:var(--dim);font-family:var(--mono);font-size:8px;line-height:1.7;letter-spacing:.03em;text-transform:uppercase;}
+  .contact-meta a{color:var(--muted);text-decoration:none;}
+  .contact-meta a:hover{color:var(--accent-soft);}
   .contact-actions{display:flex;flex-wrap:wrap;gap:12px 17px;margin-top:18px;}
   .contact-actions a{
     color:var(--dim);font-family:var(--mono);font-size:9px;
@@ -450,19 +456,17 @@
   @media(min-width:1181px){
     .work-column{gap:18px;}
     .oss-block{margin-top:0;}
-    .work-mascot{
-      position:relative;display:block;
-      flex:1 1 0;min-height:0;pointer-events:none;
+    .work-art{
+      position:relative;display:block;flex:0 0 auto;
+      width:min(100%,340px);aspect-ratio:7/5;margin:0 auto;overflow:hidden;
+      border:1px solid var(--line);border-radius:2px;
+      background:#07070a;
     }
-    .work-mascot picture{
-      position:absolute;inset:0;
-      display:flex;align-items:center;justify-content:center;
-    }
-    .work-mascot img{
-      display:block;width:auto;height:100%;max-width:100%;max-height:300px;
-      filter:drop-shadow(0 18px 20px rgba(0,0,0,.55));
-      animation:gintoki-float 6.5s ease-in-out infinite;
-      transform-origin:50% 85%;
+    .work-art img{
+      display:block;width:100%;height:100%;
+      object-fit:cover;object-position:center;
+      image-rendering:pixelated;
+      filter:saturate(.94) contrast(1.02);
     }
   }
   @media(max-width:1360px){
@@ -586,14 +590,20 @@
         </a>
       </div>
 
-      <h1 class="display" id="identity-title">Backend dev<br>building systems<br>that <em>hold</em>.</h1>
+      <h1 class="display" id="identity-title">AI infra<br>for systems<br>that <em>hold</em>.</h1>
 
-      <p class="bio">Ankit this side, a backend dev tryna understand how things work. Currently playing around with TypeScript, Node.js, and PostgreSQL. I build systems end to end, focusing on how the pieces fit together and behave under load.</p>
+      <p class="bio">Ankit this side, an AI infrastructure and backend engineer. I build LLM gateways and backend systems that stay correct under load.</p>
 
       <div class="now">
         <span class="micro-label">Currently working on</span>
-        <a class="now-link" href="work/holdfast.html">HoldFast <span aria-hidden="true">&#8599;</span></a>
-        <span class="now-meta">Reservation engine / <span class="state"><span class="dot" aria-hidden="true"></span>M1 complete</span> &middot; <a href="https://github.com/itsgintoki/holdfast" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a></span>
+        <a class="now-link" href="work/llm-gateway.html">LLM Gateway <span aria-hidden="true">&#8599;</span></a>
+        <span class="now-meta">Budget-controlled gateway / <span class="state"><span class="dot" aria-hidden="true"></span>Live on Render</span> &middot; <a href="https://github.com/itsgintoki/llm-gateway" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a></span>
+      </div>
+
+      <div class="recognition">
+        <span class="micro-label">Recognition</span>
+        <p class="recognition-item"><strong>Winner, GenAI Track</strong> &middot; Code Kshetra 2.0</p>
+        <p class="recognition-item"><strong>Pre-finalist</strong> &middot; BVP HEX, HackWithMAIT 6.0</p>
       </div>
 
       <div class="identity-foot">
@@ -619,11 +629,29 @@
 
         <div class="project-list">
           <article class="project">
-            <a class="project-link" href="work/gatekeep.html">
+            <a class="project-link" href="work/llm-gateway.html">
               <span class="project-no">01</span>
               <div class="project-copy">
+                <h3>LLM Gateway</h3>
+                <p>Budget-controlled LLM API gateway with virtual keys, micro-USD reservations, and Groq-to-Gemini fallback.</p>
+              </div>
+              <span class="project-arrow" aria-hidden="true">&#8599;</span>
+            </a>
+            <div class="project-meta">
+              <span>TypeScript / PostgreSQL</span>
+              <span class="project-meta-links">
+                <a href="https://llm-gateway-17vz.onrender.com/" target="_blank" rel="noopener">Live <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>
+                <a href="https://github.com/itsgintoki/llm-gateway" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>
+              </span>
+            </div>
+          </article>
+
+          <article class="project">
+            <a class="project-link" href="work/gatekeep.html">
+              <span class="project-no">02</span>
+              <div class="project-copy">
                 <h3>GateKeep</h3>
-                <p>Encrypted, expiring notes with passphrase gates, read limits, and access analytics.</p>
+                <p>Encrypted, expiring notes with passphrase gates, atomic read limits, and signed webhooks.</p>
               </div>
               <span class="project-arrow" aria-hidden="true">&#8599;</span>
             </a>
@@ -638,10 +666,10 @@
 
           <article class="project">
             <a class="project-link" href="work/idleforge.html">
-              <span class="project-no">02</span>
+              <span class="project-no">03</span>
               <div class="project-copy">
                 <h3>IdleForge</h3>
-                <p>Idle-game economy API with offline earnings, Redis leaderboards, and BullMQ jobs.</p>
+                <p>Idle-game economy API with atomic offline collection, persisted idempotency, and Redis leaderboards.</p>
               </div>
               <span class="project-arrow" aria-hidden="true">&#8599;</span>
             </a>
@@ -656,10 +684,10 @@
         </div>
       </section>
 
-      <div class="work-mascot" aria-hidden="true">
+      <div class="work-art" aria-hidden="true">
         <picture>
-          <source srcset="assets/mascots/gintoki-chibi.webp" type="image/webp">
-          <img src="assets/mascots/gintoki-chibi.png" alt="" width="467" height="560" loading="lazy">
+          <source srcset="assets/art/evangelion-night.webp" type="image/webp">
+          <img src="assets/art/evangelion-night.jpg" alt="" width="1260" height="900" loading="lazy" decoding="async">
         </picture>
       </div>
 
@@ -673,14 +701,14 @@
         </div>
 
         <div class="oss-list">
-          <a class="oss-item" href="https://github.com/Agenta-AI/agenta/pull/6453" target="_blank" rel="noopener">
+          <div class="oss-item">
             <div class="oss-top">
-              <span class="oss-repo">Agenta-AI/agenta</span>
-              <span class="oss-pr">#6453</span>
-              <span class="oss-merged">Merged Oct 2026</span>
+              <a class="oss-repo" href="https://github.com/desplega-ai/agent-swarm" target="_blank" rel="noopener">desplega-ai/agent-swarm</a>
+              <span class="oss-pr"><a href="https://github.com/desplega-ai/agent-swarm/pull/2754" target="_blank" rel="noopener">#2754</a><span aria-hidden="true"> / </span><a href="https://github.com/desplega-ai/agent-swarm/pull/2755" target="_blank" rel="noopener">#2755</a></span>
+              <span class="oss-merged">Merged Nov 2026</span>
             </div>
-            <p>Fixed the SDK so schemeless <code>AGENTA_API_URL</code> values default to http.</p>
-          </a>
+            <p>Rejected credential-bearing feedback URLs and blocked <code>0.0.0.0/8</code> hosts (including IPv4-mapped IPv6) in browser reachability checks; added regression tests.</p>
+          </div>
 
           <a class="oss-item" href="https://github.com/faker-js/faker/pull/4020" target="_blank" rel="noopener">
             <div class="oss-top">
@@ -688,7 +716,16 @@
               <span class="oss-pr">#4020</span>
               <span class="oss-merged">Merged Aug 2026</span>
             </div>
-            <p>Replaced a <code>Math.random</code> spy with behavior-based assertions in the Roman numeral tests.</p>
+            <p>Refactored Roman numeral tests to use public inputs instead of internal spies.</p>
+          </a>
+
+          <a class="oss-item" href="https://github.com/Agenta-AI/agenta/pull/6453" target="_blank" rel="noopener">
+            <div class="oss-top">
+              <span class="oss-repo">Agenta-AI/agenta</span>
+              <span class="oss-pr">#6453</span>
+              <span class="oss-merged">Merged Oct 2026</span>
+            </div>
+            <p>Fixed schemeless Python SDK API URLs to prevent malformed OTLP endpoints; added 7 unit tests.</p>
           </a>
         </div>
       </section>
@@ -705,27 +742,27 @@
         </div>
 
         <div class="activity-total-row">
-          <strong class="activity-total" id="activity-total">&mdash;</strong>
+          <strong class="activity-total" id="activity-total">131</strong>
           <span class="activity-total-label">contributions<br>in the last year</span>
         </div>
 
         <div class="contrib" id="contrib-chart" role="img" aria-label="GitHub contribution graph for the last 12 months"></div>
 
-        <div class="activity-breakdown" id="activity-breakdown" role="img" aria-label="Activity mix over the last year: 88% commits, 11% pull requests, 1% code review, and 0% issues.">
+        <div class="activity-breakdown" id="activity-breakdown" role="img" aria-label="Activity mix over the last year: 87% commits, 13% pull requests, 0% code review, and 0% issues.">
           <div class="mix">
             <span class="mix-label">Commits</span>
-            <span class="mix-value" data-metric="Commits">88%</span>
-            <span class="mix-bar"><b data-bar="Commits" style="width:88%"></b></span>
+            <span class="mix-value" data-metric="Commits">87%</span>
+            <span class="mix-bar"><b data-bar="Commits" style="width:87%"></b></span>
           </div>
           <div class="mix">
             <span class="mix-label">Pull requests</span>
-            <span class="mix-value" data-metric="Pull requests">11%</span>
-            <span class="mix-bar"><b data-bar="Pull requests" style="width:11%"></b></span>
+            <span class="mix-value" data-metric="Pull requests">13%</span>
+            <span class="mix-bar"><b data-bar="Pull requests" style="width:13%"></b></span>
           </div>
           <div class="mix">
             <span class="mix-label">Code review</span>
-            <span class="mix-value" data-metric="Code review">1%</span>
-            <span class="mix-bar"><b data-bar="Code review" style="width:1%"></b></span>
+            <span class="mix-value" data-metric="Code review">0%</span>
+            <span class="mix-bar"><b data-bar="Code review" style="width:0%"></b></span>
           </div>
           <div class="mix">
             <span class="mix-label">Issues</span>
@@ -736,11 +773,11 @@
 
         <div class="radar-panel">
           <span class="micro-label">Activity mix</span>
-          <div class="radar" id="radar" role="img" aria-label="Activity breakdown over the last year: 88% commits, 11% pull requests, 1% code review, and 0% issues.">
-            <div class="radar-label top" data-metric="Code review"><span>1%</span>Code review</div>
-            <div class="radar-label left" data-metric="Commits"><span>88%</span>Commits</div>
+          <div class="radar" id="radar" role="img" aria-label="Activity breakdown over the last year: 87% commits, 13% pull requests, 0% code review, and 0% issues.">
+            <div class="radar-label top" data-metric="Code review"><span>0%</span>Code review</div>
+            <div class="radar-label left" data-metric="Commits"><span>87%</span>Commits</div>
             <div class="radar-label right" data-metric="Issues"><span>0%</span>Issues</div>
-            <div class="radar-label bottom" data-metric="Pull requests"><span>11%</span>Pull requests</div>
+            <div class="radar-label bottom" data-metric="Pull requests"><span>13%</span>Pull requests</div>
             <svg viewBox="0 0 300 230" aria-hidden="true" focusable="false">
               <g class="radar-grid">
                 <polygon points="150,97.5 172.5,115 150,132.5 127.5,115" vector-effect="non-scaling-stroke"/>
@@ -754,12 +791,12 @@
                 <line x1="150" y1="115" x2="150" y2="45" vector-effect="non-scaling-stroke"/>
                 <line x1="150" y1="115" x2="150" y2="185" vector-effect="non-scaling-stroke"/>
               </g>
-              <polygon class="radar-area" id="radar-area" points="150,114.3 150,115 150,122.7 70.8,115" vector-effect="non-scaling-stroke"/>
+              <polygon class="radar-area" id="radar-area" points="150,115 150,115 150,124.1 71.7,115" vector-effect="non-scaling-stroke"/>
               <g class="radar-points">
-                <circle data-metric="Commits" cx="70.8" cy="115" r="2.6"/>
-                <circle data-metric="Code review" cx="150" cy="114.3" r="2.6"/>
+                <circle data-metric="Commits" cx="71.7" cy="115" r="2.6"/>
+                <circle data-metric="Code review" cx="150" cy="115" r="2.6"/>
                 <circle data-metric="Issues" cx="150" cy="115" r="2.6"/>
-                <circle data-metric="Pull requests" cx="150" cy="122.7" r="2.6"/>
+                <circle data-metric="Pull requests" cx="150" cy="124.1" r="2.6"/>
               </g>
             </svg>
           </div>
@@ -769,16 +806,16 @@
           <a class="org" href="https://github.com/Agenta-AI" target="_blank" rel="noopener">
             <img src="https://avatars.githubusercontent.com/u/127993667?s=40&amp;v=4" alt="" width="18" height="18" loading="lazy">@Agenta-AI
           </a>
+          <a class="org" href="https://github.com/desplega-ai" target="_blank" rel="noopener">
+            <img src="https://avatars.githubusercontent.com/u/224128078?s=40&amp;v=4" alt="" width="18" height="18" loading="lazy">@desplega-ai
+          </a>
           <a class="org" href="https://github.com/21072026" target="_blank" rel="noopener">
             <img src="https://avatars.githubusercontent.com/u/307296943?s=40&amp;v=4" alt="" width="18" height="18" loading="lazy">@21072026
-          </a>
-          <a class="org" href="https://github.com/faker-js" target="_blank" rel="noopener">
-            <img src="https://avatars.githubusercontent.com/u/97165289?s=40&amp;v=4" alt="" width="18" height="18" loading="lazy">@faker-js
           </a>
           <a class="org org-more" href="https://github.com/itsgintoki?tab=overview" target="_blank" rel="noopener">More</a>
         </nav>
 
-        <p class="activity-contrib" id="activity-contrib-text">Contributed to <a href="https://github.com/itsgintoki/url-shortener" target="_blank" rel="noopener">itsgintoki/url-shortener</a>, <a href="https://github.com/itsgintoki/gatekeep" target="_blank" rel="noopener">itsgintoki/gatekeep</a>, <a href="https://github.com/itsgintoki/web" target="_blank" rel="noopener">itsgintoki/web</a> and 11 other repositories.</p>
+        <p class="activity-contrib" id="activity-contrib-text">Contributed to <a href="https://github.com/itsgintoki/idleforge" target="_blank" rel="noopener">itsgintoki/idleforge</a>, <a href="https://github.com/itsgintoki/url-shortener" target="_blank" rel="noopener">itsgintoki/url-shortener</a>, <a href="https://github.com/itsgintoki/gatekeep" target="_blank" rel="noopener">itsgintoki/gatekeep</a> and 14 other repositories.</p>
       </section>
 
       <section class="contact-block" id="contact" aria-labelledby="contact-heading">
@@ -789,12 +826,13 @@
           </div>
         </div>
 
-        <p class="contact-lead">Currently building <a href="work/holdfast.html">HoldFast</a>. Open to backend/systems roles and interesting problems.</p>
+        <p class="contact-lead">Currently building <a href="work/llm-gateway.html">LLM Gateway</a>. Open to AI infrastructure, backend, and systems roles.</p>
         <a class="email-link" href="mailto:sinhaankit12jan@gmail.com">sinhaankit12jan@gmail.com <span aria-hidden="true">&#8599;</span></a>
+        <p class="contact-meta">New Delhi, India <span aria-hidden="true">/</span> <a href="tel:+919971745319">+91 99717 45319</a></p>
         <div class="contact-actions">
           <a href="https://github.com/itsgintoki" target="_blank" rel="me noopener">GitHub <span class="arrow" aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>
           <a href="https://www.linkedin.com/in/ank1202/" target="_blank" rel="me noopener">LinkedIn <span class="arrow" aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>
-          <a id="resume-trigger" href="resume.pdf?v=2" target="_blank" rel="noopener" aria-haspopup="dialog" aria-controls="resume-modal" aria-expanded="false">Resume <span class="arrow" aria-hidden="true">&#8599;</span><span class="sr-only"> (opens resume preview)</span></a>
+          <a id="resume-trigger" href="resume.pdf?v=3" target="_blank" rel="noopener" aria-haspopup="dialog" aria-controls="resume-modal" aria-expanded="false">Resume <span class="arrow" aria-hidden="true">&#8599;</span><span class="sr-only"> (opens resume preview)</span></a>
         </div>
       </section>
     </div>
@@ -804,7 +842,7 @@
     <div class="footer-left">
       <span>&copy; 2026 Ankit Sinha</span>
       <span class="sep" aria-hidden="true">/</span>
-      <span>Backend developer</span>
+      <span>AI infrastructure / backend engineer</span>
     </div>
     <div class="footer-right">
       <a href="#top">Back to top <span aria-hidden="true">&uarr;</span></a>
@@ -901,18 +939,18 @@
     <div class="resume-head">
       <div>
         <h2 class="resume-title" id="resume-title">Resume</h2>
-        <p class="resume-sub" id="resume-sub">Ankit Sinha &middot; Backend Developer</p>
+        <p class="resume-sub" id="resume-sub">Ankit Sinha &middot; AI Infrastructure / Backend Engineer</p>
       </div>
       <button class="resume-close" type="button" aria-label="Close resume">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="m4 4 8 8M12 4l-8 8"/></svg>
       </button>
     </div>
-    <a class="resume-preview" href="resume.pdf?v=2" target="_blank" rel="noopener" aria-label="Open Ankit Sinha's resume PDF in a new tab">
-      <img src="resume-preview.jpg?v=2" alt="Preview of Ankit Sinha's resume" width="910" height="1287" loading="lazy">
+    <a class="resume-preview" href="resume.pdf?v=3" target="_blank" rel="noopener" aria-label="Open Ankit Sinha's resume PDF in a new tab">
+      <img src="resume-preview.jpg?v=3" alt="Preview of Ankit Sinha's resume" width="910" height="1287" loading="lazy">
     </a>
     <div class="resume-actions">
-      <a class="resume-action primary" href="resume.pdf?v=2" download="Ankit-Sinha-Resume.pdf">Download PDF</a>
-      <a class="resume-action" href="resume.pdf?v=2" target="_blank" rel="noopener">Open PDF <span aria-hidden="true">&#8599;</span></a>
+      <a class="resume-action primary" href="resume.pdf?v=3" download="Ankit-Sinha-Resume.pdf">Download PDF</a>
+      <a class="resume-action" href="resume.pdf?v=3" target="_blank" rel="noopener">Open PDF <span aria-hidden="true">&#8599;</span></a>
     </div>
   </div>
 </div>
@@ -1066,13 +1104,13 @@
     if (!chart || !totalEl) return;
 
     try {
-      const response = await fetch('https://github-contributions-api.jogruber.de/v4/itsgintoki?y=last');
+      const response = await fetch('activity.json', { cache: 'no-store' });
       if (!response.ok) throw new Error('Request failed');
 
       const data = await response.json();
       const days = data.contributions;
-      const total = data.total && data.total.lastYear;
-      if (!Array.isArray(days) || !days.length || typeof total !== 'number') {
+      const total = data.totalContributions;
+      if (!Array.isArray(days) || !days.length || !Number.isFinite(total) || total < 0) {
         throw new Error('Unexpected response');
       }
 
@@ -1212,18 +1250,24 @@
   "@context": "https://schema.org",
   "@type": "Person",
   "name": "Ankit Sinha",
-  "jobTitle": "Backend Developer",
+  "jobTitle": "AI Infrastructure / Backend Engineer",
   "email": "sinhaankit12jan@gmail.com",
+  "telephone": "+91-9971745319",
   "url": "https://itsgintoki.github.io/web/",
   "sameAs": [
     "https://github.com/itsgintoki",
     "https://www.linkedin.com/in/ank1202/"
   ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "New Delhi",
+    "addressCountry": "IN"
+  },
   "alumniOf": {
     "@type": "CollegeOrUniversity",
     "name": "Maharaja Agrasen Institute of Technology"
   },
-  "knowsAbout": ["TypeScript", "Node.js", "PostgreSQL", "Redis", "REST APIs"]
+  "knowsAbout": ["LLM gateways", "Provider fallback", "Usage metering", "MCP servers", "TypeScript", "Node.js", "PostgreSQL", "Redis", "REST APIs"]
 }
 </script>
 

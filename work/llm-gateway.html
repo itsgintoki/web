@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM Gateway — Case study — Ankit Sinha</title>
+<meta name="description" content="How LLM Gateway reserves budget before each provider call, settles usage afterward, and falls back from Groq to Gemini without losing financial correctness.">
+<meta name="author" content="Ankit Sinha">
+<meta name="theme-color" content="#0a0a0a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LLM Gateway — Case study">
+<meta property="og:description" content="A budget-controlled LLM API gateway with virtual keys, integer micro-USD reservations, provider fallback, and client-disconnect cancellation.">
+<link rel="canonical" href="https://itsgintoki.github.io/web/work/llm-gateway.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='10'%20fill='%233547f5'/%3E%3Ctext%20x='32'%20y='42'%20text-anchor='middle'%20font-family='monospace'%20font-size='24'%20font-weight='700'%20fill='white'%3EAS%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="case-study.css">
+</head>
+<body>
+<main class="page">
+  <div class="topbar">
+    <a class="back" href="../index.html"><span aria-hidden="true">&larr;</span> Ankit Sinha</a>
+    <a class="site-mark" href="../index.html#projects">All projects</a>
+  </div>
+
+  <header class="case-header">
+    <p class="eyebrow">Selected work / 01</p>
+    <h1>LLM Gateway</h1>
+    <p class="summary">A budget-controlled LLM API gateway with virtual keys, per-key usage accounting, and automatic Groq-to-Gemini fallback. Every request reserves estimated cost before it reaches a provider.</p>
+    <div class="tags">
+      <span class="tag">TypeScript</span>
+      <span class="tag">Node.js</span>
+      <span class="tag">Express</span>
+      <span class="tag">PostgreSQL</span>
+      <span class="tag">Drizzle</span>
+      <span class="tag">Groq</span>
+      <span class="tag">Gemini</span>
+      <span class="tag">Render</span>
+    </div>
+    <div class="links">
+      <a href="https://llm-gateway-17vz.onrender.com/" target="_blank" rel="noopener">Live gateway <span aria-hidden="true">&nearr;</span><span class="sr-only"> (opens in a new tab)</span></a>
+      <a href="https://github.com/itsgintoki/llm-gateway" target="_blank" rel="noopener">Source <span aria-hidden="true">&nearr;</span><span class="sr-only"> (opens in a new tab)</span></a>
+    </div>
+  </header>
+
+  <section class="case-section">
+    <h2>The problem</h2>
+    <p>Putting an LLM behind an API key is easy. Keeping a budget correct while several requests share that key is not. A request can be rejected for lack of funds, then retried; a provider can time out after the caller has already been charged; a second provider can answer while the first request is still settling; and a client can disconnect after the reservation has been taken.</p>
+    <p>LLM Gateway treats the budget as a ledger, not a counter. It reserves an estimated cost in integer micro-USD before the provider call, commits that reservation, and settles the provider-reported usage afterward. Fallback and cancellation are part of the same accounting path.</p>
+  </section>
+
+  <section class="case-section">
+    <h2>How it fits together</h2>
+    <pre class="diagram" aria-label="LLM Gateway architecture diagram">Client
+  │  Bearer virtual key
+  ▼
+Express gateway ─────────────── PostgreSQL
+  │                             ├─ virtual keys and budgets
+  │  1. reserve estimated cost  ├─ usage ledger (µUSD)
+  │     SELECT ... FOR UPDATE    ├─ reservations with TTL
+  │                             └─ settle / release
+  │
+  ├── Groq primary
+  │     └─ 8s timeout, one transient retry
+  │
+  └── Gemini fallback
+        └─ 10s timeout, OpenAI-compatible endpoint</pre>
+    <p>The gateway exposes an OpenAI-compatible <code>/v1/chat/completions</code> endpoint. The caller only ever sees the virtual key; the provider credentials stay server-side.</p>
+  </section>
+
+  <section class="case-section">
+    <h2>Design decisions</h2>
+
+    <div class="decision">
+      <h3>Reserve first, settle after the provider responds</h3>
+      <p>A request cannot spend money it has not reserved. The gateway takes a row lock on the key balance, rejects the request if the worst-case estimate does not fit, and writes the reservation before calling a provider. Provider-reported usage then replaces the estimate with the settled amount.</p>
+    </div>
+
+    <div class="decision">
+      <h3>Transactions never span a network call</h3>
+      <p>The reservation transaction is short: lock, check, write, commit. The LLM call happens outside it, so a slow provider does not hold a database lock or block other requests on the same key. A crash between reservation and settlement leaves a recoverable record instead of a half-open transaction.</p>
+    </div>
+
+    <div class="decision">
+      <h3>Integer micro-USD, not floating-point dollars</h3>
+      <p>All balances and usage amounts are stored as integer micro-USD in PostgreSQL <code>bigint</code>. That removes the rounding drift that shows up when fractional cents are repeatedly added, subtracted, and compared under concurrency.</p>
+    </div>
+
+    <div class="decision">
+      <h3>Fallback is a routing decision, not a blind retry</h3>
+      <p>Transient primary failures get one retry with a short backoff. If Groq stays unavailable, the same reservation is routed to Gemini. A circuit breaker opens after repeated primary failures so later requests skip the timeout penalty. Non-transient client errors fail fast and do not trigger fallback.</p>
+    </div>
+
+    <div class="decision">
+      <h3>Disconnects and abandoned reservations release budget</h3>
+      <p>If the client closes the connection, the gateway aborts the upstream request and releases the reservation. A TTL sweeper reclaims reservations stranded by an ungraceful server exit, so budget is not lost to a process that never got to settle.</p>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <h2>At a glance</h2>
+    <div class="metrics">
+      <div class="metric"><strong>2</strong><span>phase budget<br>reservation</span></div>
+      <div class="metric"><strong>&micro;USD</strong><span>integer money<br>accounting</span></div>
+      <div class="metric"><strong>8s / 10s</strong><span>primary and fallback<br>timeouts</span></div>
+      <div class="metric"><strong>TTL</strong><span>recovery for stranded<br>reservations</span></div>
+    </div>
+    <p class="callout">The important invariant: a request can fail, retry, fall back, or lose its client without letting the budget ledger drift.</p>
+  </section>
+
+  <section class="case-section">
+    <h2>What I'd do next</h2>
+    <ul>
+      <li>Add streaming responses without letting a partial stream escape the reservation and settlement path.</li>
+      <li>Expose per-key latency, fallback rate, and spend as metrics so provider behavior is visible over time.</li>
+      <li>Add a second fallback adapter behind the same interface and test routing under mixed provider failures.</li>
+      <li>Push the concurrency tests beyond the current integration suite and measure contention on the key row.</li>
+    </ul>
+  </section>
+
+  <footer class="case-footer">
+    <a class="back" href="../index.html"><span aria-hidden="true">&larr;</span> Back to portfolio</a>
+    <a class="next" href="gatekeep.html">Next case study: GateKeep <span aria-hidden="true">&rarr;</span></a>
+  </footer>
+</main>
+</body>
+</html>
