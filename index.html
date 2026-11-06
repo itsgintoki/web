@@ -261,7 +261,6 @@
   .state{display:inline-flex;align-items:center;gap:6px;color:var(--green-soft);}
   .state .dot{width:4px;height:4px;box-shadow:0 0 0 2px rgba(86,211,100,.1);}
 
-  .work-art{display:none;}
   .oss-block{margin-top:auto;}
   .oss-block .section-head{margin-bottom:2px;}
   .oss-list{display:flex;flex-direction:column;}
@@ -454,20 +453,7 @@
   @keyframes resume-in{from{opacity:0;transform:translateY(6px) scale(.99);}to{opacity:1;transform:translateY(0) scale(1);}}
 
   @media(min-width:1181px){
-    .work-column{gap:18px;}
-    .oss-block{margin-top:0;}
-    .work-art{
-      position:relative;display:block;flex:0 0 auto;
-      width:min(100%,340px);aspect-ratio:7/5;margin:0 auto;overflow:hidden;
-      border:1px solid var(--line);border-radius:2px;
-      background:#07070a;
-    }
-    .work-art img{
-      display:block;width:100%;height:100%;
-      object-fit:cover;object-position:center;
-      image-rendering:pixelated;
-      filter:saturate(.94) contrast(1.02);
-    }
+    .oss-block{margin-top:auto;}
   }
   @media(max-width:1360px){
     .identity-foot{grid-template-columns:1fr;}
@@ -684,12 +670,6 @@
         </div>
       </section>
 
-      <div class="work-art" aria-hidden="true">
-        <picture>
-          <source srcset="assets/art/evangelion-night.webp" type="image/webp">
-          <img src="assets/art/evangelion-night.jpg" alt="" width="1260" height="900" loading="lazy" decoding="async">
-        </picture>
-      </div>
 
       <section class="oss-block" id="oss" aria-labelledby="oss-heading">
         <div class="section-head">
