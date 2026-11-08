@@ -10,7 +10,7 @@ work/
 ├── llm-gateway.html     case study
 ├── gatekeep.html        case study
 ├── idleforge.html       case study
-├── plumb.html           case study / build plan
+├── tallyman.html        case study / build plan
 └── case-study.css       case-study shell and typography
 assets/
 ├── base.css             design tokens, reset, shared elements
@@ -40,8 +40,8 @@ Opening `index.html` directly with `file://` will block the `activity.json` fetc
 - Activity rendering: `assets/activity.js`. The DOM keeps static fallback values so the page is useful before the snapshot loads.
 - Modal/popover behavior: `assets/ui.js`. The resume modal marks `.site` as `inert` while open.
 - Case studies are standalone HTML pages. Keep their `<head>` meta, canonical URL, and the `.next` chain in sync when adding one.
-- The project cards in `index.html` and the case-study footers should stay in the same order: LLM Gateway → GateKeep → IdleForge → Plumb.
-- Plumb is currently a build plan; `work/plumb.html` documents M1–M12 before code.
+- The project cards in `index.html` and the case-study footers should stay in the same order: LLM Gateway → GateKeep → IdleForge → Tallyman.
+- Tallyman is currently a build plan; `work/tallyman.html` documents M1–M12 before code.
 
 ## Activity snapshot
 
