@@ -43,6 +43,7 @@
     </div>
     <div class="links">
       <a href="https://gatekeep-6lhv.onrender.com" target="_blank" rel="noopener">Live app <span aria-hidden="true">&nearr;</span><span class="sr-only"> (opens in a new tab)</span></a>
+      <a href="https://github.com/itsgintoki/gatekeep#readme" target="_blank" rel="noopener">README <span aria-hidden="true">&nearr;</span><span class="sr-only"> (opens in a new tab)</span></a>
       <a href="https://github.com/itsgintoki/gatekeep" target="_blank" rel="noopener">Source <span aria-hidden="true">&nearr;</span><span class="sr-only"> (opens in a new tab)</span></a>
     </div>
   </header>
@@ -56,17 +57,20 @@
   <section class="case-section">
     <h2>How it fits together</h2>
     <pre class="diagram" aria-label="GateKeep architecture diagram">Browser
-  │  JWT session
+  │  JWT session (short-lived access + rotating refresh)
   ▼
 Express API ─────────────── PostgreSQL
   │                         ├─ note metadata, expiry, read counts
   │                         ├─ access analytics
-  │                         └─ HMAC webhook events
+  │                         ├─ refresh_tokens (hashed, rotating)
+  │                         └─ webhook_deliveries (outbox)
   │
   ├── AES-256-GCM encrypted note content
   │
   ├── Supabase Storage
   │     └─ private files → short-lived signed URLs
+  │
+  ├── five-stage resolve: exists → burn → expiry → passphrase → consume
   │
   └── rate limits</pre>
     <p>The API owns expiry, passphrase verification, read counters, file authorization, and analytics. The browser only receives what it needs for the current request.</p>
@@ -82,7 +86,7 @@ Express API ─────────────── PostgreSQL
 
     <div class="decision">
       <h3>Passphrases are checked before content is returned</h3>
-      <p>The note link is not the secret. The passphrase gate is verified server-side before the note body or file URL is released, so the passphrase never has to live in the URL or in browser state.</p>
+      <p>The note link is not the secret. The passphrase gate is verified server-side before the note body or file URL is released, so the passphrase never has to live in the URL or in browser state. The resolve path checks existence, burn state, and expiry first; decryption happens before the atomic consume, so a wrong passphrase never burns a read.</p>
     </div>
 
     <div class="decision">
@@ -91,8 +95,13 @@ Express API ─────────────── PostgreSQL
     </div>
 
     <div class="decision">
-      <h3>Webhooks are signed and retried</h3>
-      <p>Analytics and notification events are sent with an HMAC signature so receivers can verify the payload. Retries make delivery more resilient without turning every failed request into a manual cleanup task.</p>
+      <h3>Webhooks are signed, retried, and durable</h3>
+      <p>Analytics and notification events are written to a <code>webhook_deliveries</code> outbox in the same transaction and drained by a poller using <code>FOR UPDATE SKIP LOCKED</code>. Deliveries carry an HMAC signature and retry with backoff, so a slow receiver never blocks the note request.</p>
+    </div>
+
+    <div class="decision">
+      <h3>Refresh tokens rotate in one transaction</h3>
+      <p>Access tokens are short-lived httpOnly cookies. Refresh tokens are opaque, stored only as SHA-256 hashes, and rotated in a single transaction; replaying a consumed token revokes the whole family.</p>
     </div>
   </section>
 
@@ -101,7 +110,7 @@ Express API ─────────────── PostgreSQL
     <div class="metrics">
       <div class="metric"><strong>32</strong><span>unit + integration<br>tests</span></div>
       <div class="metric"><strong>AES-256</strong><span>GCM note encryption</span></div>
-      <div class="metric"><strong>3</strong><span>access gates: passphrase, expiry, read limit</span></div>
+      <div class="metric"><strong>5</strong><span>resolve stages, from existence to atomic burn</span></div>
       <div class="metric"><strong>HMAC</strong><span>signed, retried webhooks</span></div>
     </div>
     <p class="callout">The part I care about most: the read limit is enforced by the database, not by UI state.</p>
@@ -113,6 +122,7 @@ Express API ─────────────── PostgreSQL
       <li>Add key rotation and per-note key derivation so encryption keys are not tied to one long-lived application secret.</li>
       <li>Run a background cleanup job for expired note rows and orphaned files.</li>
       <li>Give note owners an audit trail for access events instead of only aggregate analytics.</li>
+      <li>Move the in-memory rate limiter to a shared store for multi-instance deployments.</li>
       <li>Test concurrent reads and file requests more aggressively, including the failure path when storage is slow.</li>
     </ul>
   </section>

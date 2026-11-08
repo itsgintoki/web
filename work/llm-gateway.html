@@ -43,6 +43,7 @@
     </div>
     <div class="links">
       <a href="https://llm-gateway-17vz.onrender.com/" target="_blank" rel="noopener">Live gateway <span aria-hidden="true">&nearr;</span><span class="sr-only"> (opens in a new tab)</span></a>
+      <a href="https://github.com/itsgintoki/llm-gateway#readme" target="_blank" rel="noopener">README <span aria-hidden="true">&nearr;</span><span class="sr-only"> (opens in a new tab)</span></a>
       <a href="https://github.com/itsgintoki/llm-gateway" target="_blank" rel="noopener">Source <span aria-hidden="true">&nearr;</span><span class="sr-only"> (opens in a new tab)</span></a>
     </div>
   </header>
@@ -110,6 +111,7 @@ Express gateway ─────────────── PostgreSQL
       <div class="metric"><strong>TTL</strong><span>recovery for stranded<br>reservations</span></div>
     </div>
     <p class="callout">The important invariant: a request can fail, retry, fall back, or lose its client without letting the budget ledger drift.</p>
+    <p>The 11-test integration suite runs against real PostgreSQL with provider calls mocked; it covers budget exhaustion, the three-way TOCTOU race, fallback routing, usage accounting, and TTL recovery.</p>
   </section>
 
   <section class="case-section">
