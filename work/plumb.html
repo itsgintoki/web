@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tallyman — Case study — Ankit Sinha</title>
-<meta name="description" content="Tallyman is a payment reconciliation and refund-ops service for charged-but-unfulfilled orders: verified webhook ingest, an out-of-order-safe payment state machine, safe refunds, and a double-entry ledger.">
+<title>Plumb — Case study — Ankit Sinha</title>
+<meta name="description" content="Plumb is a payment reconciliation and refund-ops service for charged-but-unfulfilled orders: verified webhook ingest, an out-of-order-safe payment state machine, safe refunds, and a double-entry ledger.">
 <meta name="author" content="Ankit Sinha">
 <meta name="theme-color" content="#0a0a0a">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Tallyman — Case study">
+<meta property="og:title" content="Plumb — Case study">
 <meta property="og:description" content="Payment reconciliation and refund-ops for the charged-but-order-failed case. A 12-milestone build plan.">
-<link rel="canonical" href="https://itsgintoki.github.io/web/work/tallyman.html">
-<meta property="og:url" content="https://itsgintoki.github.io/web/work/tallyman.html">
+<link rel="canonical" href="https://itsgintoki.github.io/web/work/plumb.html">
+<meta property="og:url" content="https://itsgintoki.github.io/web/work/plumb.html">
 <meta property="og:site_name" content="Ankit Sinha">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='10'%20fill='%233547f5'/%3E%3Ctext%20x='32'%20y='42'%20text-anchor='middle'%20font-family='monospace'%20font-size='24'%20font-weight='700'%20fill='white'%3EAS%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,8 +28,8 @@
   </div>
 
   <header class="case-header">
-    <p class="eyebrow">Currently building / 04</p>
-    <h1>Tallyman</h1>
+    <p class="eyebrow">Currently building</p>
+    <h1>Plumb</h1>
     <p class="summary">A payment reconciliation and refund-ops service for the “charged, but the order failed” case. Verified ingest, an out-of-order-safe payment state machine, a reconciler, safe refunds, and a double-entry ledger. The plan is written; M1 is next.</p>
     <div class="tags">
       <span class="tag tag-status">Build plan · M1 next</span>
@@ -46,17 +46,20 @@
       <span class="tag">Vitest</span>
       <span class="tag">OpenTelemetry</span>
     </div>
+    <div class="links">
+      <a href="https://github.com/itsgintoki/plumb" target="_blank" rel="noopener">Repository <span aria-hidden="true">&nearr;</span><span class="sr-only"> (opens in a new tab)</span></a>
+    </div>
   </header>
 
   <section class="case-section">
     <h2>The problem</h2>
     <p>A gateway debits the customer, then the store’s order stays pending or failed. Gateway webhooks arrive late, twice, out of order, or never, and small teams sort it out in spreadsheets. <a href="https://razorpay.com/docs/webhooks/validate-test/" target="_blank" rel="noopener">Razorpay’s webhook docs</a> say duplicate deliveries are expected, tell you to dedupe on the event id, and warn that events may not arrive in order. Every store rebuilds this logic badly.</p>
-    <p>Tallyman records every signal from the gateway and the store, derives the true state of each payment, finds mismatches, auto-resolves the clear ones with safe idempotent actions, and routes the rest to a reviewer. The LLM helps match a customer’s support message to the right payment; it never moves money.</p>
+    <p>Plumb records every signal from the gateway and the store, derives the true state of each payment, finds mismatches, auto-resolves the clear ones with safe idempotent actions, and routes the rest to a reviewer. The LLM helps match a customer’s support message to the right payment; it never moves money.</p>
   </section>
 
   <section class="case-section">
     <h2>How it fits together</h2>
-    <pre class="diagram" aria-label="Tallyman architecture diagram">Store + gateway
+    <pre class="diagram" aria-label="Plumb architecture diagram">Store + gateway
   │  webhooks (raw body) · poller · order updates
   ▼
 Ingest ── HMAC verify · event-id dedupe · append raw
@@ -77,6 +80,44 @@ events (append-only) ──▶ payment state machine
                               │
               Redis projection · MCP · LLM ticket matching</pre>
     <p>Each layer has one job. Ingest trusts nothing until the signature passes. The state machine ignores arrival order. The reconciler compares derived payment state with order state. Resolution actions are locked, capped, and idempotent. The ledger and outbox are written in the same transaction as the action.</p>
+    <div class="state-diagram">
+      <svg viewBox="0 0 720 206" role="img" aria-labelledby="state-title">
+        <title id="state-title">Payment state machine: created, authorized, captured, refunded, with a failed terminal state</title>
+        <defs>
+          <marker id="state-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0 0 10 5 0 10Z" fill="#6b7280"/>
+          </marker>
+        </defs>
+        <g font-family="IBM Plex Mono, monospace" font-size="12" text-anchor="middle">
+          <rect x="10" y="30" width="120" height="44" rx="4" fill="#141412" stroke="#3a3a36"/>
+          <text x="70" y="56" fill="#d7d0c4">created</text>
+          <rect x="180" y="30" width="120" height="44" rx="4" fill="#141412" stroke="#3a3a36"/>
+          <text x="240" y="56" fill="#d7d0c4">authorized</text>
+          <rect x="350" y="30" width="120" height="44" rx="4" fill="#141412" stroke="#8b96ff"/>
+          <text x="410" y="56" fill="#e9e4da">captured</text>
+          <rect x="520" y="30" width="120" height="44" rx="4" fill="#141412" stroke="#8b96ff"/>
+          <text x="580" y="56" fill="#e9e4da">refunded</text>
+          <rect x="180" y="130" width="120" height="44" rx="4" fill="#141412" stroke="#3a3a36"/>
+          <text x="240" y="156" fill="#d7d0c4">failed</text>
+
+          <g stroke="#6b7280" fill="none" marker-end="url(#state-arrow)">
+            <line x1="130" y1="52" x2="174" y2="52"/>
+            <line x1="300" y1="52" x2="344" y2="52"/>
+            <line x1="470" y1="52" x2="514" y2="52"/>
+            <path d="M70 74 70 110 240 110 240 124" stroke-dasharray="4 4"/>
+            <path d="M240 74 240 124" stroke-dasharray="4 4"/>
+          </g>
+          <g fill="#8b96ff" font-size="9" letter-spacing=".08em">
+            <text x="152" y="22">AUTHORIZE</text>
+            <text x="322" y="22">CAPTURE</text>
+            <text x="492" y="22">REFUND</text>
+            <text x="154" y="105">FAIL</text>
+          </g>
+          <text x="360" y="194" fill="#6b7280" font-size="9" letter-spacing=".08em">CAPTURED · FAILED · REFUNDED ARE TERMINAL</text>
+        </g>
+      </svg>
+      <p class="diagram-caption">State only moves forward. A late authorized event after captured is recorded but ignored for state; terminal states are final.</p>
+    </div>
   </section>
 
   <section class="case-section">
@@ -111,7 +152,7 @@ events (append-only) ──▶ payment state machine
 
     <div class="decision">
       <h3>Auto-resolution is locked, capped, and shadow-first</h3>
-      <p>New merchants start in shadow mode, where Tallyman proposes but never acts, until the numbers look right. In auto mode a refund executor locks the payment row, checks the refundable remainder, inserts the refund, and calls the gateway with an idempotency key. Twenty concurrent refund requests for one payment produce exactly one refund; a crash after the gateway call but before commit is recovered by the retry.</p>
+      <p>New merchants start in shadow mode, where Plumb proposes but never acts, until the numbers look right. In auto mode a refund executor locks the payment row, checks the refundable remainder, inserts the refund, and calls the gateway with an idempotency key. Twenty concurrent refund requests for one payment produce exactly one refund; a crash after the gateway call but before commit is recovered by the retry.</p>
     </div>
 
     <div class="decision">
