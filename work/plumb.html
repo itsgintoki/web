@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plumb — Case study — Ankit Sinha</title>
+<meta name="description" content="Plumb is a payment reconciliation and refund-ops service for charged-but-unfulfilled orders: verified webhook ingest, an out-of-order-safe payment state machine, safe refunds, and a double-entry ledger.">
+<meta name="author" content="Ankit Sinha">
+<meta name="theme-color" content="#0a0a0a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Plumb — Case study">
+<meta property="og:description" content="Payment reconciliation and refund-ops for the charged-but-order-failed case. A 12-milestone build plan.">
+<link rel="canonical" href="https://itsgintoki.github.io/web/work/plumb.html">
+<meta property="og:url" content="https://itsgintoki.github.io/web/work/plumb.html">
+<meta property="og:site_name" content="Ankit Sinha">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='10'%20fill='%233547f5'/%3E%3Ctext%20x='32'%20y='42'%20text-anchor='middle'%20font-family='monospace'%20font-size='24'%20font-weight='700'%20fill='white'%3EAS%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/base.css">
+<link rel="stylesheet" href="case-study.css">
+</head>
+<body>
+<main class="page">
+  <div class="topbar">
+    <a class="back" href="../index.html"><span aria-hidden="true">&larr;</span> Ankit Sinha</a>
+    <a class="site-mark" href="../index.html#projects">All projects</a>
+  </div>
+
+  <header class="case-header">
+    <p class="eyebrow">Currently building / 04</p>
+    <h1>Plumb</h1>
+    <p class="summary">A payment reconciliation and refund-ops service for the “charged, but the order failed” case. Verified ingest, an out-of-order-safe payment state machine, a reconciler, safe refunds, and a double-entry ledger. The plan is written; M1 is next.</p>
+    <div class="tags">
+      <span class="tag tag-status">Build plan · M1 next</span>
+      <span class="tag">TypeScript</span>
+      <span class="tag">Node.js</span>
+      <span class="tag">Express</span>
+      <span class="tag">PostgreSQL</span>
+      <span class="tag">Drizzle</span>
+      <span class="tag">Redis</span>
+      <span class="tag">BullMQ</span>
+      <span class="tag">Razorpay</span>
+      <span class="tag">Supabase Storage</span>
+      <span class="tag">Docker</span>
+      <span class="tag">Vitest</span>
+      <span class="tag">OpenTelemetry</span>
+    </div>
+    <div class="links">
+      <a href="https://github.com/itsgintoki/plumb" target="_blank" rel="noopener">Repository <span aria-hidden="true">&nearr;</span><span class="sr-only"> (opens in a new tab)</span></a>
+    </div>
+  </header>
+
+  <section class="case-section">
+    <h2>The problem</h2>
+    <p>A gateway debits the customer, then the store’s order stays pending or failed. Gateway webhooks arrive late, twice, out of order, or never, and small teams sort it out in spreadsheets. <a href="https://razorpay.com/docs/webhooks/validate-test/" target="_blank" rel="noopener">Razorpay’s webhook docs</a> say duplicate deliveries are expected, tell you to dedupe on the event id, and warn that events may not arrive in order. Every store rebuilds this logic badly.</p>
+    <p>Plumb records every signal from the gateway and the store, derives the true state of each payment, finds mismatches, auto-resolves the clear ones with safe idempotent actions, and routes the rest to a reviewer. The LLM helps match a customer’s support message to the right payment; it never moves money.</p>
+  </section>
+
+  <section class="case-section">
+    <h2>How it fits together</h2>
+    <pre class="diagram" aria-label="Plumb architecture diagram">Store + gateway
+  │  webhooks (raw body) · poller · order updates
+  ▼
+Ingest ── HMAC verify · event-id dedupe · append raw
+  ▼
+events (append-only) ──▶ payment state machine
+                              │
+                              ▼
+                         reconciler
+                    ┌─────────┼─────────┐
+                    ▼         ▼         ▼
+                 auto      human      wait
+                 resolve   review     re-check
+                    └─────────┼─────────┘
+                              ▼
+                    ledger + outbox
+                    ├─ double-entry, zero-sum invariants
+                    └─ HMAC-signed webhook to the store
+                              │
+              Redis projection · MCP · LLM ticket matching</pre>
+    <p>Each layer has one job. Ingest trusts nothing until the signature passes. The state machine ignores arrival order. The reconciler compares derived payment state with order state. Resolution actions are locked, capped, and idempotent. The ledger and outbox are written in the same transaction as the action.</p>
+  </section>
+
+  <section class="case-section">
+    <h2>What it catches</h2>
+    <ul>
+      <li><strong>Paid, not fulfilled:</strong> the gateway captured but the order is pending or failed. Auto-mark the order paid when the amounts match.</li>
+      <li><strong>Duplicate capture:</strong> two captures for one order. Auto-refund the extra up to the merchant’s cap; otherwise send it to a human.</li>
+      <li><strong>Fulfilled, not paid:</strong> the order says paid but no capture was seen. Wait out the grace window, then escalate.</li>
+      <li><strong>Amount mismatch:</strong> the captured amount differs from the order total. Always human.</li>
+      <li><strong>Refund stuck:</strong> a refund started but no processed event arrived. Re-poll the gateway; auto-resolve only if confirmed.</li>
+      <li><strong>Orphan payment:</strong> a captured payment with no matching order. The LLM can propose a match from the customer’s message; a human confirms.</li>
+    </ul>
+  </section>
+
+  <section class="case-section">
+    <h2>Design decisions</h2>
+
+    <div class="decision">
+      <h3>Ingest is signature-first and append-only</h3>
+      <p>The webhook route verifies HMAC-SHA256 over the raw request body, never the re-serialized JSON. It dedupes on the gateway event id, appends the untouched event, enqueues a BullMQ job, and returns 200 quickly. A bad signature stores nothing; ten parallel copies of one event produce one row and one job.</p>
+    </div>
+
+    <div class="decision">
+      <h3>Payment state is derived, not overwritten</h3>
+      <p>The state machine derives each payment’s state from its event stream in any arrival order. State only moves forward; a late <code>authorized</code> after <code>captured</code> is recorded but ignored for state. A version column with optimistic checks keeps concurrent derivations honest, and terminal states are final.</p>
+    </div>
+
+    <div class="decision">
+      <h3>Reconciliation is a scan with occurrence records</h3>
+      <p>A scheduled scan compares payment state with order state and writes one mismatch row per payment, type, and scan. The scan window is recorded once, so rerunning the same scan produces no duplicates. Each mismatch type has a seeded scenario and an exactly-right-row test.</p>
+    </div>
+
+    <div class="decision">
+      <h3>Auto-resolution is locked, capped, and shadow-first</h3>
+      <p>New merchants start in shadow mode, where Plumb proposes but never acts, until the numbers look right. In auto mode a refund executor locks the payment row, checks the refundable remainder, inserts the refund, and calls the gateway with an idempotency key. Twenty concurrent refund requests for one payment produce exactly one refund; a crash after the gateway call but before commit is recovered by the retry.</p>
+    </div>
+
+    <div class="decision">
+      <h3>The ledger is double-entry, append-only, and checked</h3>
+      <p>Every capture, refund, and fee becomes balanced ledger entries in the same transaction as the action. A database check rejects a transaction whose entries do not sum to zero. A nightly job compares ledger totals with the gateway’s settlement data; replaying all events must rebuild identical balances.</p>
+    </div>
+
+    <div class="decision">
+      <h3>Outcomes leave through an outbox</h3>
+      <p>Merchant gateway keys and webhook secrets are encrypted with AES-256-GCM and a key id for rotation. The resolution and its outbox row commit together; a relay worker sends HMAC-signed webhooks with backoff and a dead letter. Killing the relay mid-delivery cannot lose a committed resolution, and the store dedupes by id.</p>
+    </div>
+
+    <div class="decision">
+      <h3>Redis is a projection; Postgres is the truth</h3>
+      <p>The ops view of open mismatches is a Redis projection rebuilt from Postgres with a staging key, an atomic swap, and a completeness marker. A stale projection returns 503 rather than a misleading zero. A stdio MCP server exposes <code>find_payment</code>, <code>list_mismatches</code>, and <code>propose_resolution</code> behind the same auth and routing.</p>
+    </div>
+
+    <div class="decision">
+      <h3>The LLM never moves money</h3>
+      <p>A customer message such as “paid ₹1,499 yesterday, no order” goes through the LLM Gateway with one virtual key per merchant. The model extracts amount, time, email, or UTR; a deterministic query fetches candidate payments; the model must cite a candidate id, validated by Zod and a membership check. Routing still decides, and a wrong or invented match escalates to a human.</p>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <h2>At a glance</h2>
+    <div class="metrics">
+      <div class="metric"><strong>12</strong><span>milestones across<br>3 layers</span></div>
+      <div class="metric"><strong>0</strong><span>money moved<br>by the LLM</span></div>
+      <div class="metric"><strong>2</strong><span>modes: shadow<br>then auto</span></div>
+      <div class="metric"><strong>1</strong><span>invariant: every ledger<br>transaction sums to zero</span></div>
+    </div>
+    <p class="callout">The LLM can link a ticket to a candidate payment and explain the timeline. Routing, caps, row locks, and idempotency keys decide what happens to money.</p>
+  </section>
+
+  <section class="case-section">
+    <h2>Build plan</h2>
+    <p>The plan is layered. Only start a layer when the previous one passes its tests; stopping after any layer still leaves something shippable.</p>
+
+    <h3>Layer 1 — core <span class="roadmap-status">M1–M5</span></h3>
+    <div class="roadmap">
+      <div class="roadmap-row next">
+        <span class="roadmap-milestone">M1</span>
+        <div class="roadmap-copy">
+          <h3>Verified ingest + simulator <span class="roadmap-status">Next</span></h3>
+          <p>HMAC-SHA256 over the raw body, event-id dedupe, append-only events, a BullMQ job, and a simulator that duplicates, delays, and reorders signed events.</p>
+        </div>
+      </div>
+      <div class="roadmap-row">
+        <span class="roadmap-milestone">M2</span>
+        <div class="roadmap-copy">
+          <h3>Payment state machine <span class="roadmap-status">Planned</span></h3>
+          <p>Derive created, authorized, captured, failed, and refunded from events in any order. Forward-only state, optimistic version checks, final terminal states.</p>
+        </div>
+      </div>
+      <div class="roadmap-row">
+        <span class="roadmap-milestone">M3</span>
+        <div class="roadmap-copy">
+          <h3>Order sync + reconciler <span class="roadmap-status">Planned</span></h3>
+          <p>Register orders, update their status, and run a scheduled scan that writes mismatch rows by type. One scan window produces one set of rows.</p>
+        </div>
+      </div>
+      <div class="roadmap-row">
+        <span class="roadmap-milestone">M4</span>
+        <div class="roadmap-copy">
+          <h3>Safe resolution actions <span class="roadmap-status">Planned</span></h3>
+          <p>Routing, per-merchant caps, shadow or auto mode, a locked refund executor with an idempotency key, and approval records with TTL.</p>
+        </div>
+      </div>
+      <div class="roadmap-row">
+        <span class="roadmap-milestone">M5</span>
+        <div class="roadmap-copy">
+          <h3>Double-entry ledger <span class="roadmap-status">Planned</span></h3>
+          <p>Balanced capture, refund, and fee entries in the same transaction; an append-only zero-sum check; a nightly gateway settlement comparison.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>Layer 2 — resume coverage <span class="roadmap-status">M6–M9</span></h3>
+    <div class="roadmap">
+      <div class="roadmap-row">
+        <span class="roadmap-milestone">M6</span>
+        <div class="roadmap-copy">
+          <h3>Gateway poller <span class="roadmap-status">Planned</span></h3>
+          <p>Scheduled pulls as poll events, missed-webhook detection, timeouts, transient retries, a circuit breaker, and cancellation on shutdown.</p>
+        </div>
+      </div>
+      <div class="roadmap-row">
+        <span class="roadmap-milestone">M7</span>
+        <div class="roadmap-copy">
+          <h3>Encrypted secrets + outbound webhooks <span class="roadmap-status">Planned</span></h3>
+          <p>AES-256-GCM with a key id, an outbox in the state-change transaction, HMAC-signed delivery with backoff and a dead letter.</p>
+        </div>
+      </div>
+      <div class="roadmap-row">
+        <span class="roadmap-milestone">M8</span>
+        <div class="roadmap-copy">
+          <h3>Reviewer links + evidence <span class="roadmap-status">Planned</span></h3>
+          <p>One-time links with hashed tokens, expiry, and burn-on-read; encrypted evidence served by signed URLs; reviewer and merchant-admin roles.</p>
+        </div>
+      </div>
+      <div class="roadmap-row">
+        <span class="roadmap-milestone">M9</span>
+        <div class="roadmap-copy">
+          <h3>Ops projection + MCP <span class="roadmap-status">Planned</span></h3>
+          <p>Redis projection with a staging key, atomic swap, and completeness marker; stale data returns 503. A stdio MCP server exposes read and propose tools behind auth.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>Layer 3 — something more <span class="roadmap-status">M10–M12</span></h3>
+    <div class="roadmap">
+      <div class="roadmap-row">
+        <span class="roadmap-milestone">M10</span>
+        <div class="roadmap-copy">
+          <h3>Chaos + property-based tests <span class="roadmap-status">Planned</span></h3>
+          <p>Random delay, duplication, reordering, drops, and partial outages; fast-check event streams; invariants checked after every run.</p>
+        </div>
+      </div>
+      <div class="roadmap-row">
+        <span class="roadmap-milestone">M11</span>
+        <div class="roadmap-copy">
+          <h3>LLM ticket matching + evals <span class="roadmap-status">Planned</span></h3>
+          <p>Grounded extraction through the LLM Gateway, candidate-only matching with citation validation, a timeline summary, and 40+ labeled eval cases. The wrong-match rate is the headline number.</p>
+        </div>
+      </div>
+      <div class="roadmap-row">
+        <span class="roadmap-milestone">M12</span>
+        <div class="roadmap-copy">
+          <h3>Observability + delivery <span class="roadmap-status">Planned</span></h3>
+          <p>One OpenTelemetry trace from webhook to resolution, mismatch-age and auto-resolve metrics, Redis-backed per-merchant limits, a load test, and a Razorpay test-mode demo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <h2>Current status</h2>
+    <p>This is a build plan, not a shipped system. The repository is empty; M1 is the next step. The page will be updated as milestones land, and the first honest proof is the M1 duplicate-delivery test: the same event ten times in parallel produces one row and one job.</p>
+    <p>The plan deliberately reuses pieces from the other projects: the LLM Gateway for budgets and fallback, GateKeep for one-time links and signed URLs, and IdleForge for outbox delivery and Redis projections. The new material is webhook-level ingest, an out-of-order-safe payment state machine, a double-entry ledger, and reconciliation.</p>
+  </section>
+
+  <section class="case-section">
+    <h2>What I'd do next</h2>
+    <ul>
+      <li>Build M1 and its simulator; prove duplicated, delayed, and reordered events never create a second row or job.</li>
+      <li>Take M2–M5 in order: state machine, reconciler, locked refunds, then the ledger invariant.</li>
+      <li>After M4, run shadow mode against one small store’s test data before enabling auto-resolution. Real mismatches will teach more than seeded ones.</li>
+      <li>Do Layer 2 in order: M6–M8 first, then the projection and MCP server.</li>
+      <li>Do M10 before M11; the LLM headline only works if the property tests and eval set are credible. Finish with M12.</li>
+    </ul>
+  </section>
+
+  <footer class="case-footer">
+    <a class="back" href="../index.html"><span aria-hidden="true">&larr;</span> Back to portfolio</a>
+    <a class="next" href="llm-gateway.html">Next case study: LLM Gateway <span aria-hidden="true">&rarr;</span></a>
+  </footer>
+</main>
+</body>
+</html>
