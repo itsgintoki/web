@@ -2,6 +2,8 @@
     color-scheme:dark;
     --bg:#0a0a0a;
     --bg-soft:#11110f;
+    --surface:#141412;
+    --surface-hover:#1a1a17;
     --text:#f2efe8;
     --muted:#b8b2a8;
     --dim:#8a857d;
@@ -16,6 +18,21 @@
     --contrib-2:#2a3a9e;
     --contrib-3:#3547f5;
     --contrib-4:#7f8bff;
+    --brand-typescript:#3178c6;
+    --brand-node:#5fa04e;
+    --brand-postgres:#4169e1;
+    --brand-redis:#ff4438;
+    --brand-drizzle:#c5f74f;
+    --brand-docker:#2496ed;
+    --brand-git:#f05032;
+    --brand-github:#f0f0f0;
+    --diagram-node:#3a3a36;
+    --diagram-arrow:#6b7280;
+    --diagram-text:#d7d0c4;
+    --diagram-text-strong:#e9e4da;
+    --diagram-accent:#8b96ff;
+    --diagram-surface:#10100e;
+    --diagram-code:#c9c2b8;
     --sans:'Inter', sans-serif;
     --display:'Space Grotesk', 'Inter', sans-serif;
     --mono:'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -31,7 +48,7 @@
     overflow-x:hidden;
   }
   body.modal-open{overflow:hidden;}
-  ::selection{background:rgba(53,71,245,.45);color:#fff;}
+  ::selection{background:rgba(53,71,245,.45);color:var(--text);}
   a{color:inherit;}
   button{font:inherit;}
   img{max-width:100%;}
@@ -42,3 +59,15 @@
   }
 
 :root{--pill-bg:#11110f;--pill-border:#2b2925;}
+
+/* Brand marks in the stack popover keep their official colors. */
+.brand-typescript{fill:var(--brand-typescript);}
+.brand-node{fill:var(--brand-node);}
+.brand-postgres{stroke:var(--brand-postgres);}
+.brand-redis{fill:var(--brand-redis);}
+.brand-redis-line{stroke:var(--brand-redis);}
+.brand-drizzle{stroke:var(--brand-drizzle);}
+.brand-docker{fill:var(--brand-docker);}
+.brand-git{stroke:var(--brand-git);}
+.brand-github{fill:var(--brand-github);}
+.brand-on-accent{fill:var(--text);}

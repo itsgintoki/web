@@ -85,35 +85,35 @@ events (append-only) ──▶ payment state machine
         <title id="state-title">Payment state machine: created, authorized, captured, refunded, with a failed terminal state</title>
         <defs>
           <marker id="state-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M0 0 10 5 0 10Z" fill="#6b7280"/>
+            <path d="M0 0 10 5 0 10Z" class="diagram-edge-head"/>
           </marker>
         </defs>
         <g font-family="IBM Plex Mono, monospace" font-size="12" text-anchor="middle">
-          <rect x="10" y="30" width="120" height="44" rx="4" fill="#141412" stroke="#3a3a36"/>
-          <text x="70" y="56" fill="#d7d0c4">created</text>
-          <rect x="180" y="30" width="120" height="44" rx="4" fill="#141412" stroke="#3a3a36"/>
-          <text x="240" y="56" fill="#d7d0c4">authorized</text>
-          <rect x="350" y="30" width="120" height="44" rx="4" fill="#141412" stroke="#8b96ff"/>
-          <text x="410" y="56" fill="#e9e4da">captured</text>
-          <rect x="520" y="30" width="120" height="44" rx="4" fill="#141412" stroke="#8b96ff"/>
-          <text x="580" y="56" fill="#e9e4da">refunded</text>
-          <rect x="180" y="130" width="120" height="44" rx="4" fill="#141412" stroke="#3a3a36"/>
-          <text x="240" y="156" fill="#d7d0c4">failed</text>
+          <rect x="10" y="30" width="120" height="44" rx="4" class="diagram-node"/>
+          <text x="70" y="56" class="diagram-label">created</text>
+          <rect x="180" y="30" width="120" height="44" rx="4" class="diagram-node"/>
+          <text x="240" y="56" class="diagram-label">authorized</text>
+          <rect x="350" y="30" width="120" height="44" rx="4" class="diagram-node-active"/>
+          <text x="410" y="56" class="diagram-label-strong">captured</text>
+          <rect x="520" y="30" width="120" height="44" rx="4" class="diagram-node-active"/>
+          <text x="580" y="56" class="diagram-label-strong">refunded</text>
+          <rect x="180" y="130" width="120" height="44" rx="4" class="diagram-node"/>
+          <text x="240" y="156" class="diagram-label">failed</text>
 
-          <g stroke="#6b7280" fill="none" marker-end="url(#state-arrow)">
+          <g class="diagram-edge" fill="none" marker-end="url(#state-arrow)">
             <line x1="130" y1="52" x2="174" y2="52"/>
             <line x1="300" y1="52" x2="344" y2="52"/>
             <line x1="470" y1="52" x2="514" y2="52"/>
             <path d="M70 74 70 110 240 110 240 124" stroke-dasharray="4 4"/>
             <path d="M240 74 240 124" stroke-dasharray="4 4"/>
           </g>
-          <g fill="#8b96ff" font-size="9" letter-spacing=".08em">
+          <g class="diagram-callout" font-size="9" letter-spacing=".08em">
             <text x="152" y="22">AUTHORIZE</text>
             <text x="322" y="22">CAPTURE</text>
             <text x="492" y="22">REFUND</text>
             <text x="154" y="105">FAIL</text>
           </g>
-          <text x="360" y="194" fill="#6b7280" font-size="9" letter-spacing=".08em">CAPTURED · FAILED · REFUNDED ARE TERMINAL</text>
+          <text x="360" y="194" class="diagram-edge-head" font-size="9" letter-spacing=".08em">CAPTURED · FAILED · REFUNDED ARE TERMINAL</text>
         </g>
       </svg>
       <p class="diagram-caption">State only moves forward. A late authorized event after captured is recorded but ignored for state; terminal states are final.</p>
