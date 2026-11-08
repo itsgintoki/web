@@ -37,9 +37,11 @@ Opening `index.html` directly with `file://` will block the `activity.json` fetc
 
 - Home layout and components: `assets/site.css` + `index.html`.
 - Shared tokens/reset: `assets/base.css`; case-study pages link it before `work/case-study.css`.
+- Colors live in `assets/base.css` as CSS variables: surfaces (`--bg`, `--bg-soft`, `--surface`, `--surface-hover`), text (`--text`, `--muted`, `--dim`), lines, accent, contribution levels, and two sealed groups: `--brand-*` for the stack-popover logo marks and `--diagram-*` for the Plumb state diagram. Add a token instead of a raw hex.
 - Activity rendering: `assets/activity.js`. The DOM keeps static fallback values so the page is useful before the snapshot loads.
 - Modal/popover behavior: `assets/ui.js`. The resume modal marks `.site` as `inert` while open.
 - Case studies are standalone HTML pages. Keep their `<head>` meta, canonical URL, and the `.next` chain in sync when adding one.
+- Typography: `.eyebrow` on the home page is the only eyebrow treatment. Don't reintroduce `text-transform:uppercase` plus wide tracking on nav, meta, footer, or link labels; use size, weight, and spacing for hierarchy instead.
 - The project cards in `index.html` should stay in the order LLM Gateway → GateKeep → IdleForge. The case-study footers continue that chain with Plumb → LLM Gateway.
 - Plumb is currently a build plan; `work/plumb.html` documents M1–M12 before code. It is featured in “Currently working on,” not Selected work.
 
