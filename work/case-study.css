@@ -1,37 +1,5 @@
-:root{
-  color-scheme:dark;
-  --bg:#0a0a0a;
-  --text:#f2efe8;
-  --dim:#8a857d;
-  --muted:#b8b2a8;
-  --pill-bg:#11110f;
-  --pill-border:#2b2925;
-  --line:#262421;
-  --accent:#3547f5;
-  --accent-soft:#8b96ff;
-  --green:#56d364;
-  --green-soft:#8fd6a9;
-  --sans:'Inter', sans-serif;
-  --display:'Space Grotesk', 'Inter', sans-serif;
-  --mono:'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:var(--sans);
-  font-size:15px;
-  line-height:1.6;
-  -webkit-font-smoothing:antialiased;
-}
-::selection{background:rgba(53,71,245,.45);color:#fff;}
-a{color:inherit;}
-:focus-visible{outline:2px solid var(--accent-soft);outline-offset:3px;}
-.sr-only{
-  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
-  overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
-}
+/* Tokens, reset, and shared elements live in ../assets/base.css. */
+body{line-height:1.6;}
 
 .page{max-width:760px;margin:0 auto;padding:52px 24px 64px;}
 .topbar{

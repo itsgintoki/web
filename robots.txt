@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://itsgintoki.github.io/web/sitemap.xml
