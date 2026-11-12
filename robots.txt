@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://itsgintoki.github.io/web/sitemap.xml
+Sitemap: https://anki.site/sitemap.xml

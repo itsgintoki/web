@@ -1,6 +1,6 @@
 # Ankit Sinha — portfolio
 
-Static portfolio at [itsgintoki.github.io/web](https://itsgintoki.github.io/web/).
+Static portfolio at [anki.site](https://anki.site/).
 
 ## Structure
 
@@ -51,7 +51,7 @@ Opening `index.html` directly with `file://` will block the `activity.json` fetc
 
 ## Deployment
 
-GitHub Pages serves the `main` branch from the repository root. Push to `main`; there is no build or deploy workflow. The site is published under `/web/`, so keep asset paths relative (`assets/...`, `../assets/...`) rather than root-absolute, except in `404.html`, where the request path depth is unknown.
+GitHub Pages serves the `main` branch from the repository root. Push to `main`; there is no build or deploy workflow. The site is published at the apex of `anki.site` via the `CNAME` file, so use root-absolute paths (`/assets/...`) in `404.html` (request depth is unknown) and relative paths elsewhere.
 
 `robots.txt` and `sitemap.xml` use the public URL. `404.html` is picked up automatically by GitHub Pages.
 
