@@ -71,6 +71,40 @@ Express gateway ─────────────── PostgreSQL
   └── Gemini fallback
         └─ 10s timeout, OpenAI-compatible endpoint</pre>
     <p>The gateway exposes an OpenAI-compatible <code>/v1/chat/completions</code> endpoint. The caller only ever sees the virtual key; the provider credentials stay server-side.</p>
+    <div class="state-diagram">
+      <svg viewBox="0 0 720 206" role="img" aria-labelledby="reservation-title">
+        <title id="reservation-title">Reservation state machine: reserved, committed, settled, with a released terminal state</title>
+        <defs>
+          <marker id="reservation-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0 0 10 5 0 10Z" class="diagram-edge-head"/>
+          </marker>
+        </defs>
+        <g font-family="IBM Plex Mono, monospace" font-size="12" text-anchor="middle">
+          <rect x="70" y="30" width="140" height="44" rx="4" class="diagram-node"/>
+          <text x="140" y="56" class="diagram-label">reserved</text>
+          <rect x="290" y="30" width="140" height="44" rx="4" class="diagram-node"/>
+          <text x="360" y="56" class="diagram-label">committed</text>
+          <rect x="510" y="30" width="140" height="44" rx="4" class="diagram-node-active"/>
+          <text x="580" y="56" class="diagram-label-strong">settled</text>
+          <rect x="290" y="130" width="140" height="44" rx="4" class="diagram-node"/>
+          <text x="360" y="156" class="diagram-label">released</text>
+
+          <g class="diagram-edge" fill="none" marker-end="url(#reservation-arrow)">
+            <line x1="210" y1="52" x2="284" y2="52"/>
+            <line x1="430" y1="52" x2="504" y2="52"/>
+            <path d="M140 74 140 110 360 110 360 124" stroke-dasharray="4 4"/>
+            <path d="M360 74 360 124" stroke-dasharray="4 4"/>
+          </g>
+          <g class="diagram-callout" font-size="9" letter-spacing=".08em">
+            <text x="247" y="22">RESERVE</text>
+            <text x="467" y="22">COMMIT</text>
+            <text x="240" y="104">RELEASE</text>
+          </g>
+          <text x="360" y="194" class="diagram-edge-head" font-size="9" letter-spacing=".08em">SETTLED AND RELEASED CLOSE A RESERVATION</text>
+        </g>
+      </svg>
+      <p class="diagram-caption">Reserved money is held, never spent twice: settlement replaces the estimate with provider-reported usage, while a client disconnect or the TTL sweeper releases the hold. Fallback routes the same reservation, so a provider switch never re-reserves.</p>
+    </div>
   </section>
 
   <section class="case-section">
