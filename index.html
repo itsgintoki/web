@@ -218,8 +218,8 @@
   .wrap {
     width: 100%;
     max-width: 35.5rem;
-    margin: auto auto 0;
-    padding: clamp(44px, 9vh, 112px) 24px 0;
+    margin: auto;
+    padding: clamp(32px, 5svh, 64px) 24px clamp(12px, 2svh, 24px);
   }
 
   h1 {
@@ -360,8 +360,8 @@
   }
 
   .whisper {
-    margin-top: 1.1em;
-    min-height: 1.55em;
+    margin-top: 0.85em;
+    min-height: 1.45em;
     font-family: "IBM Plex Mono", ui-monospace, monospace;
     font-size: 11px;
     line-height: 1.45;
@@ -380,7 +380,7 @@
     position: relative;
     width: 100%;
     margin: 0;
-    padding-top: clamp(24px, 4.5vh, 48px);
+    padding-top: 0;
     overflow: hidden;
     user-select: none;
     -webkit-user-select: none;
@@ -392,14 +392,23 @@
     cursor: grabbing;
   }
 
+  .horizon-bar {
+    width: 100%;
+    max-width: 35.5rem;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
   .ride-controls {
-    position: absolute;
-    top: 6px;
-    left: max(16px, env(safe-area-inset-left, 16px));
-    z-index: 5;
     display: inline-flex;
     align-items: center;
     gap: 4px;
+    margin-left: -7px;
+    min-width: 0;
   }
 
   .ride-btn {
@@ -412,7 +421,7 @@
     font-size: 12px;
     line-height: 1.25;
     color: var(--ink-muted);
-    opacity: 0.48;
+    opacity: 0.52;
     cursor: pointer;
     transition: opacity 0.16s ease, color 0.16s ease, background-color 0.16s ease, border-color 0.16s ease;
   }
@@ -433,6 +442,9 @@
     color: var(--ink-muted);
     opacity: 0.45;
     margin-left: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     pointer-events: none;
     transition: opacity 0.6s ease;
   }
@@ -441,10 +453,8 @@
   }
 
   .season-pill {
-    position: absolute;
-    top: 6px;
-    right: max(16px, env(safe-area-inset-right, 16px));
-    z-index: 5;
+    flex: none;
+    margin-right: -8px;
     appearance: none;
     background: transparent;
     border: 0;
@@ -455,7 +465,7 @@
     letter-spacing: 0.06em;
     text-transform: lowercase;
     color: var(--ink-muted);
-    opacity: 0.45;
+    opacity: 0.52;
     cursor: pointer;
     transition: opacity 0.18s ease, color 0.18s ease, background-color 0.18s ease;
   }
@@ -470,7 +480,7 @@
   .horizon svg {
     display: block;
     width: 100%;
-    height: clamp(170px, 25svh, 275px);
+    height: clamp(150px, 24svh, 255px);
   }
 
   .illus-red    { stroke: var(--illus-red); transition: stroke 3s ease; }
@@ -574,8 +584,8 @@
       line-height: 1.64;
     }
     .wrap {
-      margin: auto auto 0;
-      padding: clamp(36px, 6.5vh, 68px) 22px 0;
+      margin: auto;
+      padding: clamp(44px, 6.5svh, 72px) 22px 18px;
     }
     h1 {
       font-size: clamp(1.95rem, 8.6vw, 2.4rem);
@@ -590,11 +600,11 @@
     .whisper {
       display: none;
     }
-    .horizon {
-      padding-top: 22px;
+    .horizon-bar {
+      padding: 0 22px;
     }
     .horizon svg {
-      height: clamp(148px, 24svh, 205px);
+      height: clamp(148px, 23svh, 198px);
     }
   }
 
@@ -604,16 +614,13 @@
       line-height: 1.56;
     }
     .wrap {
-      padding-top: 26px;
+      padding: 38px 22px 12px;
     }
     .meta {
       margin-bottom: 1.05em;
     }
     p {
       margin-top: 0.8em;
-    }
-    .horizon {
-      padding-top: 14px;
     }
     .horizon svg {
       height: 136px;
@@ -692,12 +699,14 @@
 </main>
 
 <figure class="horizon" id="horizon" aria-hidden="true">
-  <div class="ride-controls">
-    <button class="ride-btn" id="ride-prev" type="button" aria-label="Ride backward" title="Hold to ride backward (←)">‹</button>
-    <button class="ride-btn" id="ride-next" type="button" aria-label="Ride forward" title="Hold to ride forward (→)">›</button>
-    <span class="ride-hint" id="ride-hint">hold › / ← → / scroll / drag</span>
+  <div class="horizon-bar">
+    <div class="ride-controls">
+      <button class="ride-btn" id="ride-prev" type="button" aria-label="Ride backward" title="Hold to ride backward (←)">‹</button>
+      <button class="ride-btn" id="ride-next" type="button" aria-label="Ride forward" title="Hold to ride forward (→)">›</button>
+      <span class="ride-hint" id="ride-hint">hold › · scroll · drag</span>
+    </div>
+    <button class="season-pill" id="season-pill" type="button" title="Click to change season (S)">spring</button>
   </div>
-  <button class="season-pill" id="season-pill" type="button" title="Click to change season (S)">spring</button>
 <svg id="horizon-svg" viewBox="0 48 1440 230" preserveAspectRatio="xMidYMax slice" role="presentation">
   <defs>
     <g id="sky-tile">
@@ -737,7 +746,7 @@
     <g class="wx wx-autumn"><g class="leaf-drift"><path class="illus-gold leaf-fill" d="M94.6 69.2Q97.8 73.9 103.4 74.8Q100.2 70.1 94.6 69.2Z"/><path class="illus-amber leaf-fill" d="M229.1 117.3Q233.3 121.2 238.9 120.7Q234.7 116.8 229.1 117.3Z"/><path class="illus-gold leaf-fill" d="M317.9 164.9Q322.5 168.2 328.1 167.1Q323.5 163.8 317.9 164.9Z"/><path class="illus-amber leaf-fill" d="M455.8 92.6Q460.8 95.3 466.2 93.4Q461.2 90.7 455.8 92.6Z"/><path class="illus-gold leaf-fill" d="M545.3 137.8Q549.0 142.1 554.7 142.2Q551.0 137.9 545.3 137.8Z"/><path class="illus-amber leaf-fill" d="M644.1 188.7Q649.8 189.2 653.9 185.3Q648.2 184.8 644.1 188.7Z"/><path class="illus-gold leaf-fill" d="M760.6 116.8Q766.3 115.9 769.4 111.2Q763.7 112.1 760.6 116.8Z"/><path class="illus-amber leaf-fill" d="M858.9 162.2Q864.5 163.2 869.1 159.8Q863.5 158.8 858.9 162.2Z"/><path class="illus-gold leaf-fill" d="M1003.7 85.0Q1006.7 89.9 1012.3 91.0Q1009.3 86.1 1003.7 85.0Z"/><path class="illus-amber leaf-fill" d="M1125.8 132.0Q1128.7 136.9 1134.2 138.0Q1131.3 133.1 1125.8 132.0Z"/><path class="illus-gold leaf-fill" d="M1225.9 183.0Q1231.4 184.3 1236.1 181.0Q1230.6 179.7 1225.9 183.0Z"/><path class="illus-amber leaf-fill" d="M1322.8 105.9Q1325.6 110.9 1331.2 112.1Q1328.4 107.1 1322.8 105.9Z"/></g></g>
     <g class="wx wx-monsoon illus-water" stroke-width=".95"><g class="rain-a"><path d="M40 58l-3.9 15.0"/><path d="M143 144l-3.9 15.0"/><path d="M237 75l-4.4 17.0"/><path d="M344 161l-5.7 22.0"/><path d="M443 92l-3.9 15.0"/><path d="M542 178l-4.2 16.0"/><path d="M643 109l-5.7 22.0"/><path d="M734 195l-4.2 16.0"/><path d="M831 126l-5.2 20.0"/><path d="M933 212l-4.9 19.0"/><path d="M1035 143l-4.7 18.0"/><path d="M1149 74l-3.9 15.0"/><path d="M1245 160l-5.5 21.0"/><path d="M1335 91l-3.9 15.0"/></g><g class="rain-b"><path d="M89 101l-5.2 20.0"/><path d="M201 187l-5.2 20.0"/><path d="M300 118l-4.2 16.0"/><path d="M379 204l-4.2 16.0"/><path d="M487 135l-5.7 22.0"/><path d="M592 66l-3.9 15.0"/><path d="M685 152l-4.4 17.0"/><path d="M802 83l-3.9 15.0"/><path d="M900 169l-3.6 14.0"/><path d="M990 100l-4.7 18.0"/><path d="M1099 186l-5.5 21.0"/><path d="M1199 117l-4.2 16.0"/><path d="M1280 203l-4.9 19.0"/><path d="M1398 134l-4.9 19.0"/></g></g>
     <g id="ripples"></g>
-    <g class="runner" id="runner" transform="translate(532 220)">
+    <g class="runner" id="runner" transform="translate(556 220)">
       <g id="runner-tilt" class="illus-ink" stroke-width="1.5" fill="none">
         <g id="wheel-back" transform="translate(-7 -6)">
           <circle cx="0" cy="0" r="5"/>
@@ -868,7 +877,7 @@
   var kiteTimer = null;
 
   var TILE_W = 2880;
-  var BASE_X = 532;
+  var BASE_X = 556;
   var BASE_Y = 220;
   var worldX = 0;
   var waterX = 0;
