@@ -4,35 +4,52 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Keel — Case study — Ankit Sinha</title>
-<meta name="description" content="Keel is a durable, guard-railed agent harness for refund and support operations: an append-only run loop, idempotent tool execution, hybrid RAG, on-demand skills, guardrails, human approvals, traces, and evals on one request path.">
+<meta name="description" content="Keel is an operations agent for a small online store: reconciliation in plain code, a model that only sees the exceptions it cannot resolve, and a refund path where every action is validated, idempotent, and auditable.">
 <meta name="author" content="Ankit Sinha">
-<meta name="theme-color" content="#0a0a0a">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d0d0c" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Keel — Case study">
-<meta property="og:description" content="A durable, guard-railed agent harness for refund and support operations. An eight-milestone build plan; M0 is done and M1 is next.">
+<meta property="og:description" content="Reconciliation in plain code, a model that sees only the exceptions, and a refund path that moves money exactly once. A design study.">
 <link rel="canonical" href="https://anki.site/work/keel.html">
 <meta property="og:url" content="https://anki.site/work/keel.html">
 <meta property="og:site_name" content="Ankit Sinha">
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='10'%20fill='%233547f5'/%3E%3Ctext%20x='32'%20y='42'%20text-anchor='middle'%20font-family='monospace'%20font-size='24'%20font-weight='700'%20fill='white'%3EAS%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='10'%20fill='%23c84b31'/%3E%3Ctext%20x='32'%20y='42'%20text-anchor='middle'%20font-family='Georgia,serif'%20font-size='26'%20fill='white'%3EA%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/base.css">
 <link rel="stylesheet" href="case-study.css">
+<script>
+(function(){try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();
+</script>
+<script src="../assets/theme.js" defer></script>
 </head>
 <body>
+<div class="read-progress" id="read-progress" aria-hidden="true"></div>
 <main class="page">
   <div class="topbar">
     <a class="back" href="../index.html"><span aria-hidden="true">&larr;</span> Ankit Sinha</a>
-    <a class="site-mark" href="../index.html#projects">All projects</a>
+    <div class="topbar-actions">
+      <a class="site-mark" href="../index.html">Portfolio</a>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle color theme" title="Switch light / dark mode (D)">
+        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>
+        </svg>
+        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4m11.4-11.4 1.4-1.4"/>
+        </svg>
+      </button>
+    </div>
   </div>
 
   <header class="case-header">
-    <p class="eyebrow">Currently building</p>
+    <p class="eyebrow">Design study</p>
     <h1>Keel</h1>
-    <p class="summary">A durable, guard-railed agent harness for refund and support operations at small stores. One request path covers the agent loop, tool execution, RAG, skills, guardrails, approvals, traces, and evals. The plan is written; M0 is done.</p>
+    <p class="summary">An operations agent for a small online store: it reconciles settlements against orders, investigates the mismatches code cannot resolve, and issues refunds through a path that moves money exactly once. Reconciliation is plain code. The model is the most expensive and least trustworthy part of the system, so it only ever sees the leftovers.</p>
     <div class="tags">
-      <span class="tag tag-status">Build plan · M0 done</span>
       <span class="tag">TypeScript</span>
       <span class="tag">Node 22</span>
       <span class="tag">PostgreSQL</span>
@@ -41,99 +58,111 @@
       <span class="tag">Zod</span>
       <span class="tag">Vitest</span>
       <span class="tag">Docker</span>
-      <span class="tag">pnpm</span>
-      <span class="tag">Biome</span>
     </div>
   </header>
 
   <section class="case-section">
     <h2>The problem</h2>
-    <p>A support agent gets a message: “Order #4821 arrived damaged. I want a refund.” Answering it well means reading the store’s refund policy, checking the order and the customer’s history, deciding between a refund, a partial refund, a rejection, or an escalation, and then moving money exactly once. A model can do the reading and the proposing. The hard part is everything around it: a process that can die mid-run, a model that can repeat a tool call, customer text that can carry an injection, and a refund that must not happen twice.</p>
-    <p>Most agent demos stop at the loop. Keel treats the loop as one part of a system where every action is validated, persisted, and attributable. The model proposes; policy, row locks, and idempotency keys decide.</p>
+    <p>A store takes payments through a provider. Every night the provider sends a settlement file: what it actually paid out, net of fees, often batched, sometimes late, occasionally duplicated. Some rows match an order exactly. Others differ by a fee, arrive twice, arrive short, arrive for an order that never existed in the store's books, or match two orders that happened to cost the same amount on the same day.</p>
+    <p>That last part is where most reconciliation tools give up and hand everything to a person. It is also where a model is genuinely useful: given one exception, it can read the order, the payment, the customer's history and the refund policy, then propose a resolution with a citation. What it cannot be trusted with is deciding that money should move, and it certainly cannot be trusted to guarantee it moves once.</p>
+    <p>Most agent demos stop at the loop. Keel treats the loop as one component inside a system where every action is validated, persisted, and attributable. The model proposes; policy, row locks, and idempotency keys decide.</p>
   </section>
 
   <section class="case-section">
     <h2>How it fits together</h2>
-    <pre class="diagram" aria-label="Keel architecture diagram">case
-  │  customer message · order note
-  ▼
-API ── create run · approve · resume · trace
-  │
-  ▼
-input guardrails ── injection · PII · scope
-  │
-  ▼
-run loop (durable)
-  │  load state → model.step() → validate → dispatch → persist
-  ├──▶ skills         loaded on demand
-  ├──▶ RAG tool       policy chunks + citations
-  ├──▶ action tools   idempotent, audited
-  └──▶ approval gate  pause · resume · expire
-  │
-  ▼
-output guardrails ── schema · policy · limits
-  │
-  ▼
-trace + eval recorder</pre>
-    <p>Each module has a narrow interface. The model returns a tool call or a final answer and nothing else. The dispatcher owns validation and idempotency. RAG returns chunks with document ids and versions. Skills are markdown bodies loaded by name. Guardrails run before the model, before an action, and after the model’s answer. The approval gate is a persisted state, not a blocking request. The trace records every one of those decisions.</p>
+    <pre class="diagram" aria-label="Keel architecture">settlement files
+      │
+      ▼
+reconcile (plain code) ────▶ matched rows, closed
+      │
+      ▼
+typed exceptions
+      │
+      ▼
+agent loop ◀──▶ read tools · skills · policy chunks
+      │
+      │  proposes: refund + amount + citation
+      ▼
+guardrails      cap · allow-list · dry-run mode
+      │
+      ▼
+approval        auto under cap · human above cap
+      │
+      ▼
+executor        intent key · row lock · ledger
+      │
+      ▼
+fake PSP        flaky: delays · 5xx · duplicates
+
+side path       agent parser ──▶ sealed container
+                no net · ro root · mem cap · timeout
+
+every step ───▶ trace + append-only ledger</pre>
+    <p>Each module has a narrow interface. The model returns a tool call or a final answer and nothing else. The executor owns validation and idempotency. Retrieval returns chunks with document ids and versions. Skills are markdown bodies loaded by name. Guardrails run before the model sees input, before an action executes, and before an answer ships. Approval is a persisted state, not a blocking request.</p>
+
     <div class="state-diagram">
-      <svg viewBox="0 0 720 206" role="img" aria-labelledby="run-state-title">
-        <title id="run-state-title">Run state machine: pending to running, then completed, failed, rejected, or awaiting approval before resuming</title>
+      <svg viewBox="0 0 560 202" role="img" aria-labelledby="refund-state-title">
+        <title id="refund-state-title">Refund intent states: proposed, then approved or rejected; approved becomes executed, then confirmed, or unknown on a provider timeout</title>
         <defs>
-          <marker id="run-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <marker id="refund-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
             <path d="M0 0 10 5 0 10Z" class="diagram-edge-head"/>
           </marker>
         </defs>
-        <g font-family="IBM Plex Mono, monospace" font-size="12" text-anchor="middle">
-          <rect x="10" y="30" width="110" height="44" rx="4" class="diagram-node"/>
-          <text x="65" y="56" class="diagram-label">pending</text>
-          <rect x="160" y="30" width="110" height="44" rx="4" class="diagram-node-active"/>
-          <text x="215" y="56" class="diagram-label-strong">running</text>
-          <rect x="310" y="30" width="150" height="44" rx="4" class="diagram-node-active"/>
-          <text x="385" y="56" class="diagram-label-strong">awaiting approval</text>
-          <rect x="10" y="130" width="110" height="44" rx="4" class="diagram-node"/>
-          <text x="65" y="156" class="diagram-label">completed</text>
-          <rect x="160" y="130" width="110" height="44" rx="4" class="diagram-node"/>
-          <text x="215" y="156" class="diagram-label">failed</text>
-          <rect x="310" y="130" width="150" height="44" rx="4" class="diagram-node"/>
-          <text x="385" y="156" class="diagram-label">rejected</text>
+        <g font-family="IBM Plex Mono, monospace" font-size="13" text-anchor="middle">
+          <rect x="8" y="28" width="106" height="44" rx="4" class="diagram-node"/>
+          <text x="61" y="55" class="diagram-label">proposed</text>
 
-          <g class="diagram-edge" fill="none" marker-end="url(#run-arrow)">
-            <line x1="120" y1="52" x2="154" y2="52"/>
-            <line x1="270" y1="52" x2="304" y2="52"/>
-            <path d="M385 30 385 14 215 14 215 28"/>
-            <path d="M215 74 215 102 65 102 65 124"/>
-            <line x1="215" y1="74" x2="215" y2="124"/>
-            <line x1="385" y1="74" x2="385" y2="124"/>
+          <rect x="152" y="28" width="106" height="44" rx="4" class="diagram-node-active"/>
+          <text x="205" y="55" class="diagram-label-strong">approved</text>
+
+          <rect x="296" y="28" width="106" height="44" rx="4" class="diagram-node-active"/>
+          <text x="349" y="55" class="diagram-label-strong">executed</text>
+
+          <rect x="440" y="28" width="112" height="44" rx="4" class="diagram-node"/>
+          <text x="496" y="55" class="diagram-label">confirmed</text>
+
+          <rect x="152" y="124" width="106" height="44" rx="4" class="diagram-node"/>
+          <text x="205" y="151" class="diagram-label">rejected</text>
+
+          <rect x="296" y="124" width="106" height="44" rx="4" class="diagram-node"/>
+          <text x="349" y="151" class="diagram-label">unknown</text>
+
+          <g class="diagram-edge" fill="none" marker-end="url(#refund-arrow)">
+            <line x1="114" y1="50" x2="146" y2="50"/>
+            <line x1="258" y1="50" x2="290" y2="50"/>
+            <line x1="402" y1="50" x2="434" y2="50"/>
+            <line x1="205" y1="72" x2="205" y2="118"/>
+            <line x1="349" y1="72" x2="349" y2="118"/>
           </g>
-          <g class="diagram-callout" font-size="9" letter-spacing=".08em">
-            <text x="137" y="22">START</text>
-            <text x="287" y="22">MONEY TOOL</text>
-            <text x="300" y="9">APPROVED</text>
-            <text x="140" y="98">FINAL</text>
-            <text x="222" y="102" text-anchor="start">BUDGET · ERROR</text>
-            <text x="392" y="102" text-anchor="start">REJECTED</text>
+
+          <g class="diagram-callout" font-size="9.5" letter-spacing=".06em">
+            <text x="133" y="20">GUARDS</text>
+            <text x="277" y="20">PSP CALL</text>
+            <text x="421" y="20">ACK</text>
+            <text x="213" y="102" text-anchor="start">LIMIT/HUMAN</text>
+            <text x="357" y="102" text-anchor="start">TIMEOUT</text>
           </g>
-          <text x="360" y="194" class="diagram-edge-head" font-size="9" letter-spacing=".08em">EVERY TRANSITION IS PERSISTED BEFORE THE NEXT STEP</text>
+
+          <text x="280" y="190" class="diagram-edge-head" font-size="9.5" letter-spacing=".06em">EVERY TRANSITION PERSISTED · NO MONEY MOVES WITHOUT A KEY</text>
         </g>
       </svg>
-      <p class="diagram-caption">A run is a persisted state machine. Killing the process while a run waits for approval does not lose it; approve or reject resumes from the step log.</p>
+      <p class="diagram-caption">A refund intent is a row, not a call. The state write and the ledger row commit together. A provider timeout lands in <code>unknown</code> — not failed — until the provider is asked what actually happened.</p>
     </div>
-    <p>The step log is the source of truth. The loop loads the last persisted state, asks the model for the next step, validates and dispatches it, then persists the result before moving on. Restarting the process resumes from the log instead of replaying side effects.</p>
   </section>
 
   <section class="case-section">
-    <h2>What it is built to survive</h2>
+    <h2>Cases the design answers</h2>
     <ul>
-      <li><strong>Crash after the refund succeeds, before the result is saved:</strong> resume finds the idempotency key and does not refund again.</li>
-      <li><strong>The model emits the same tool call twice:</strong> the second call is deduped, not executed.</li>
-      <li><strong>The model emits invalid arguments:</strong> the Zod error goes back to the model as a tool result, and the step is still counted.</li>
-      <li><strong>The model loops without progress:</strong> a step, cost, or wall-time budget stops the run and marks it failed with a reason.</li>
-      <li><strong>Injection in a customer message or order note:</strong> the guardrail logs it and the outcome does not change.</li>
-      <li><strong>A refund above the threshold:</strong> the run pauses and no money moves until a human approves.</li>
-      <li><strong>An approval is rejected:</strong> the run ends rejected and drafts a reply without a refund.</li>
-      <li><strong>A policy document changes mid-run:</strong> the run keeps the version it started with.</li>
-      <li><strong>The provider returns 429 or 5xx:</strong> bounded retries with backoff, then a clean failure.</li>
+      <li><strong>The provider times out mid-refund.</strong> The intent is <code>unknown</code>. The executor queries the provider by its own key before it decides anything, because a timeout is not a failure.</li>
+      <li><strong>The same refund is fired ten times at once.</strong> One effect. The key comes from the exception, not from the call, so a retry cannot become a second refund.</li>
+      <li><strong>Ten different refunds race against the daily cap.</strong> The cap holds, because the reservation is an <code>UPDATE ... WHERE total + amount &lt;= cap</code>, not a read followed by a write.</li>
+      <li><strong>The process dies after the money moved.</strong> Restart finds the key and the ledger row and does not refund again.</li>
+      <li><strong>The same key arrives with a different amount.</strong> Rejected, not replayed. Returning a cached success for a different request is how a store loses money and its audit trail at once.</li>
+      <li><strong>Two orders, same amount, same day.</strong> Reported as <code>ambiguous</code> instead of being silently matched, and the matcher is ordered deterministically so the answer does not change between runs.</li>
+      <li><strong>A settlement arrives twice, or out of order.</strong> Deduped on the provider's reference at reconcile time, before any model is involved.</li>
+      <li><strong>Injection in a customer note or a settlement description.</strong> Logged. The guard that stops the action is code, not a sentence in the prompt.</li>
+      <li><strong>A refund above the cap.</strong> Nothing moves until a human approves, and pending requests expire instead of waiting forever.</li>
+      <li><strong>A tool call with invalid arguments.</strong> The Zod error goes back to the model as an observation and the step still counts against the budget.</li>
     </ul>
   </section>
 
@@ -141,146 +170,80 @@ trace + eval recorder</pre>
     <h2>Design decisions</h2>
 
     <div class="decision">
-      <h3>The run loop is durable and event-sourced</h3>
-      <p><code>runs</code> and <code>steps</code> are the truth. Every loop iteration appends one step with a unique <code>(run_id, seq)</code>. The loop stops on a final answer, max steps, max cost, or max wall time. A crash loses nothing but the current step; restarting reads the log and continues from the last persisted state.</p>
+      <h3>Reconciliation is plain code; the model sees only exceptions</h3>
+      <p>Matching keys, date windows, fee handling and duplicate detection are deterministic functions with tests. The agent is invoked once per exception, not once per row. That keeps cost proportional to the number of problems rather than the number of transactions, and it keeps the model out of the part of the system where a wrong answer is silent.</p>
     </div>
 
     <div class="decision">
       <h3>A model turn has exactly two outcomes</h3>
-      <p><code>ModelProvider.step()</code> returns <code>tool_call</code> or <code>final</code>. Streaming, retries, persistence, and tool execution live outside that interface. Errors throw and are handled by the loop. The result is a small state machine where every step can be persisted and the provider can be replaced by a scripted mock.</p>
+      <p><code>ModelProvider.step()</code> returns <code>tool_call</code> or <code>final</code>. Streaming, retries, persistence and tool execution live outside that interface. Tool failures come back as observations, not exceptions. The loop itself never throws: budget exhaustion, timeout or confusion return an outcome — propose, escalate, or fail with a reason — so the state machine has no unreachable branch.</p>
     </div>
 
     <div class="decision">
-      <h3>Exactly-once is a unique key, not a promise</h3>
-      <p>The dispatcher derives an idempotency key from <code>hash(run_id, step_seq, tool, canonical_input)</code> and stores it with the tool call under a unique constraint. The dangerous window is between the external call succeeding and the result being saved. On retry the key is already there, so the stored result is returned instead of moving money again. That makes the guarantee at-least-once delivery plus idempotent effects.</p>
+      <h3>Exactly-once is an intent plus a hash, not a promise</h3>
+      <p>The key is derived from the business fact — <code>refund:&lt;exception_id&gt;</code> — so the model cannot choose it and a retry cannot invent a new one. It is stored with a hash of the canonical payload and a two-phase status. A completed key with a matching hash replays the stored response; a matching key with a different payload is a rejection; a live lock is a conflict the caller retries; an expired lock means the previous attempt died and its outcome must be reconciled with the provider before anything else happens. The result is at-least-once delivery with idempotent effects.</p>
     </div>
 
     <div class="decision">
-      <h3>Guardrails sit outside the model</h3>
-      <p>Input rules catch injection patterns, redact PII before logging, and reject out-of-scope cases. Action rules enforce per-tool scopes, refund limits, and velocity limits. Output rules check the schema, require a policy citation, and reject an answer that contradicts a tool result. Every verdict is written to <code>guardrail_events</code>. Asking the model to “ignore malicious instructions” is not a guardrail.</p>
+      <h3>Limits are enforced inside the write</h3>
+      <p>A refund cap checked with a <code>SELECT sum(...)</code> before an insert is check-then-act: ten concurrent requests read the same total and all pass. The reservation is a single conditional update on a per-day row, in the same transaction as the refund itself, and it is released if execution fails. Counting attempts instead of reserving budget is the conservative alternative — never an over-refund, occasionally a refused legitimate one. Either is defensible; not choosing is the bug.</p>
     </div>
 
     <div class="decision">
       <h3>Approval is a persisted pause</h3>
-      <p>A money tool above the threshold sets the run to <code>awaiting_approval</code> and records the request against the tool call. Approve or reject through the API resumes the loop from the step log; requests expire. Nothing blocks a worker while a human thinks, and a restart does not drop the pending decision.</p>
+      <p>A refund above the cap leaves the intent in <code>proposed</code> and records a pending approval request. Approve moves it to <code>approved</code>; reject ends it; requests expire. Nothing blocks a worker while a human thinks, and restarting the process does not drop the pending decision.</p>
+    </div>
+
+    <div class="decision">
+      <h3>The ledger is append-only by grant</h3>
+      <p>The application role holds <code>SELECT</code> and <code>INSERT</code> on the ledger and nothing else. Append-only as a convention is a comment; append-only as a revoked privilege is an enforcement. Every row carries the actor — agent, human, or system — so a refund can be attributed later without trusting the trace.</p>
     </div>
 
     <div class="decision">
       <h3>Retrieval is hybrid and cited</h3>
-      <p>Policy documents are chunked, embedded into pgvector, and indexed as <code>tsvector</code>. Vector and full-text results are merged with reciprocal rank fusion and reranked. <code>search_policy(query)</code> returns chunks with document ids and versions, and a final answer must cite chunk ids. A pure vector search would miss exact identifiers like “policy 3.2” or an order number.</p>
+      <p>Policy documents are chunked, embedded into pgvector, and indexed as <code>tsvector</code>. Vector and full-text results are merged with reciprocal rank fusion and reranked. <code>search_policy(query)</code> returns chunks with document ids and versions, and a proposal must cite chunk ids. Pure vector search misses exact identifiers like “policy 3.2”; pure keyword search misses paraphrase. A citation that does not exist blocks auto-approval rather than becoming a footnote.</p>
     </div>
 
     <div class="decision">
       <h3>Skills load on demand</h3>
-      <p>Skills are markdown files with a name, a description, and a body. Only names and descriptions sit in the base prompt; <code>load_skill(name)</code> pulls the body in when the case needs it. Three start the set: <code>damaged-item-refund</code>, <code>late-delivery</code>, and <code>suspected-abuse</code>. Prompt size stays flat as the skill library grows, and the run records which skills it loaded.</p>
+      <p>A skill is a markdown file with a name, a description and a body. Only names and descriptions sit in the base prompt; <code>load_skill(name)</code> pulls the body in when the case needs it. Prompt size stays flat as the library grows, and the trace records what was loaded — which is also what makes a skill change reviewable.</p>
     </div>
 
     <div class="decision">
-      <h3>Traces and evals are part of the harness</h3>
-      <p>A trace records steps, tool calls, retrieved chunks, loaded skills, guardrail events, cost, and latency. A stored run can be replayed against the scripted provider using its recorded outputs. The eval suite covers the happy path, policy edges, injection, duplicate requests, crash-resume, and approval timeout. A prompt change has to show its eval delta before it merges.</p>
+      <h3>Agent-written code runs in a sealed container</h3>
+      <p>Settlement files from small providers are inconsistent, so the agent can write a parser. It runs with no network, a read-only root filesystem, dropped capabilities, memory and PID limits, and a wall-clock timeout that kills and reaps the container. The output directory is created and owned by the container's uid, because a bind mount is only writable if the host agrees. Standard output is treated as untrusted data, because a model wrote it and a model will read it.</p>
+    </div>
+
+    <div class="decision">
+      <h3>Failure is injected on purpose</h3>
+      <p>The fake payment provider has a flaky mode: random latency, 5xx responses, duplicate acknowledgements. Idempotency that has only been tested against a cooperative provider has not been tested. This belongs next to the executor, not at the end of the project, because the bugs it finds are in the code it exercises.</p>
     </div>
   </section>
 
   <section class="case-section">
     <h2>At a glance</h2>
     <div class="metrics">
-      <div class="metric"><strong>8</strong><span>milestones<br>M0–M7</span></div>
-      <div class="metric"><strong>1</strong><span>append-only<br>step log</span></div>
-      <div class="metric"><strong>0</strong><span>unsafe actions<br>allowed by evals</span></div>
-      <div class="metric"><strong>30</strong><span>eval cases<br>planned</span></div>
+      <div class="metric"><strong>6</strong><span>exception<br>classes</span></div>
+      <div class="metric"><strong>1</strong><span>path that<br>moves money</span></div>
+      <div class="metric"><strong>0</strong><span>floats in<br>money columns</span></div>
+      <div class="metric"><strong>4</strong><span>loop stop<br>conditions</span></div>
     </div>
-    <p class="callout">The model proposes. Zod, policy, row locks, and idempotency keys decide. A refusal with a complete trace is a successful run.</p>
+    <p class="callout">The model proposes. Policy, row locks and idempotency keys decide. A refusal with a complete trace is a successful run.</p>
   </section>
 
   <section class="case-section">
-    <h2>Build plan</h2>
-    <p>The plan is layered. Each milestone ends with something that runs; only start the next when the previous “done when” is true. Stopping after any layer still leaves a usable piece.</p>
-
-    <h3>Layer 1 — the loop <span class="roadmap-status">M0–M2</span></h3>
-    <div class="roadmap">
-      <div class="roadmap-row done">
-        <span class="roadmap-milestone">M0</span>
-        <div class="roadmap-copy">
-          <h3>Skeleton <span class="roadmap-status">Done</span></h3>
-          <p>Strict TypeScript, Node 22, Drizzle and Postgres, Zod, Vitest, and Biome. The model interface and a ScriptedProvider with a test that feeds a three-step script and gets the expected output.</p>
-        </div>
-      </div>
-      <div class="roadmap-row next">
-        <span class="roadmap-milestone">M1</span>
-        <div class="roadmap-copy">
-          <h3>Durable loop <span class="roadmap-status">Next</span></h3>
-          <p><code>runs</code> and <code>steps</code> tables, an append-only step log, and the loop: load state, call the model, persist the step, validate and dispatch, repeat. Stop conditions and two toy tools. Done when a test kills the loop after step 2, restarts it, and the run completes without redoing steps 1–2.</p>
-        </div>
-      </div>
-      <div class="roadmap-row">
-        <span class="roadmap-milestone">M2</span>
-        <div class="roadmap-copy">
-          <h3>Tool layer <span class="roadmap-status">Planned</span></h3>
-          <p>Registry, Zod input and output validation, error shaping back to the model, retries for transient failures, and the idempotency key with its unique constraint. Real store tools read a mock orders and payments backend. Done when the same <code>issue_refund</code> call, including after a simulated crash between the money moving and the result being saved, refunds once.</p>
-        </div>
-      </div>
-    </div>
-
-    <h3>Layer 2 — context and control <span class="roadmap-status">M3–M5</span></h3>
-    <div class="roadmap">
-      <div class="roadmap-row">
-        <span class="roadmap-milestone">M3</span>
-        <div class="roadmap-copy">
-          <h3>RAG tool <span class="roadmap-status">Planned</span></h3>
-          <p>Chunk and embed policy docs into pgvector with a <code>tsvector</code> column, merge vector and full-text results with reciprocal rank fusion, then rerank. <code>search_policy</code> returns doc and version citations. Done when a 20+ question eval set records its recall@5.</p>
-        </div>
-      </div>
-      <div class="roadmap-row">
-        <span class="roadmap-milestone">M4</span>
-        <div class="roadmap-copy">
-          <h3>Skills <span class="roadmap-status">Planned</span></h3>
-          <p>Markdown skills with frontmatter, an on-demand loader, and three starting skills. Only names and descriptions live in the base prompt, and the run records what it loaded. Done when a damaged-item case loads only its skill and prompt size stays flat as skills are added.</p>
-        </div>
-      </div>
-      <div class="roadmap-row">
-        <span class="roadmap-milestone">M5</span>
-        <div class="roadmap-copy">
-          <h3>Guardrails and approvals <span class="roadmap-status">Planned</span></h3>
-          <p>Input, action, and output rules with every verdict stored. A refund above the threshold pauses the run until an approve or reject call resumes it. Done when an injection hidden in an order note changes nothing and a large refund blocks until approval.</p>
-        </div>
-      </div>
-    </div>
-
-    <h3>Layer 3 — evidence <span class="roadmap-status">M6–M7</span></h3>
-    <div class="roadmap">
-      <div class="roadmap-row">
-        <span class="roadmap-milestone">M6</span>
-        <div class="roadmap-copy">
-          <h3>Traces and evals <span class="roadmap-status">Planned</span></h3>
-          <p>A per-run trace, replay of stored runs against the scripted provider, and an eval suite of about 30 cases. Metrics: decision accuracy, policy-citation rate, unsafe-action rate, and cost per case. Scripted evals run in CI. Done when a prompt or skill change shows its eval delta before merge.</p>
-        </div>
-      </div>
-      <div class="roadmap-row">
-        <span class="roadmap-milestone">M7</span>
-        <div class="roadmap-copy">
-          <h3>Polish <span class="roadmap-status">Optional</span></h3>
-          <p>An approval queue and trace viewer, provider fallback and a circuit breaker behind the model interface, multi-turn follow-ups, and the final write-up with recorded eval results.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="case-section">
-    <h2>Current status</h2>
-    <p>This is a build plan with a working first milestone, not a shipped system. M0 is complete: the repository has strict TypeScript, Drizzle and Postgres scaffolding, Biome, Vitest, and a tested model interface with a scripted provider. There is no API layer and no run loop yet; M1 is next. The repository is not public yet, so this page is the build log for now.</p>
-    <p>The plan deliberately reuses lessons from the other projects: the LLM Gateway for budgets and provider fallback, GateKeep for hashed one-time links and signed URLs, IdleForge for outbox delivery. The new material is the durable agent loop, the guardrail and approval spine, and the eval harness.</p>
-    <p>The first honest proof is M1’s crash-resume test, followed by M2’s exactly-once refund. Nothing on this page claims those exist yet.</p>
-  </section>
-
-  <section class="case-section">
-    <h2>What I’d do next</h2>
+    <h2>What this costs</h2>
     <ul>
-      <li>Build M1 and its kill-after-step-2 test; a resumed run must not redo a completed step or repeat a side effect.</li>
-      <li>Build M2 and prove the crash window: a refund that succeeds before its result is saved still refunds once.</li>
-      <li>Do M3 next and record recall@5 before touching prompts. Without a retrieval number, a policy answer is just a guess.</li>
-      <li>Take M4 and M5 together; skill selection and approval thresholds both need the tool layer to be stable first.</li>
-      <li>Finish with M6. A baseline eval table is the only credible way to claim the agent got better, and M7 stays optional until then.</li>
+      <li><strong>More moving parts than a refund queue.</strong> Reconciliation, guards, a ledger, a trace and a sandbox all have to exist before the first refund is credible. The payoff is that every decision is replayable and attributable, which a queue does not give you.</li>
+      <li><strong>Docker shares the host kernel.</strong> That is acceptable for parser code over a file the store owns. It would not be acceptable for hostile code, where the answer is gVisor or a microVM, and saying so is part of knowing what the sandbox is.</li>
+      <li><strong>Retrieval is only worth it when policy actually changes.</strong> If the refund rule is five sentences, code the five sentences and skip the vector store. The retrieval layer has to earn its place by being wrong less often than a static rule would be.</li>
     </ul>
+  </section>
+
+  <section class="case-section">
+    <h2>Status</h2>
+    <p>This is a written design, not a running system. The repository has no implementation yet and this page does not claim otherwise: no evals have been run, no refund has moved, and the numbers above describe the shape of the design rather than measured results.</p>
+    <p>The work starts with the reconciler, because it is deterministic and can be proved against a fixture of planted mistakes, then moves to the executor, where the concurrency and timeout tests are the first honest evidence that the money path is safe.</p>
   </section>
 
   <footer class="case-footer">

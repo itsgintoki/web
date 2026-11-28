@@ -1,73 +1,114 @@
   :root{
-    color-scheme:dark;
-    --bg:#0a0a0a;
-    --bg-soft:#11110f;
-    --surface:#141412;
-    --surface-hover:#1a1a17;
-    --text:#f2efe8;
-    --muted:#b8b2a8;
-    --dim:#8a857d;
-    --line:#262421;
-    --line-strong:#3b3833;
-    --accent:#3547f5;
-    --accent-soft:#8b96ff;
-    --green:#56d364;
-    --green-soft:#8fd6a9;
-    --contrib-0:#171715;
-    --contrib-1:#1f2a5e;
-    --contrib-2:#2a3a9e;
-    --contrib-3:#3547f5;
-    --contrib-4:#7f8bff;
-    --brand-typescript:#3178c6;
-    --brand-node:#5fa04e;
-    --brand-postgres:#4169e1;
-    --brand-redis:#ff4438;
-    --brand-drizzle:#c5f74f;
-    --brand-docker:#2496ed;
-    --brand-git:#f05032;
-    --brand-github:#f0f0f0;
-    --diagram-node:#3a3a36;
-    --diagram-arrow:#6b7280;
-    --diagram-text:#d7d0c4;
-    --diagram-text-strong:#e9e4da;
-    --diagram-accent:#8b96ff;
-    --diagram-surface:#10100e;
-    --diagram-code:#c9c2b8;
-    --sans:'Inter', sans-serif;
-    --display:'Space Grotesk', 'Inter', sans-serif;
+    color-scheme:light dark;
+    --bg:#ffffff;
+    --bg-soft:#f8f7f4;
+    --surface:#f5f3ee;
+    --surface-hover:#ece9e2;
+    --text:#191918;
+    --muted:#4b4944;
+    --dim:#6f6c65;
+    --line:rgba(25,25,24,0.13);
+    --line-strong:rgba(25,25,24,0.24);
+    --rule:rgba(25,25,24,0.26);
+    --accent:#c84b31;
+    --accent-soft:#b84027;
+    --green:#1f7a3f;
+    --green-soft:#1f7a3f;
+    --pill-bg:rgba(25,25,24,0.035);
+    --pill-border:rgba(25,25,24,0.16);
+    --toggle-hover:rgba(25,25,24,0.06);
+    --diagram-node:#c7c1b5;
+    --diagram-arrow:#747068;
+    --diagram-text:#272623;
+    --diagram-text-strong:#191918;
+    --diagram-accent:#c84b31;
+    --diagram-surface:#faf9f6;
+    --diagram-code:#272623;
+    --sans:'Source Serif 4', ui-serif, Georgia, 'Times New Roman', serif;
+    --display:'Source Serif 4', ui-serif, Georgia, 'Times New Roman', serif;
     --mono:'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      color-scheme:dark;
+      --bg:#0d0d0c;
+      --bg-soft:#141412;
+      --surface:#181815;
+      --surface-hover:#20201c;
+      --text:#ece9e1;
+      --muted:#b7b1a6;
+      --dim:#918b80;
+      --line:rgba(236,233,225,0.13);
+      --line-strong:rgba(236,233,225,0.24);
+      --rule:rgba(236,233,225,0.28);
+      --accent:#e06b50;
+      --accent-soft:#e06b50;
+      --green:#56d364;
+      --green-soft:#8fd6a9;
+      --pill-bg:rgba(236,233,225,0.045);
+      --pill-border:rgba(236,233,225,0.16);
+      --toggle-hover:rgba(236,233,225,0.08);
+      --diagram-node:#3b3833;
+      --diagram-arrow:#878176;
+      --diagram-text:#d7d0c4;
+      --diagram-text-strong:#ece9e1;
+      --diagram-accent:#e06b50;
+      --diagram-surface:#131311;
+      --diagram-code:#d2ccc0;
+    }
+  }
+  :root[data-theme="light"]{
+    color-scheme:light;
+  }
+  :root[data-theme="dark"]{
+    color-scheme:dark;
+    --bg:#0d0d0c;
+    --bg-soft:#141412;
+    --surface:#181815;
+    --surface-hover:#20201c;
+    --text:#ece9e1;
+    --muted:#b7b1a6;
+    --dim:#918b80;
+    --line:rgba(236,233,225,0.13);
+    --line-strong:rgba(236,233,225,0.24);
+    --rule:rgba(236,233,225,0.28);
+    --accent:#e06b50;
+    --accent-soft:#e06b50;
+    --green:#56d364;
+    --green-soft:#8fd6a9;
+    --pill-bg:rgba(236,233,225,0.045);
+    --pill-border:rgba(236,233,225,0.16);
+    --toggle-hover:rgba(236,233,225,0.08);
+    --diagram-node:#3b3833;
+    --diagram-arrow:#878176;
+    --diagram-text:#d7d0c4;
+    --diagram-text-strong:#ece9e1;
+    --diagram-accent:#e06b50;
+    --diagram-surface:#131311;
+    --diagram-code:#d2ccc0;
+  }
   *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
   body{
     background:var(--bg);
     color:var(--text);
     font-family:var(--sans);
-    font-size:15px;
+    font-optical-sizing:auto;
+    font-size:17px;
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
+    transition:background-color .2s ease,color .2s ease;
   }
-  body.modal-open{overflow:hidden;}
-  ::selection{background:rgba(53,71,245,.45);color:var(--text);}
+  ::selection{background:rgba(200,75,49,.2);color:var(--text);}
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]) ::selection{background:rgba(224,107,80,.28);}
+  }
+  :root[data-theme="dark"] ::selection{background:rgba(224,107,80,.28);}
   a{color:inherit;}
   button{font:inherit;}
   img{max-width:100%;}
-  :focus-visible{outline:2px solid var(--accent-soft);outline-offset:3px;}
+  :focus-visible{outline:1.5px solid var(--accent);outline-offset:3px;border-radius:2px;}
   .sr-only{
     position:absolute;width:1px;height:1px;padding:0;margin:-1px;
     overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
   }
-
-:root{--pill-bg:#11110f;--pill-border:#2b2925;}
-
-/* Brand marks in the stack popover keep their official colors. */
-.brand-typescript{fill:var(--brand-typescript);}
-.brand-node{fill:var(--brand-node);}
-.brand-postgres{stroke:var(--brand-postgres);}
-.brand-redis{fill:var(--brand-redis);}
-.brand-redis-line{stroke:var(--brand-redis);}
-.brand-drizzle{stroke:var(--brand-drizzle);}
-.brand-docker{fill:var(--brand-docker);}
-.brand-git{stroke:var(--brand-git);}
-.brand-github{fill:var(--brand-github);}
-.brand-on-accent{fill:var(--text);}
