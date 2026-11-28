@@ -359,6 +359,124 @@
     border-radius: 2px;
   }
 
+  .sections {
+    display: grid;
+    align-items: center;
+  }
+
+  .section {
+    grid-area: 1 / 1;
+    min-width: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translate3d(calc(var(--sec-dir, 1) * 14px), 0, 0);
+    transition: opacity 0.28s ease, transform 0.34s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 0.28s;
+  }
+
+  .section.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translate3d(0, 0, 0);
+    transition: opacity 0.32s ease 0.05s, transform 0.38s cubic-bezier(0.22, 1, 0.36, 1) 0.05s, visibility 0s linear 0s;
+  }
+
+  .sec-kicker {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
+    color: var(--ink-muted);
+    margin: 0 0 0.7em;
+    opacity: 0.78;
+  }
+
+  .sec-title {
+    margin: 0 0 0.75em;
+    font-weight: 400;
+    font-size: clamp(1.65rem, 1.5vw + 1.15rem, 2.2rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  .sec-lead {
+    margin: 0 0 1.25em;
+    color: var(--ink);
+    text-wrap: pretty;
+  }
+
+  .entry-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .entry-row {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .entry-link,
+  .entry-static {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 0.62em 0;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .entry-link:hover .entry-name,
+  .entry-link:focus-visible .entry-name {
+    text-decoration-color: var(--ink);
+  }
+
+  .entry-link:focus-visible {
+    outline: 1.5px solid var(--illus-red);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .entry-main {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.15em 0.65em;
+    min-width: 0;
+  }
+
+  .entry-name {
+    font-weight: 400;
+    white-space: nowrap;
+    text-decoration-line: underline;
+    text-decoration-color: var(--rule);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.24em;
+    transition: text-decoration-color 0.16s ease;
+  }
+
+  .entry-static .entry-name {
+    text-decoration: none;
+  }
+
+  .entry-desc {
+    font-size: 0.87em;
+    color: var(--ink-muted);
+    line-height: 1.45;
+  }
+
+  .entry-tag {
+    flex: none;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    color: var(--ink-muted);
+    opacity: 0.82;
+    white-space: nowrap;
+  }
+
   .whisper {
     margin-top: 0.85em;
     min-height: 1.45em;
@@ -397,13 +515,14 @@
     max-width: 35.5rem;
     margin: 0 auto;
     padding: 0 24px;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
-    gap: 12px;
+    gap: 8px;
   }
 
   .ride-controls {
+    justify-self: start;
     display: inline-flex;
     align-items: center;
     gap: 4px;
@@ -421,7 +540,7 @@
     font-size: 12px;
     line-height: 1.25;
     color: var(--ink-muted);
-    opacity: 0.52;
+    opacity: 0.56;
     cursor: pointer;
     transition: opacity 0.16s ease, color 0.16s ease, background-color 0.16s ease, border-color 0.16s ease;
   }
@@ -452,7 +571,43 @@
     opacity: 0;
   }
 
+  .section-nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    flex: none;
+  }
+
+  .sec-btn {
+    appearance: none;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 2px 7px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    color: var(--ink-muted);
+    opacity: 0.52;
+    cursor: pointer;
+    transition: opacity 0.18s ease, color 0.18s ease, background-color 0.18s ease, border-color 0.18s ease;
+  }
+  .sec-btn:hover,
+  .sec-btn:focus-visible {
+    opacity: 0.95;
+    color: var(--ink);
+    background: var(--toggle-hover);
+    outline: none;
+  }
+  .sec-btn.is-active {
+    opacity: 0.96;
+    color: var(--ink);
+    border-color: var(--badge-border);
+    background: var(--badge-bg);
+  }
+
   .season-pill {
+    justify-self: end;
     flex: none;
     margin-right: -8px;
     appearance: none;
@@ -590,6 +745,9 @@
     h1 {
       font-size: clamp(1.95rem, 8.6vw, 2.4rem);
     }
+    .sec-title {
+      font-size: clamp(1.5rem, 6.4vw, 1.85rem);
+    }
     .meta {
       margin-bottom: 1.35em;
       font-size: 0.85em;
@@ -599,6 +757,20 @@
     }
     .whisper {
       display: none;
+    }
+    .ride-hint {
+      display: none;
+    }
+    .sec-btn {
+      padding: 2px 5px;
+    }
+    .entry-link,
+    .entry-static {
+      padding: 0.54em 0;
+      gap: 10px;
+    }
+    .entry-desc {
+      font-size: 0.84em;
     }
     .horizon-bar {
       padding: 0 22px;
@@ -622,13 +794,23 @@
     p {
       margin-top: 0.8em;
     }
+    .sec-title {
+      margin-bottom: 0.55em;
+    }
+    .sec-lead {
+      margin-bottom: 0.9em;
+    }
+    .entry-link,
+    .entry-static {
+      padding: 0.44em 0;
+    }
     .horizon svg {
       height: 136px;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    body, a, .theme-toggle, .whisper, #sky-layer, .kite, .wx, .petal-drift, .leaf-drift, .rain-a, .rain-b {
+    body, a, .theme-toggle, .whisper, .section, #sky-layer, .kite, .wx, .petal-drift, .leaf-drift, .rain-a, .rain-b {
       transition: none;
       animation: none;
     }
@@ -649,62 +831,190 @@
 </button>
 
 <main class="wrap">
-  <h1>Hey, I'm Ankit.</h1>
+  <div class="sections" id="sections">
+    <section class="section active" data-section="0" aria-label="Intro">
+      <h1>Hey, I'm Ankit.</h1>
 
-  <div class="meta" aria-label="Location: New Delhi, India">
-    <svg class="meta-icon" width="16" height="14" viewBox="0 0 20 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M2 16h16M4 16V5h12v11M3 5h14M6 3h8v2H6z"/>
-      <path d="M8 16v-5a2 2 0 0 1 4 0v5"/>
-    </svg>
-    <span>New Delhi</span>
-    <button class="coords-btn" id="coords-btn" type="button" title="Toggle local time in New Delhi" aria-label="New Delhi coordinates — click to show local IST time">
-      <span class="coords-stack">
-        <span>28.6139° N</span>
-        <span>77.2090° E</span>
-      </span>
-      <span class="ist-time" id="ist-time"></span>
-    </button>
-    <span>India</span>
-    <span class="country-badge">IN</span>
+      <div class="meta" aria-label="Location: New Delhi, India">
+        <svg class="meta-icon" width="16" height="14" viewBox="0 0 20 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M2 16h16M4 16V5h12v11M3 5h14M6 3h8v2H6z"/>
+          <path d="M8 16v-5a2 2 0 0 1 4 0v5"/>
+        </svg>
+        <span>New Delhi</span>
+        <button class="coords-btn" id="coords-btn" type="button" title="Toggle local time in New Delhi" aria-label="New Delhi coordinates — click to show local IST time">
+          <span class="coords-stack">
+            <span>28.6139° N</span>
+            <span>77.2090° E</span>
+          </span>
+          <span class="ist-time" id="ist-time"></span>
+        </button>
+        <span>India</span>
+        <span class="country-badge">IN</span>
+      </div>
+
+      <p>
+        Backend and AI infrastructure engineer studying IT at MAIT. Active on
+        <span class="ilink"><svg class="ilink-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><a href="https://github.com/itsgintoki" target="_blank" rel="me noopener">GitHub</a></span>
+        and <a href="https://www.linkedin.com/in/ank1202/" target="_blank" rel="me noopener">LinkedIn</a>; happy to share my
+        <a href="resume.pdf?v=4" target="_blank" rel="noopener">resume</a>
+        or talk over
+        <span class="ilink"><svg class="ilink-ico accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg><a href="mailto:sinhaankit12jan@gmail.com">email</a></span>.
+      </p>
+
+      <p>
+        Designing
+        <span class="ilink"><svg class="ilink-ico accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3 4 7v5c0 5 3.4 8.5 8 9.8 4.6-1.3 8-4.8 8-9.8V7l-8-4Z"/><path d="m9.5 12.2 1.8 1.8 3.5-3.8"/></svg><a href="work/keel.html" data-note="Keel — deterministic reconciliation + idempotent refund loop (design study)">Keel</a></span>
+        for deterministic settlement reconciliation and safe refunds. Previously built
+        <a href="work/llm-gateway.html" data-note="LLM Gateway — failover proxy, budgets &amp; virtual keys across providers">LLM Gateway</a>,
+        <a href="work/gatekeep.html" data-note="GateKeep — self-destructing secrets, rotating JWTs &amp; signed URLs">GateKeep</a>,
+        and
+        <a href="work/idleforge.html" data-note="IdleForge — idle economy with row locks &amp; outbox ledger">IdleForge</a>.
+      </p>
+
+      <p>
+        Won the GenAI track at Code Kshetra 2.0 and ship upstream PRs to
+        <span class="ilink"><svg class="ilink-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8.2 7.4 10.7 15.8M15.8 7.4 13.3 15.8M8.5 6h7"/></svg><a href="https://github.com/desplega-ai/agent-swarm/pull/2754" target="_blank" rel="noopener">Agent Swarm</a></span>,
+        <a href="https://github.com/faker-js/faker/pull/4020" target="_blank" rel="noopener">faker.js</a>,
+        and
+        <a href="https://github.com/Agenta-AI/agenta/pull/6453" target="_blank" rel="noopener">Agenta</a>.
+      </p>
+
+      <div class="whisper" id="whisper" aria-live="polite"></div>
+    </section>
+
+    <section class="section" data-section="1" aria-label="Selected work" aria-hidden="true">
+      <div class="sec-kicker">02 · selected work</div>
+      <h2 class="sec-title">Systems built to stay correct.</h2>
+      <ul class="entry-list">
+        <li class="entry-row">
+          <a class="entry-link" href="work/keel.html">
+            <span class="entry-main">
+              <span class="entry-name">Keel</span>
+              <span class="entry-desc">deterministic ops &amp; safe refunds</span>
+            </span>
+            <span class="entry-tag">design study</span>
+          </a>
+        </li>
+        <li class="entry-row">
+          <a class="entry-link" href="work/llm-gateway.html">
+            <span class="entry-main">
+              <span class="entry-name">LLM Gateway</span>
+              <span class="entry-desc">micro-USD budgets &amp; failover</span>
+            </span>
+            <span class="entry-tag">proxy</span>
+          </a>
+        </li>
+        <li class="entry-row">
+          <a class="entry-link" href="work/gatekeep.html">
+            <span class="entry-main">
+              <span class="entry-name">GateKeep</span>
+              <span class="entry-desc">expiring secrets &amp; signed URLs</span>
+            </span>
+            <span class="entry-tag">security</span>
+          </a>
+        </li>
+        <li class="entry-row">
+          <a class="entry-link" href="work/idleforge.html">
+            <span class="entry-main">
+              <span class="entry-name">IdleForge</span>
+              <span class="entry-desc">row-locked economy &amp; ledger</span>
+            </span>
+            <span class="entry-tag">backend</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <section class="section" data-section="2" aria-label="Open source" aria-hidden="true">
+      <div class="sec-kicker">03 · open source</div>
+      <h2 class="sec-title">Shipping in public.</h2>
+      <ul class="entry-list">
+        <li class="entry-row">
+          <div class="entry-static">
+            <span class="entry-main">
+              <span class="entry-name">Code Kshetra 2.0</span>
+              <span class="entry-desc">1st place, GenAI track</span>
+            </span>
+            <span class="entry-tag">winner</span>
+          </div>
+        </li>
+        <li class="entry-row">
+          <a class="entry-link" href="https://github.com/desplega-ai/agent-swarm/pull/2754" target="_blank" rel="noopener">
+            <span class="entry-main">
+              <span class="entry-name">Agent Swarm</span>
+              <span class="entry-desc">upstream contribution</span>
+            </span>
+            <span class="entry-tag">PR #2754</span>
+          </a>
+        </li>
+        <li class="entry-row">
+          <a class="entry-link" href="https://github.com/faker-js/faker/pull/4020" target="_blank" rel="noopener">
+            <span class="entry-main">
+              <span class="entry-name">faker.js</span>
+              <span class="entry-desc">upstream contribution</span>
+            </span>
+            <span class="entry-tag">PR #4020</span>
+          </a>
+        </li>
+        <li class="entry-row">
+          <a class="entry-link" href="https://github.com/Agenta-AI/agenta/pull/6453" target="_blank" rel="noopener">
+            <span class="entry-main">
+              <span class="entry-name">Agenta</span>
+              <span class="entry-desc">upstream contribution</span>
+            </span>
+            <span class="entry-tag">PR #6453</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <section class="section" data-section="3" aria-label="Elsewhere" aria-hidden="true">
+      <div class="sec-kicker">04 · elsewhere</div>
+      <h2 class="sec-title">New Delhi, India.</h2>
+      <p class="sec-lead">Studying IT at MAIT. Building reliable backend services, financial state machines, and AI tooling.</p>
+      <ul class="entry-list">
+        <li class="entry-row">
+          <a class="entry-link" href="https://github.com/itsgintoki" target="_blank" rel="me noopener">
+            <span class="entry-main"><span class="entry-name">GitHub</span></span>
+            <span class="entry-tag">@itsgintoki</span>
+          </a>
+        </li>
+        <li class="entry-row">
+          <a class="entry-link" href="https://www.linkedin.com/in/ank1202/" target="_blank" rel="me noopener">
+            <span class="entry-main"><span class="entry-name">LinkedIn</span></span>
+            <span class="entry-tag">in/ank1202</span>
+          </a>
+        </li>
+        <li class="entry-row">
+          <a class="entry-link" href="resume.pdf?v=4" target="_blank" rel="noopener">
+            <span class="entry-main"><span class="entry-name">Resume</span></span>
+            <span class="entry-tag">PDF</span>
+          </a>
+        </li>
+        <li class="entry-row">
+          <a class="entry-link" href="mailto:sinhaankit12jan@gmail.com">
+            <span class="entry-main"><span class="entry-name">Email</span></span>
+            <span class="entry-tag">sinhaankit12jan@gmail.com</span>
+          </a>
+        </li>
+      </ul>
+    </section>
   </div>
-
-  <p>
-    Backend and AI infrastructure engineer studying IT at MAIT. Active on
-    <span class="ilink"><svg class="ilink-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><a href="https://github.com/itsgintoki" target="_blank" rel="me noopener">GitHub</a></span>
-    and <a href="https://www.linkedin.com/in/ank1202/" target="_blank" rel="me noopener">LinkedIn</a>; happy to share my
-    <a href="resume.pdf?v=4" target="_blank" rel="noopener">resume</a>
-    or talk over
-    <span class="ilink"><svg class="ilink-ico accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg><a href="mailto:sinhaankit12jan@gmail.com">email</a></span>.
-  </p>
-
-  <p>
-    Designing
-    <span class="ilink"><svg class="ilink-ico accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3 4 7v5c0 5 3.4 8.5 8 9.8 4.6-1.3 8-4.8 8-9.8V7l-8-4Z"/><path d="m9.5 12.2 1.8 1.8 3.5-3.8"/></svg><a href="work/keel.html" data-note="Keel — deterministic reconciliation + idempotent refund loop (design study)">Keel</a></span>
-    for deterministic settlement reconciliation and safe refunds. Previously built
-    <a href="work/llm-gateway.html" data-note="LLM Gateway — failover proxy, budgets &amp; virtual keys across providers">LLM Gateway</a>,
-    <a href="work/gatekeep.html" data-note="GateKeep — self-destructing secrets, rotating JWTs &amp; signed URLs">GateKeep</a>,
-    and
-    <a href="work/idleforge.html" data-note="IdleForge — idle economy with row locks &amp; outbox ledger">IdleForge</a>.
-  </p>
-
-  <p>
-    Won the GenAI track at Code Kshetra 2.0 and ship upstream PRs to
-    <span class="ilink"><svg class="ilink-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8.2 7.4 10.7 15.8M15.8 7.4 13.3 15.8M8.5 6h7"/></svg><a href="https://github.com/desplega-ai/agent-swarm/pull/2754" target="_blank" rel="noopener">Agent Swarm</a></span>,
-    <a href="https://github.com/faker-js/faker/pull/4020" target="_blank" rel="noopener">faker.js</a>,
-    and
-    <a href="https://github.com/Agenta-AI/agenta/pull/6453" target="_blank" rel="noopener">Agenta</a>.
-  </p>
-
-  <div class="whisper" id="whisper" aria-live="polite"></div>
 </main>
 
-<figure class="horizon" id="horizon" aria-hidden="true">
+<figure class="horizon" id="horizon">
   <div class="horizon-bar">
     <div class="ride-controls">
       <button class="ride-btn" id="ride-prev" type="button" aria-label="Ride backward" title="Hold to ride backward (←)">‹</button>
       <button class="ride-btn" id="ride-next" type="button" aria-label="Ride forward" title="Hold to ride forward (→)">›</button>
-      <span class="ride-hint" id="ride-hint">hold › · scroll · drag</span>
+      <span class="ride-hint" id="ride-hint">ride to explore</span>
     </div>
+    <nav class="section-nav" id="section-nav" aria-label="Sections">
+      <button class="sec-btn is-active" type="button" data-stop="0" aria-current="page" title="Intro (1)">01</button>
+      <button class="sec-btn" type="button" data-stop="1" title="Selected work (2)">02</button>
+      <button class="sec-btn" type="button" data-stop="2" title="Open source (3)">03</button>
+      <button class="sec-btn" type="button" data-stop="3" title="Elsewhere (4)">04</button>
+    </nav>
     <button class="season-pill" id="season-pill" type="button" title="Click to change season (S)">spring</button>
   </div>
 <svg id="horizon-svg" viewBox="0 48 1440 230" preserveAspectRatio="xMidYMax slice" role="presentation">
@@ -832,8 +1142,6 @@
 
   var SEASONS = ["spring", "summer", "monsoon", "autumn"];
   var seasonIdx = 0;
-  var seasonDist = 0;
-  var SEASON_STEP = 640;
   var seasonPill = document.getElementById("season-pill");
 
   function setSeason(idx){
@@ -844,7 +1152,6 @@
   }
 
   function nextSeason(){
-    seasonDist = 0;
     setSeason(seasonIdx + 1);
   }
 
@@ -855,6 +1162,37 @@
     seasonPill.addEventListener("click", function(e){
       e.stopPropagation();
       nextSeason();
+    });
+  }
+
+  var sections = Array.prototype.slice.call(document.querySelectorAll(".section"));
+  var secButtons = Array.prototype.slice.call(document.querySelectorAll(".sec-btn"));
+  var sectionNav = document.getElementById("section-nav");
+  var STOP_STEP = 720;
+  var activeSecIdx = 0;
+
+  function syncSectionState(idx, dir){
+    if(idx === activeSecIdx) return;
+    var moveDir = dir || (idx > activeSecIdx ? 1 : -1);
+    var prev = sections[activeSecIdx];
+    var next = sections[idx];
+    if(prev){
+      prev.style.setProperty("--sec-dir", String(-moveDir));
+      prev.classList.remove("active");
+      prev.setAttribute("aria-hidden", "true");
+    }
+    if(next){
+      next.style.setProperty("--sec-dir", String(moveDir));
+      if(!reducedMotion) void next.offsetWidth;
+      next.classList.add("active");
+      next.removeAttribute("aria-hidden");
+    }
+    activeSecIdx = idx;
+    secButtons.forEach(function(b, bi){
+      var on = bi === idx;
+      b.classList.toggle("is-active", on);
+      if(on) b.setAttribute("aria-current", "page");
+      else b.removeAttribute("aria-current");
     });
   }
 
@@ -889,7 +1227,7 @@
   var jumpVel = 0;
   var lastTime = null;
   var vel = 0;
-  var CRUISE_SPEED = 140;
+  var CRUISE_SPEED = 185;
   var leftDown = false;
   var rightDown = false;
   var btnDir = 0;
@@ -901,11 +1239,17 @@
   var lastPointerTime = 0;
   var dragVel = 0;
   var suppressClick = false;
+  var autoActive = false;
+  var autoTargetX = 0;
   var rainRippleCooldown = 0;
   var rafId = null;
 
   function wrapMod(v, m){
     return ((v % m) + m) % m;
+  }
+
+  function shortestDelta(from, to){
+    return wrapMod(to - from + TILE_W * 0.5, TILE_W) - TILE_W * 0.5;
   }
 
   function setCycling(active){
@@ -943,15 +1287,15 @@
     if(legFront) legFront.setAttribute("d", legPath(crankAngle));
     if(legBack) legBack.setAttribute("d", legPath(crankAngle + Math.PI));
 
-    var stepAbs = Math.abs(dx);
-    totalDist += stepAbs;
+    totalDist += Math.abs(dx);
     if(totalDist > 75 && rideHint && !rideHint.classList.contains("faded")){
       rideHint.classList.add("faded");
     }
-    seasonDist += stepAbs;
-    if(seasonDist >= SEASON_STEP){
-      seasonDist = seasonDist % SEASON_STEP;
-      setSeason(seasonIdx + 1);
+
+    var stopIdx = Math.floor(wrapMod(worldX + STOP_STEP * 0.5, TILE_W) / STOP_STEP);
+    if(stopIdx !== activeSecIdx){
+      syncSectionState(stopIdx, dx >= 0 ? 1 : -1);
+      setSeason(stopIdx);
     }
   }
 
@@ -961,6 +1305,32 @@
       rafId = requestAnimationFrame(tick);
     }
   }
+
+  function goToStop(idx){
+    var targetX = ((idx % sections.length) + sections.length) % sections.length * STOP_STEP;
+    var rem = shortestDelta(worldX, targetX);
+    if(Math.abs(rem) < 1){
+      advanceWorld(rem);
+      autoActive = false;
+      vel = 0;
+      return;
+    }
+    if(reducedMotion){
+      advanceWorld(rem);
+      return;
+    }
+    autoTargetX = targetX;
+    autoActive = true;
+    ensureLoop();
+  }
+
+  secButtons.forEach(function(b){
+    b.addEventListener("click", function(e){
+      e.stopPropagation();
+      var idx = parseInt(b.getAttribute("data-stop"), 10);
+      if(!isNaN(idx)) goToStop(idx);
+    });
+  });
 
   function hop(){
     if(jumpOffset >= -1 && jumpVel === 0){
@@ -993,14 +1363,32 @@
   function renderFrame(dt){
     if(!dragging){
       if(inputDir !== 0){
+        autoActive = false;
         var targetVel = inputDir * CRUISE_SPEED;
         vel += (targetVel - vel) * Math.min(1, 9 * dt);
+        if(vel !== 0) advanceWorld(vel * dt);
+      }else if(autoActive){
+        var rem = shortestDelta(worldX, autoTargetX);
+        if(Math.abs(rem) <= 1.5){
+          advanceWorld(rem);
+          autoActive = false;
+          vel = 0;
+        }else{
+          var aTargetVel = (rem >= 0 ? 1 : -1) * Math.min(380, Math.max(95, Math.abs(rem) * 2.8));
+          vel += (aTargetVel - vel) * Math.min(1, 10 * dt);
+          var step = vel * dt;
+          if(Math.sign(step) === Math.sign(rem) && Math.abs(step) >= Math.abs(rem)){
+            advanceWorld(rem);
+            autoActive = false;
+            vel = 0;
+          }else if(step !== 0){
+            advanceWorld(step);
+          }
+        }
       }else if(vel !== 0){
         vel *= Math.exp(-3.8 * dt);
         if(Math.abs(vel) < 1.2) vel = 0;
-      }
-      if(vel !== 0){
-        advanceWorld(vel * dt);
+        if(vel !== 0) advanceWorld(vel * dt);
       }
     }
 
@@ -1041,7 +1429,7 @@
     var dt = Math.min(0.05, (now - lastTime) / 1000);
     lastTime = now;
     renderFrame(dt);
-    if(inputDir !== 0 || vel !== 0 || dragging || jumpOffset < 0 || jumpVel !== 0){
+    if(autoActive || inputDir !== 0 || vel !== 0 || dragging || jumpOffset < 0 || jumpVel !== 0){
       rafId = requestAnimationFrame(tick);
     }else{
       setCycling(false);
@@ -1053,6 +1441,7 @@
     function startHold(e){
       e.stopPropagation();
       e.preventDefault();
+      autoActive = false;
       btnDir = dir;
       el.classList.add("active");
       syncInputDir();
@@ -1075,7 +1464,8 @@
   if(horizon && svg){
     horizon.addEventListener("pointerdown", function(e){
       if(e.button !== undefined && e.button !== 0 && e.pointerType === "mouse") return;
-      if((seasonPill && seasonPill.contains(e.target)) || (ridePrev && ridePrev.contains(e.target)) || (rideNext && rideNext.contains(e.target))) return;
+      if((seasonPill && seasonPill.contains(e.target)) || (sectionNav && sectionNav.contains(e.target)) || (ridePrev && ridePrev.contains(e.target)) || (rideNext && rideNext.contains(e.target))) return;
+      autoActive = false;
       dragging = true;
       dragMoved = false;
       dragStartX = e.clientX;
@@ -1162,14 +1552,18 @@
     var delta = Math.abs(e.deltaX) >= Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
     if(!delta) return;
     e.preventDefault();
-    vel = Math.max(-360, Math.min(360, vel + delta * 1.45));
+    autoActive = false;
+    vel = Math.max(-360, Math.min(360, vel + delta * 1.6));
     ensureLoop();
   }, { passive: false });
 
   function syncInputDir(){
     var kDir = (rightDown ? 1 : 0) - (leftDown ? 1 : 0);
     inputDir = kDir !== 0 ? kDir : btnDir;
-    if(inputDir !== 0) ensureLoop();
+    if(inputDir !== 0){
+      autoActive = false;
+      ensureLoop();
+    }
   }
 
   document.addEventListener("keydown", function(e){
@@ -1189,6 +1583,8 @@
       toggleTheme();
     }else if(e.key === "s" || e.key === "S"){
       nextSeason();
+    }else if(e.key >= "1" && e.key <= "4"){
+      goToStop(parseInt(e.key, 10) - 1);
     }
   });
 
