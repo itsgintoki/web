@@ -28,6 +28,9 @@
 </script>
 <style>
   :root {
+    --serif: "Source Serif 4", ui-serif, Georgia, "Times New Roman", serif;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
     --paper: #ffffff;
     --ink: #191918;
     --ink-muted: #5a5955;
@@ -265,6 +268,7 @@
   }
 
   * { box-sizing: border-box; }
+  button { font: inherit; }
   html {
     -webkit-text-size-adjust: 100%;
     background: var(--paper);
@@ -279,7 +283,7 @@
     position: relative;
     background: var(--paper);
     color: var(--ink);
-    font-family: "Source Serif 4", ui-serif, Georgia, "Times New Roman", serif;
+    font-family: var(--serif);
     font-optical-sizing: auto;
     font-size: clamp(16.5px, 0.35vw + 15.2px, 18.5px);
     line-height: 1.74;
@@ -303,11 +307,18 @@
     transition-duration: 0.2s;
   }
 
-  .theme-toggle {
+  .top-controls {
     position: fixed;
     top: max(14px, env(safe-area-inset-top, 14px));
     right: max(16px, env(safe-area-inset-right, 16px));
     z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .theme-toggle,
+  .sound-toggle {
     width: 36px;
     height: 36px;
     display: grid;
@@ -321,17 +332,28 @@
     padding: 0;
     transition: background-color 0.16s ease, color 0.16s ease, border-color 0.16s ease, opacity 0.16s ease;
   }
-  .theme-toggle:hover {
+  .theme-toggle:hover,
+  .sound-toggle:hover {
     background: var(--toggle-hover);
     color: var(--ink);
     border-color: var(--badge-border);
     opacity: 1;
   }
-  .theme-toggle:focus-visible {
+  .theme-toggle:focus-visible,
+  .sound-toggle:focus-visible {
     outline: 1.5px solid var(--illus-red);
     outline-offset: 2px;
     opacity: 1;
   }
+  .sound-toggle .icon-sound-on { display: none; }
+  .sound-toggle .icon-sound-off { display: block; }
+  .sound-toggle.is-on {
+    color: var(--illus-red);
+    opacity: 0.96;
+  }
+  .sound-toggle.is-on .icon-sound-on { display: block; }
+  .sound-toggle.is-on .icon-sound-off { display: none; }
+
   .theme-toggle .icon-sun { display: none; }
   .theme-toggle .icon-moon { display: block; }
   @media (prefers-color-scheme: dark) {
@@ -398,8 +420,9 @@
   }
   .coords-btn .ist-time {
     display: none;
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-family: var(--mono);
     font-size: 0.68em;
+    line-height: 1.25;
     color: var(--illus-red);
     letter-spacing: 0.03em;
   }
@@ -409,9 +432,9 @@
   .coords-stack {
     display: inline-flex;
     flex-direction: column;
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: 0.54em;
-    line-height: 1.12;
+    font-family: var(--mono);
+    font-size: 0.56em;
+    line-height: 1.15;
     letter-spacing: 0.03em;
     opacity: 0.82;
   }
@@ -424,7 +447,7 @@
     border-radius: 3px;
     background: var(--badge-bg);
     color: var(--ink-muted);
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-family: var(--mono);
     font-size: 0.64em;
     line-height: 1.25;
     letter-spacing: 0.06em;
@@ -511,7 +534,7 @@
   }
 
   .sec-kicker {
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-family: var(--mono);
     font-size: 11px;
     letter-spacing: 0.08em;
     text-transform: lowercase;
@@ -597,7 +620,7 @@
 
   .entry-tag {
     flex: none;
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-family: var(--mono);
     font-size: 11px;
     letter-spacing: 0.03em;
     color: var(--ink-muted);
@@ -608,7 +631,7 @@
   .whisper {
     margin-top: 0.85em;
     min-height: 1.45em;
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-family: var(--mono);
     font-size: 11px;
     line-height: 1.45;
     letter-spacing: 0.01em;
@@ -665,8 +688,8 @@
     border: 1px solid transparent;
     border-radius: 999px;
     padding: 2px 7px;
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: 12px;
+    font-family: var(--mono);
+    font-size: 11.5px;
     line-height: 1.25;
     color: var(--ink-muted);
     opacity: 0.56;
@@ -684,8 +707,9 @@
   }
 
   .ride-hint {
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: 10px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    line-height: 1.25;
     letter-spacing: 0.04em;
     color: var(--ink-muted);
     opacity: 0.45;
@@ -713,8 +737,9 @@
     border: 1px solid transparent;
     border-radius: 999px;
     padding: 2px 7px;
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: 10px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    line-height: 1.25;
     letter-spacing: 0.05em;
     color: var(--ink-muted);
     opacity: 0.52;
@@ -744,8 +769,9 @@
     border: 0;
     padding: 4px 8px;
     border-radius: 999px;
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: 10px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    line-height: 1.25;
     letter-spacing: 0.06em;
     text-transform: lowercase;
     color: var(--ink-muted);
@@ -939,7 +965,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    body, a, .theme-toggle, .whisper, .section, #sky-layer, .kite, .wx, .petal-drift, .leaf-drift, .rain-a, .rain-b {
+    body, a, .theme-toggle, .sound-toggle, .whisper, .section, #sky-layer, .kite, .wx, .petal-drift, .leaf-drift, .rain-a, .rain-b {
       transition: none;
       animation: none;
     }
@@ -949,15 +975,29 @@
 </head>
 <body>
 
-<button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle color theme" title="Switch light / dark mode">
-  <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>
-  </svg>
-  <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <circle cx="12" cy="12" r="4"/>
-    <path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4m11.4-11.4 1.4-1.4"/>
-  </svg>
-</button>
+<div class="top-controls">
+  <button class="sound-toggle" id="sound-toggle" type="button" aria-label="Toggle ambient sound" aria-pressed="false" title="Toggle seasonal soundscape (M)">
+    <svg class="icon-sound-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <line x1="22" y1="9" x2="16" y2="15"/>
+      <line x1="16" y1="9" x2="22" y2="15"/>
+    </svg>
+    <svg class="icon-sound-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <path d="M15.5 8.5a5 5 0 0 1 0 7"/>
+      <path d="M18.8 5.8a9 9 0 0 1 0 12.4"/>
+    </svg>
+  </button>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle color theme" title="Switch light / dark mode (D)">
+    <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>
+    </svg>
+    <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4m11.4-11.4 1.4-1.4"/>
+    </svg>
+  </button>
+</div>
 
 <main class="wrap">
   <div class="sections" id="sections">
@@ -1277,12 +1317,328 @@
   var SEASONS = ["spring", "summer", "monsoon", "autumn"];
   var seasonIdx = 0;
   var seasonPill = document.getElementById("season-pill");
+  var soundBtn = document.getElementById("sound-toggle");
+
+  var SEASON_AUDIO = {
+    spring: {
+      pad: [146.83, 220.00],
+      notes: [293.66, 329.63, 369.99, 440.00, 493.88, 587.33],
+      filterType: "lowpass",
+      cutoff: 340,
+      q: 0.5,
+      airGain: 0.022,
+      padGain: 0.022,
+      chimeMin: 2400,
+      chimeMax: 4600
+    },
+    summer: {
+      pad: [130.81, 196.00],
+      notes: [261.63, 329.63, 392.00, 493.88, 587.33],
+      filterType: "lowpass",
+      cutoff: 480,
+      q: 0.6,
+      airGain: 0.032,
+      padGain: 0.024,
+      chimeMin: 2900,
+      chimeMax: 5400
+    },
+    monsoon: {
+      pad: [110.00, 164.81],
+      notes: [220.00, 261.63, 293.66, 329.63, 392.00, 440.00],
+      filterType: "bandpass",
+      cutoff: 760,
+      q: 0.65,
+      airGain: 0.088,
+      padGain: 0.020,
+      chimeMin: 2100,
+      chimeMax: 4200
+    },
+    autumn: {
+      pad: [174.61, 261.63],
+      notes: [349.23, 392.00, 440.00, 523.25, 587.33],
+      filterType: "bandpass",
+      cutoff: 520,
+      q: 1.05,
+      airGain: 0.044,
+      padGain: 0.022,
+      chimeMin: 2700,
+      chimeMax: 5000
+    }
+  };
+
+  var soundOn = false;
+  var audioCtx = null;
+  var masterGain = null;
+  var airFilter = null;
+  var airGain = null;
+  var padOscA = null;
+  var padOscB = null;
+  var padGain = null;
+  var noiseBuffer = null;
+  var chimeTimer = null;
+  var suspendTimer = null;
+  var pedalTickAccum = 0;
+  var lastTickAt = 0;
+  var lastSpeedNorm = 0;
+
+  function makePinkNoise(ctx){
+    var len = ctx.sampleRate * 3;
+    var buf = ctx.createBuffer(1, len, ctx.sampleRate);
+    var out = buf.getChannelData(0);
+    var b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+    for(var i = 0; i < len; i++){
+      var w = Math.random() * 2 - 1;
+      b0 = 0.99886 * b0 + w * 0.0555179;
+      b1 = 0.99332 * b1 + w * 0.0750759;
+      b2 = 0.96900 * b2 + w * 0.1538520;
+      b3 = 0.86650 * b3 + w * 0.3104856;
+      b4 = 0.55000 * b4 + w * 0.5329522;
+      b5 = -0.7616 * b5 - w * 0.0168980;
+      out[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + w * 0.5362) * 0.045;
+      b6 = w * 0.115926;
+    }
+    return buf;
+  }
+
+  function ensureAudio(){
+    if(audioCtx) return audioCtx;
+    var Ctx = window.AudioContext || window.webkitAudioContext;
+    if(!Ctx) return null;
+    audioCtx = new Ctx();
+    noiseBuffer = makePinkNoise(audioCtx);
+
+    var comp = audioCtx.createDynamicsCompressor();
+    comp.threshold.value = -10;
+    comp.ratio.value = 3;
+    comp.connect(audioCtx.destination);
+
+    masterGain = audioCtx.createGain();
+    masterGain.gain.value = 0.0001;
+    masterGain.connect(comp);
+
+    var noiseSrc = audioCtx.createBufferSource();
+    noiseSrc.buffer = noiseBuffer;
+    noiseSrc.loop = true;
+    airFilter = audioCtx.createBiquadFilter();
+    airGain = audioCtx.createGain();
+    airGain.gain.value = 0.02;
+    noiseSrc.connect(airFilter);
+    airFilter.connect(airGain);
+    airGain.connect(masterGain);
+    noiseSrc.start();
+
+    var padFilter = audioCtx.createBiquadFilter();
+    padFilter.type = "lowpass";
+    padFilter.frequency.value = 380;
+    padGain = audioCtx.createGain();
+    padGain.gain.value = 0.02;
+    padOscA = audioCtx.createOscillator();
+    padOscB = audioCtx.createOscillator();
+    padOscA.type = "sine";
+    padOscB.type = "triangle";
+    var oscBGain = audioCtx.createGain();
+    oscBGain.gain.value = 0.32;
+    padOscA.connect(padFilter);
+    padOscB.connect(oscBGain);
+    oscBGain.connect(padFilter);
+    padFilter.connect(padGain);
+    padGain.connect(masterGain);
+    padOscA.start();
+    padOscB.start();
+
+    syncSoundSeason(true);
+    return audioCtx;
+  }
+
+  function syncSoundSeason(immediate){
+    if(!audioCtx) return;
+    var cfg = SEASON_AUDIO[SEASONS[seasonIdx]] || SEASON_AUDIO.spring;
+    var now = audioCtx.currentTime;
+    var tc = immediate ? 0.02 : 0.7;
+    airFilter.type = cfg.filterType;
+    airFilter.frequency.setTargetAtTime(cfg.cutoff + lastSpeedNorm * 160, now, tc);
+    airFilter.Q.setTargetAtTime(cfg.q, now, tc);
+    airGain.gain.setTargetAtTime(cfg.airGain + lastSpeedNorm * 0.026, now, tc);
+    padOscA.frequency.setTargetAtTime(cfg.pad[0], now, tc);
+    padOscB.frequency.setTargetAtTime(cfg.pad[1], now, tc);
+    padGain.gain.setTargetAtTime(cfg.padGain, now, tc);
+  }
+
+  function setSoundSpeed(speedNorm){
+    if(!audioCtx || !soundOn) return;
+    if(Math.abs(speedNorm - lastSpeedNorm) < 0.03 && speedNorm !== 0) return;
+    lastSpeedNorm = speedNorm;
+    var cfg = SEASON_AUDIO[SEASONS[seasonIdx]] || SEASON_AUDIO.spring;
+    var now = audioCtx.currentTime;
+    airFilter.frequency.setTargetAtTime(cfg.cutoff + speedNorm * 160, now, 0.18);
+    airGain.gain.setTargetAtTime(cfg.airGain + speedNorm * 0.026, now, 0.18);
+  }
+
+  function triggerChime(){
+    if(!audioCtx || !soundOn || document.hidden) return;
+    var cfg = SEASON_AUDIO[SEASONS[seasonIdx]] || SEASON_AUDIO.spring;
+    var freq = cfg.notes[Math.floor(Math.random() * cfg.notes.length)];
+    var now = audioCtx.currentTime;
+    var osc = audioCtx.createOscillator();
+    var overtone = audioCtx.createOscillator();
+    var g = audioCtx.createGain();
+    var og = audioCtx.createGain();
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(freq, now);
+    overtone.type = "sine";
+    overtone.frequency.setValueAtTime(freq * 2, now);
+    og.gain.value = 0.14;
+    g.gain.setValueAtTime(0.0001, now);
+    g.gain.linearRampToValueAtTime(0.028, now + 0.045);
+    g.gain.exponentialRampToValueAtTime(0.0001, now + 2.6);
+    osc.connect(g);
+    overtone.connect(og);
+    og.connect(g);
+    g.connect(masterGain);
+    osc.start(now);
+    overtone.start(now);
+    osc.stop(now + 2.7);
+    overtone.stop(now + 2.7);
+  }
+
+  function scheduleChime(){
+    clearTimeout(chimeTimer);
+    if(!soundOn) return;
+    var cfg = SEASON_AUDIO[SEASONS[seasonIdx]] || SEASON_AUDIO.spring;
+    var wait = cfg.chimeMin + Math.random() * (cfg.chimeMax - cfg.chimeMin);
+    chimeTimer = setTimeout(function(){
+      triggerChime();
+      scheduleChime();
+    }, wait);
+  }
+
+  function playBell(){
+    if(!audioCtx || !soundOn) return;
+    var now = audioCtx.currentTime;
+    [1174.66, 2349.32].forEach(function(freq, idx){
+      var osc = audioCtx.createOscillator();
+      var g = audioCtx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, now);
+      g.gain.setValueAtTime(0.0001, now);
+      g.gain.linearRampToValueAtTime(idx === 0 ? 0.026 : 0.01, now + 0.006);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + (idx === 0 ? 0.55 : 0.3));
+      osc.connect(g);
+      g.connect(masterGain);
+      osc.start(now);
+      osc.stop(now + 0.6);
+    });
+  }
+
+  function playSpokeTick(){
+    if(!audioCtx || !soundOn || !noiseBuffer) return;
+    var nowMs = performance.now();
+    if(nowMs - lastTickAt < 45) return;
+    lastTickAt = nowMs;
+    var now = audioCtx.currentTime;
+    var src = audioCtx.createBufferSource();
+    src.buffer = noiseBuffer;
+    var hp = audioCtx.createBiquadFilter();
+    hp.type = "highpass";
+    hp.frequency.value = 1500;
+    var g = audioCtx.createGain();
+    g.gain.setValueAtTime(0.03, now);
+    g.gain.exponentialRampToValueAtTime(0.0001, now + 0.022);
+    src.connect(hp);
+    hp.connect(g);
+    g.connect(masterGain);
+    src.start(now, Math.random() * 1.5, 0.025);
+  }
+
+  function playRipple(){
+    if(!audioCtx || !soundOn) return;
+    var now = audioCtx.currentTime;
+    var osc = audioCtx.createOscillator();
+    var g = audioCtx.createGain();
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(460, now);
+    osc.frequency.exponentialRampToValueAtTime(810, now + 0.065);
+    g.gain.setValueAtTime(0.0001, now);
+    g.gain.linearRampToValueAtTime(0.02, now + 0.008);
+    g.gain.exponentialRampToValueAtTime(0.0001, now + 0.09);
+    osc.connect(g);
+    g.connect(masterGain);
+    osc.start(now);
+    osc.stop(now + 0.1);
+  }
+
+  function playKiteFlutter(){
+    if(!audioCtx || !soundOn || !noiseBuffer) return;
+    var now = audioCtx.currentTime;
+    var src = audioCtx.createBufferSource();
+    src.buffer = noiseBuffer;
+    var bp = audioCtx.createBiquadFilter();
+    bp.type = "bandpass";
+    bp.frequency.value = 1150;
+    bp.Q.value = 1.6;
+    var g = audioCtx.createGain();
+    g.gain.setValueAtTime(0.0001, now);
+    g.gain.linearRampToValueAtTime(0.045, now + 0.015);
+    g.gain.exponentialRampToValueAtTime(0.0001, now + 0.11);
+    src.connect(bp);
+    bp.connect(g);
+    g.connect(masterGain);
+    src.start(now, Math.random() * 1.5, 0.12);
+  }
+
+  function syncSoundBtn(){
+    if(!soundBtn) return;
+    soundBtn.classList.toggle("is-on", soundOn);
+    soundBtn.setAttribute("aria-pressed", soundOn ? "true" : "false");
+    soundBtn.title = soundOn ? "Mute seasonal soundscape (M)" : "Play seasonal soundscape (M)";
+  }
+
+  function toggleSound(){
+    soundOn = !soundOn;
+    clearTimeout(suspendTimer);
+    if(soundOn){
+      var ctx = ensureAudio();
+      if(!ctx){ soundOn = false; syncSoundBtn(); return; }
+      if(ctx.state === "suspended") ctx.resume();
+      syncSoundSeason(false);
+      masterGain.gain.setTargetAtTime(0.88, ctx.currentTime, 0.35);
+      scheduleChime();
+      setTimeout(triggerChime, 450);
+    }else{
+      clearTimeout(chimeTimer);
+      if(audioCtx && masterGain){
+        masterGain.gain.setTargetAtTime(0.0001, audioCtx.currentTime, 0.12);
+        suspendTimer = setTimeout(function(){
+          if(!soundOn && audioCtx && audioCtx.state === "running") audioCtx.suspend();
+        }, 450);
+      }
+    }
+    syncSoundBtn();
+  }
+
+  if(soundBtn){
+    soundBtn.addEventListener("click", function(e){
+      e.stopPropagation();
+      toggleSound();
+    });
+  }
+  document.addEventListener("visibilitychange", function(){
+    if(!audioCtx || !soundOn) return;
+    if(document.hidden){
+      clearTimeout(chimeTimer);
+      if(audioCtx.state === "running") audioCtx.suspend();
+    }else{
+      if(audioCtx.state === "suspended") audioCtx.resume();
+      scheduleChime();
+    }
+  });
 
   function setSeason(idx){
     seasonIdx = (idx + SEASONS.length) % SEASONS.length;
     var name = SEASONS[seasonIdx];
     document.documentElement.setAttribute("data-season", name);
     if(seasonPill) seasonPill.textContent = name;
+    syncSoundSeason(false);
   }
 
   function nextSeason(){
@@ -1291,6 +1647,7 @@
 
   var reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   setSeason(0);
+  syncSoundBtn();
 
   if(seasonPill){
     seasonPill.addEventListener("click", function(e){
@@ -1422,6 +1779,11 @@
     if(legBack) legBack.setAttribute("d", legPath(crankAngle + Math.PI));
 
     totalDist += Math.abs(dx);
+    pedalTickAccum += Math.abs(dx);
+    if(pedalTickAccum >= 46){
+      pedalTickAccum %= 46;
+      playSpokeTick();
+    }
     if(totalDist > 75 && rideHint && !rideHint.classList.contains("faded")){
       rideHint.classList.add("faded");
     }
@@ -1469,6 +1831,7 @@
   function hop(){
     if(jumpOffset >= -1 && jumpVel === 0){
       jumpVel = -185;
+      playBell();
       ensureLoop();
     }
   }
@@ -1478,11 +1841,12 @@
     kite.classList.remove("tug");
     void kite.offsetWidth;
     kite.classList.add("tug");
+    playKiteFlutter();
     clearTimeout(kiteTimer);
     kiteTimer = setTimeout(function(){ kite.classList.remove("tug"); }, 360);
   }
 
-  function spawnRipple(x, y){
+  function spawnRipple(x, y, quiet){
     if(!ripples) return;
     var el = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
     el.setAttribute("cx", x.toFixed(1));
@@ -1491,6 +1855,7 @@
     el.setAttribute("ry", "0.8");
     el.setAttribute("class", "water-ripple");
     ripples.appendChild(el);
+    if(!quiet) playRipple();
     setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); }, 1000);
   }
 
@@ -1528,12 +1893,13 @@
 
     var moving = dragging ? dragMoved : Math.abs(vel) > 4;
     setCycling(moving);
+    setSoundSpeed(moving ? Math.min(1, Math.abs(vel) / CRUISE_SPEED) : 0);
 
     if(moving && !reducedMotion && SEASONS[seasonIdx] === "monsoon"){
       rainRippleCooldown -= dt;
       if(rainRippleCooldown <= 0){
         rainRippleCooldown = 0.45 + Math.random() * 0.55;
-        spawnRipple(120 + Math.random() * 1200, 249 + Math.random() * 22);
+        spawnRipple(120 + Math.random() * 1200, 249 + Math.random() * 22, true);
       }
     }
 
@@ -1567,6 +1933,7 @@
       rafId = requestAnimationFrame(tick);
     }else{
       setCycling(false);
+      setSoundSpeed(0);
     }
   }
 
@@ -1715,6 +2082,8 @@
       hop();
     }else if(e.key === "d" || e.key === "D"){
       toggleTheme();
+    }else if(e.key === "m" || e.key === "M"){
+      toggleSound();
     }else if(e.key === "s" || e.key === "S"){
       nextSeason();
     }else if(e.key >= "1" && e.key <= "4"){
